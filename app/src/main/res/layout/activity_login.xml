@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/common_view_bg"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title" />
+
+    <include layout="@layout/common_line" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.0dip"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include layout="@layout/common_line" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="43.0dip"
+            android:layout_marginRight="10.0dip"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="22.0dip"
+                android:layout_height="22.0dip"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:src="@drawable/act_login_phone_icon" />
+
+            <EditText
+                android:id="@+id/act_login_phone"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@color/transparent"
+                android:ellipsize="start"
+                android:hint="@string/act_login_phone_hide"
+                android:inputType="phone"
+                android:singleLine="true"
+                android:textColor="@color/act_login_edit"
+                android:textSize="16.0sp" />
+        </LinearLayout>
+
+        <include
+            layout="@layout/common_line"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="43.0dip"
+            android:layout_marginRight="10.0dip"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="22.0dip"
+                android:layout_height="22.0dip"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:contentDescription="@string/act_login_phone_hide"
+                android:src="@drawable/act_login_pwd_icon" />
+
+            <EditText
+                android:id="@+id/act_login_pwd"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@color/transparent"
+                android:ellipsize="start"
+                android:hint="@string/act_login_pwd_hide"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@color/act_login_edit"
+                android:textSize="16.0sp" />
+        </LinearLayout>
+
+        <include layout="@layout/common_line" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/act_login_forget"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="25.0dip"
+        android:layout_marginTop="15.0dip"
+        android:background="@color/transparent"
+        android:gravity="right"
+        android:text="忘记密码?"
+        android:textColor="#ff333333"
+        android:textSize="12.0sp" />
+
+    <Button
+        android:id="@+id/act_login_ok"
+        android:layout_width="fill_parent"
+        android:layout_height="44.0dip"
+        android:layout_marginLeft="25.0dip"
+        android:layout_marginRight="25.0dip"
+        android:layout_marginTop="15.0dip"
+        android:background="@drawable/act_login_ok_btn"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="#ffffffff"
+        android:textSize="16.0sp" />
+
+    <Button
+        android:id="@+id/act_login_registration"
+        android:layout_width="fill_parent"
+        android:layout_height="44.0dip"
+        android:layout_marginLeft="25.0dip"
+        android:layout_marginRight="25.0dip"
+        android:layout_marginTop="20.0dip"
+        android:background="@drawable/act_login_registration_btn"
+        android:gravity="center"
+        android:text="注册新用户"
+        android:textColor="#ff333333"
+        android:textSize="16.0sp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25.0dip"
+        android:layout_marginRight="25.0dip"
+        android:layout_marginTop="35.0dip"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_weight="1.0">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="#ff95aac0" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="#ffa6b8ca" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7.0dip"
+            android:layout_marginRight="7.0dip"
+            android:text="社交账号登录"
+            android:textColor="#ff91a7be"
+            android:textSize="15.0sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_weight="1.0">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="#ff95aac0" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="#ffa6b8ca" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15.0dip"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/act_login_thirdParty_wx_btn"
+            android:layout_width="67.0dip"
+            android:layout_height="67.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@drawable/act_login_wx_icon" />
+
+        <Button
+            android:id="@+id/act_login_thirdParty_wb_btn"
+            android:layout_width="67.0dip"
+            android:layout_height="67.0dip"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@drawable/act_login_wb_icon" />
+
+        <Button
+            android:id="@+id/act_login_thirdParty_qq_btn"
+            android:layout_width="67.0dip"
+            android:layout_height="67.0dip"
+            android:layout_marginLeft="10.0dip"
+            android:background="@drawable/act_login_qq_icon" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/act_login_nologin_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:paddingBottom="5.0dip"
+            android:paddingLeft="10.0dip"
+            android:paddingRight="10.0dip"
+            android:paddingTop="10.0dip"
+            android:text="先随便逛逛"
+            android:textColor="#ff91a7be"
+            android:textSize="15.0sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/login_protocol_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="10.0dip"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip"
+        android:text="登录即表示同意我们的 用户协议"
+        android:textColor="@color/common_like_text_normal"
+        android:textSize="11.0sp" />
+
+</LinearLayout>

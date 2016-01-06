@@ -1,10 +1,215 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+<?xml version="1.0" encoding="UTF-8"?><!--
+ Copyright (C) 2008 ZXing authors
 
-    <color name="bottomtab_normal">#3F51B5</color>
-    <color name="topbar_bg">#FF4081</color>
-    <color name="line">#FF4081</color>
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<resources>
+    <color name="colorPrimary">#ff000000</color>
+    <color name="colorPrimaryDark">#ff000000</color>
+    <color name="colorAccent">#ff000000</color>
+
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color>
+
+    <color name="common_line">#ffe5e5e5</color>
+
+    <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+
+
+    <color name="abc_input_method_navigation_guard">@android:color/black</color>
+    <color name="abc_search_url_text_normal">#ff7fa87f</color>
+    <color name="abc_search_url_text_pressed">@android:color/black</color>
+    <color name="abc_search_url_text_selected">@android:color/black</color>
+    <color name="accent_material_dark">@color/material_deep_teal_200</color>
+    <color name="accent_material_light">@color/material_deep_teal_500</color>
+    <color name="act_detail_ask_store_normal">#ffff9000</color>
+    <color name="act_detail_ask_store_select">#ff999999</color>
+    <color name="act_detail_item_press">#ffeeeeee</color>
+    <color name="act_home_tab_btn_text_normal">#ff929292</color>
+    <color name="act_home_tab_btn_text_select">#ffd8995e</color>
+    <color name="act_login_edit">#ff000000</color>
+    <color name="act_long_cmt_edit_tag_normal">#ffa1a1a1</color>
+    <color name="act_long_cmt_edit_tag_select">#ff333333</color>
+    <color name="adapter_dynamic_state_bg">#fff3f4f4</color>
+    <color name="adapter_tag_color1">#ffffb22d</color>
+    <color name="adapter_tag_color10">#ffffa199</color>
+    <color name="adapter_tag_color2">#ff56d081</color>
+    <color name="adapter_tag_color3">#ff68c1f4</color>
+    <color name="adapter_tag_color4">#ffe188e4</color>
+    <color name="adapter_tag_color5">#fff1c734</color>
+    <color name="adapter_tag_color6">#ff81de7f</color>
+    <color name="adapter_tag_color7">#ff7ad1ee</color>
+    <color name="adapter_tag_color8">#ffe1a4e3</color>
+    <color name="adapter_tag_color9">#ffec7368</color>
+    <color name="adapter_timeline_btn_normal">#ff587a96</color>
+    <color name="adapter_timeline_btn_select">#ffbfcdd7</color>
+    <color name="adapter_timeline_user_name">#ff44637e</color>
+    <color name="background">#fff7f4f0</color>
+    <color name="background_floating_material_dark">#ff424242</color>
+    <color name="background_floating_material_light">#ffeeeeee</color>
+    <color name="background_material_dark">#ff303030</color>
+    <color name="background_material_light">#ffeeeeee</color>
+    <color name="bg_color">#ffededed</color>
+    <color name="big_line_background">#ffd1d1d1</color>
+    <color name="black">#ff000000</color>
+    <color name="book_no_read_buy_bg">#ffdfdfdf</color>
+    <color name="book_price_color">#ffff725f</color>
+    <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
+    <color name="bright_foreground_disabled_material_light">#80000000</color>
+    <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light
+    </color>
+    <color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark
+    </color>
+    <color name="bright_foreground_material_dark">@android:color/white</color>
+    <color name="bright_foreground_material_light">@android:color/black</color>
+    <color name="bule">#ff0000ff</color>
+    <color name="button_material_dark">#ff5a595b</color>
+    <color name="button_material_light">#ffd6d7d7</color>
+    <color name="card_praise_color">#ffffb22d</color>
+    <color name="channel_name_color">#ff474747</color>
+    <color name="comment_none_color">#ffff9000</color>
+    <color name="common_item_click_dark">#aa000000</color>
+    <color name="common_like_normal">#ff8b8b8c</color>
+    <color name="common_like_select">#ffffb712</color>
+    <color name="common_like_text_normal">#ffa6a6a6</color>
+    <color name="common_like_text_select">#ffffb330</color>
+    <color name="common_title_bg">#fffcfcfc</color>
+    <color name="common_view_bg">#fff3f3f3</color>
+    <color name="create_card_bg">#82000000</color>
+    <color name="default_overlay_color">#aaffffff</color>
+    <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
+    <color name="dim_foreground_disabled_material_light">#80323232</color>
+    <color name="dim_foreground_material_dark">#ffbebebe</color>
+    <color name="dim_foreground_material_light">#ff323232</color>
+    <color name="error_color">#ffdd2c00</color>
+    <color name="fab_stroke_end_inner_color">#0a000000</color>
+    <color name="fab_stroke_end_outer_color">#0f000000</color>
+    <color name="fab_stroke_top_inner_color">#1affffff</color>
+    <color name="fab_stroke_top_outer_color">#2effffff</color>
+    <color name="fellow_card_color">#ffc2c2c2</color>
+    <color name="fgm_card_color">#ffa0a0a0</color>
+    <color name="fgm_card_edit_background">#ffececec</color>
+    <color name="fgm_card_edit_recommend_color">#ff696969</color>
+    <color name="fgm_channel_attention_color">#ffffb22d</color>
+    <color name="fgm_friend_navigation_btn_text_normal">#ff727272</color>
+    <color name="fgm_friend_navigation_btn_text_select">#ffffffff</color>
+    <color name="fgm_integrate_score_color">#ffff7d63</color>
+    <color name="fgm_integrate_sign_in_color">#ff67c73d</color>
+    <color name="fgm_me_header_btn_press">#6a437aa7</color>
+    <color name="fgm_my_btn_text_normal">#ffffffff</color>
+    <color name="fgm_my_btn_text_select">#ffff9000</color>
+    <color name="greet">#ff00ff00</color>
+    <color name="grgray">#ff686868</color>
+    <color name="header">#ff58567d</color>
+    <color name="help_button_view">#ffcccccc</color>
+    <color name="help_view">#ff404040</color>
+    <color name="highlighted_text_material_dark">#6680cbc4</color>
+    <color name="highlighted_text_material_light">#66009688</color>
+    <color name="hint_foreground_material_dark">@color/bright_foreground_disabled_material_dark
+    </color>
+    <color name="hint_foreground_material_light">@color/bright_foreground_disabled_material_light
+    </color>
+    <color name="hot_card_praise_color">#ff888888</color>
+    <color name="hot_channel_color">#fff99725</color>
+    <color name="integrate_system_bg_color">#ff47b384</color>
+    <color name="integrate_system_bg_color_pressed">#ff67b384</color>
+    <color name="item_chaos_book_tab_text_normal">#ff666666</color>
+    <color name="item_chaos_book_tab_text_select">#ffffffff</color>
+    <color name="item_notice_text_normal">#ff878585</color>
+    <color name="item_notice_text_select">#ffc8c7c7</color>
+    <color name="link_text_material_dark">@color/material_deep_teal_200</color>
+    <color name="link_text_material_light">@color/material_deep_teal_500</color>
+    <color name="material_blue_grey_800">#ff37474f</color>
+    <color name="material_blue_grey_900">#ff263238</color>
+    <color name="material_blue_grey_950">#ff21272b</color>
+    <color name="material_deep_teal_200">#ff80cbc4</color>
+    <color name="material_deep_teal_500">#ff009688</color>
+    <color name="normal_channel_color">#ff555555</color>
+    <color name="paint_head_text_color">#ff4e4e4e</color>
+    <color name="primary_dark_material_dark">#ff000000</color>
+    <color name="primary_dark_material_light">#ff757575</color>
+    <color name="primary_material_dark">#ff212121</color>
+    <color name="primary_material_light">#ffefefef</color>
+    <color name="primary_text_default_material_dark">#ffffffff</color>
+    <color name="primary_text_default_material_light">#de000000</color>
+    <color name="primary_text_disabled_material_dark">#4dffffff</color>
+    <color name="primary_text_disabled_material_light">#39000000</color>
+    <color name="pull_black">#ff000000</color>
+    <color name="red">#ffff0000</color>
+    <color name="refresh_color1">#ffff0000</color>
+    <color name="refresh_color2">#ffffff00</color>
+    <color name="refresh_color3">#ffffffff</color>
+    <color name="refresh_color4">#ff0000ff</color>
+    <color name="result_image_border">#ffffffff</color>
+    <color name="result_points">#c000ff00</color>
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="ripple_material_dark">#4dffffff</color>
+    <color name="ripple_material_light">#1f000000</color>
+    <color name="sbc_header_text">#ff808080</color>
+    <color name="sbc_header_view">#ffffffff</color>
+    <color name="sbc_layout_view">#ffffffff</color>
+    <color name="sbc_list_item">#fffff0e0</color>
+    <color name="sbc_page_number_text">#ff000000</color>
+    <color name="sbc_snippet_text">#ff4b4b4b</color>
+    <color name="search_channel_cannel_color">#ff969696</color>
+    <color name="search_channel_name">#ff5a5a5a</color>
+    <color name="secondary_text_default_material_dark">#b3ffffff</color>
+    <color name="secondary_text_default_material_light">#8a000000</color>
+    <color name="secondary_text_disabled_material_dark">#36ffffff</color>
+    <color name="secondary_text_disabled_material_light">#24000000</color>
+    <color name="shadow_end_color">@android:color/transparent</color>
+    <color name="shadow_mid_color">#14000000</color>
+    <color name="shadow_start_color">#44000000</color>
+    <color name="share_text">#ff000000</color>
+    <color name="share_view">#ffffffff</color>
+    <color name="singer_name_color">#ff777777</color>
+    <color name="snackbar_background_color">#ff323232</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="status_view">#50000000</color>
+    <color name="switch_thumb_disabled_material_dark">#ff616161</color>
+    <color name="switch_thumb_disabled_material_light">#ffbdbdbd</color>
+    <color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
+    <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
+    <color name="tb_munion_item_force">#ffe3e3e3</color>
+    <color name="titleTextColor">@android:color/white</color>
+    <color name="title_color">#ff333333</color>
+    <color name="transparent">#00000000</color>
+    <color name="umeng_fb_audo_dialog_bg">#f4f0745f</color>
+    <color name="umeng_fb_gray">#ffd8d8d8</color>
+    <color name="umeng_fb_lightblue">#ff0fb0a8</color>
+    <color name="umeng_fb_line">#ffdcdcdc</color>
+    <color name="umeng_fb_secondary_text_light">#8a000000</color>
+    <color name="umeng_fb_white">#ffffffff</color>
+    <color name="umeng_socialize_color_group">#ff2c3035</color>
+    <color name="umeng_socialize_comments_bg">#fff4f4f4</color>
+    <color name="umeng_socialize_divider">#ffe6e6e6</color>
+    <color name="umeng_socialize_edit_bg">#ffc4c4c4</color>
+    <color name="umeng_socialize_grid_divider_line">#fff8f8f8</color>
+    <color name="umeng_socialize_list_item_bgcolor">#ffffffff</color>
+    <color name="umeng_socialize_list_item_textcolor">#ff333333</color>
+    <color name="umeng_socialize_text_friends_list">#ff959696</color>
+    <color name="umeng_socialize_text_share_content">#ff666666</color>
+    <color name="umeng_socialize_text_time">#ff999999</color>
+    <color name="umeng_socialize_text_title">#ff464f61</color>
+    <color name="umeng_socialize_text_ucenter">#ff595959</color>
+    <color name="umeng_socialize_ucenter_bg">#ffeeeeee</color>
+    <color name="viewfinder_frame">#ff000000</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="white">#ffffffff</color>
+    <item name="adapter_timeline_btn" type="color">false</item>
+    <item name="fgm_my_tab_btn" type="color">false</item>
 </resources>

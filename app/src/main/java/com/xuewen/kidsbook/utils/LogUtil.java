@@ -25,20 +25,16 @@ public class LogUtil {
     final static int FILE_LOG_LEVEL = 2;// log file level, must >= LOGCAT_LEVEL
 
     final static int LOG_LEVEL_ERROR = 16;
-    final static int LOG_LEVEL_WARN = 8;
-    final static int LOG_LEVEL_INFO = 4;
-    final static int LOG_LEVEL_DEBUG = 2;
-
-    public final static boolean DEBUG = (LOGCAT_LEVEL <= LOG_LEVEL_DEBUG);
-    public final static boolean INFO = (LOGCAT_LEVEL <= LOG_LEVEL_INFO);
-    public final static boolean WARN = (LOGCAT_LEVEL <= LOG_LEVEL_WARN);
     public final static boolean ERROR = (LOGCAT_LEVEL <= LOG_LEVEL_ERROR);
-
+    final static int LOG_LEVEL_WARN = 8;
+    public final static boolean WARN = (LOGCAT_LEVEL <= LOG_LEVEL_WARN);
+    final static int LOG_LEVEL_INFO = 4;
+    public final static boolean INFO = (LOGCAT_LEVEL <= LOG_LEVEL_INFO);
+    final static int LOG_LEVEL_DEBUG = 2;
+    public final static boolean DEBUG = (LOGCAT_LEVEL <= LOG_LEVEL_DEBUG);
     final static String LOG_FILE_NAME = "kids_read.log";
-
-    private final static String LOG_TAG_STRING = "KidsRead";
-
     final static String LOG_ENTRY_FORMAT = "[%tF %tT][%s][%s]%s"; // [2010-01-22
+    private final static String LOG_TAG_STRING = "KidsRead";
     // 13:39:1][D][com.a.c]error
     // occured
     static PrintStream logStream;

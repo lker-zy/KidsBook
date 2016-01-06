@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xuewen.kidsbook">
 
+    <uses-sdk android:minSdkVersion="8" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:name=".KidsBookApplication"
         android:allowBackup="true"
@@ -21,8 +34,20 @@
         </activity>
         <activity
             android:name=".ui.PersonalActivity"
-            android:label="@string/title_activity_personal"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.MainSearchActivity" />
+        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.QrSearchActivity" />
+        <activity android:name=".zxing.CaptureActivity">
+            <intent-filter>
+                <action android:name="com.xuewen.kidsbook.zxing.SCAN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.ListAllActivity" />
+        <activity android:name=".ui.BookDetailActivity"></activity>
     </application>
 
 </manifest>

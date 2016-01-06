@@ -12,7 +12,7 @@ import com.xuewen.kidsbook.utils.LogUtil;
 /**
  * Created by lker_zy on 15-12-18.
  */
-public abstract  class BaseActivity extends Activity {
+public abstract class BaseActivity extends Activity {
     /**
      * LOG打印标签
      */
@@ -25,20 +25,24 @@ public abstract  class BaseActivity extends Activity {
         LogUtil.d(BaseActivity.TAG, "onCreate...");
         super.onCreate(savedInstanceState);
 
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
         int layoutId = getLayoutId();
         if (layoutId != 0) {
             setContentView(layoutId);
             // 删除窗口背景
-            // getWindow().setBackgroundDrawable(null);
+            //getWindow().setBackgroundDrawable(null);
         }
 
 
         mContext = this.getApplicationContext();
         ((KidsBookApplication) this.getApplication()).addActivity(this);
+
+        initTitleView();
     }
 
     protected abstract int getLayoutId();
+
+    protected void initTitleView() {};
 }
