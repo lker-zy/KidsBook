@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/common_view_bg" android:fitsSystemWindows="true" android:clipToPadding="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/common_title" />
+    <include layout="@layout/common_line" />
+    <LinearLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@+id/act_registration_user_icon" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginTop="30.0dip" android:layout_marginBottom="30.0dip" android:src="@drawable/act_registration_user_icon" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <include layout="@layout/common_line" />
+        <EditText android:textSize="16.0sp" android:textColor="@color/act_login_edit" android:ellipsize="start" android:id="@+id/act_registration_nick" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="43.0dip" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:hint="@string/act_registration_nick_hide" android:singleLine="true" android:maxLength="15" />
+        <include android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" layout="@layout/common_line" />
+        <EditText android:textSize="16.0sp" android:textColor="@color/act_login_edit" android:ellipsize="start" android:id="@+id/act_registration_phone" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="43.0dip" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:hint="@string/act_registration_phone_hide" android:singleLine="true" android:inputType="phone" />
+        <include android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" layout="@layout/common_line" />
+        <LinearLayout android:gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="43.0dip" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip">
+            <EditText android:textSize="16.0sp" android:textColor="@color/act_login_edit" android:ellipsize="start" android:id="@+id/act_registration_code" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginRight="10.0dip" android:hint="@string/act_registration_code_hide" android:singleLine="true" android:maxLength="8" android:layout_weight="1.0" android:inputType="number" />
+            <Button android:textSize="14.0sp" android:textColor="@color/white" android:id="@+id/act_registration_get_code" android:background="@drawable/act_login_ok_btn" android:layout_width="90.0dip" android:layout_height="33.0dip" android:text="@string/act_registration_get_code" />
+        </LinearLayout>
+        <include android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" layout="@layout/common_line" />
+        <EditText android:textSize="16.0sp" android:textColor="@color/act_login_edit" android:ellipsize="start" android:id="@+id/act_registration_pwd" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="43.0dip" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:hint="@string/act_registration_pwd_hide" android:singleLine="true" android:inputType="textPassword" />
+        <include layout="@layout/common_line" />
+    </LinearLayout>
+    <Button android:textSize="16.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@+id/act_registration_ok" android:background="@drawable/act_login_ok_btn" android:layout_width="fill_parent" android:layout_height="44.0dip" android:layout_marginLeft="25.0dip" android:layout_marginTop="40.0dip" android:layout_marginRight="25.0dip" android:text="完成" />
+</LinearLayout>
