@@ -5,17 +5,23 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.format.Time;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,18 +29,54 @@ import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.utils.UpdateHandler;
 import com.xuewen.kidsbook.utils.Version;
-import com.xuewen.kidsbook.zxing.CaptureActivity;
 import com.xuewen.kidsbook.zxing.Intents;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.Bind;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
+    private static final int MSG_CHECK_UPDATE_TOAST = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    WebView mainWebView;
+
+    @Bind(R.id.main_list_view)
+    ListView listView;
 
     private RelativeLayout dailyLayout, studyLayout, meLayout, latestLayout, listLayout;
     private ProgressDialog pBar;
 
     private Handler mHandler = new receiveVersionHandler();
+    private Handler cHandler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            super.handleMessage(message);
+            switch (message.what) {
+                case MSG_CHECK_UPDATE_TOAST:
+                    Toast.makeText(MainActivity.this, "检查版本更新", Toast.LENGTH_SHORT).show();
+                    return;
+                default:
+                    break;
+            }
+
+            Bundle data = message.getData();
+            String needUpdate = data.getString("needUpdate");
+            if (needUpdate.equals("true")) {
+                /*
+                String version = data.getString("version");
+                String verDesc = data.getString("verDesc");
+                */
+                showUpdateDialog(Version.getRemoteVersion(), Version.getVersionDesc());
+            } else {
+                Toast.makeText(MainActivity.this, "已经是最新版本了", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     public class receiveVersionHandler extends Handler {
 
@@ -55,6 +97,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void showUpdateDialog(String newVer, String verDesc) {
+        pBar = new ProgressDialog(MainActivity.this);    //进度条，在下载的时候实时更新进度，提高用户友好度
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_info);
         builder.setTitle("请升级APP至版本" + newVer);
@@ -87,12 +131,36 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void updateApp() {
-        pBar = new ProgressDialog(MainActivity.this);    //进度条，在下载的时候实时更新进度，提高用户友好度
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = MSG_CHECK_UPDATE_TOAST;
+                cHandler.sendMessage(message);
 
-        Toast.makeText(MainActivity.this, "检查版本更新", Toast.LENGTH_SHORT).show();
-        if (UpdateHandler.isNeedUpdate()) {
-            showUpdateDialog(Version.getRemoteVersion(), "VersionDesc");
-        }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                message = new Message();
+                Bundle data = new Bundle();
+                if (UpdateHandler.isNeedUpdate()) {
+                    data.putString("needUpdate", "true");
+                    data.putString("version", "1.2.3");
+                    data.putString("verDesc", "version(1.2.3)");
+                } else {
+                    data.putString("needUpdate", "false");
+                }
+
+
+                message.setData(data);
+                cHandler.sendMessage(message);
+            }
+        };
+
+        new Thread(runnable).start();
     }
 
     @Override
@@ -112,6 +180,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         meLayout.setOnClickListener(this);
 
         initView();
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         updateApp();
     }
@@ -142,21 +215,122 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         initTitleView();
 
-        // Load page
-        WebView mainWebView = (WebView) findViewById(R.id.main_web_view);
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, getData(), R.layout.book_item_listview,
+                new String[]{"title", "author", "desc", "img"},
+                new int[]{R.id.book_title, R.id.book_author, R.id.book_desc, R.id.book_img});
+        listView.setAdapter(simpleAdapter);
 
-        WebSettings webSettings = mainWebView.getSettings();
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 1500);
+
+            }
+        });
+    }
+
+    private void initWebView() {
+
+        initTitleView();
+
+        // Load page
+        //mainWebView = (WebView) findViewById(R.id.main_web_view);
+        mainWebView.requestFocus();
+
+        final WebSettings webSettings = mainWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
+        if(Build.VERSION.SDK_INT >= 19) {
+            webSettings.setLoadsImagesAutomatically(true);
+        } else {
+            webSettings.setLoadsImagesAutomatically(false);
+        }
+
         mainWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
             }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (!webSettings.getLoadsImagesAutomatically()) {
+                    webSettings.setLoadsImagesAutomatically(true);
+                }
+            }
         });
 
-        //mainWebView.loadUrl("http://www.baidu.com");
-        mainWebView.loadUrl("file:///android_asset/daily.html");
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                //重新刷新页面
+                mainWebView.loadUrl(mainWebView.getUrl());
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 1500);
+
+            }
+        });
+
+        mainWebView.loadUrl("http://180.76.176.227/kidsbook/daily.action");
+    }
+    private List<Map<String, Object>> getData() {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("title", "book1");
+        map.put("author", "google 1");
+        map.put("desc", "google 1");
+        map.put("img", R.drawable.ic_launcher);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "book2");
+        map.put("author", "google 2");
+        map.put("desc", "google 2");
+        map.put("img", R.drawable.ic_launcher);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "book3");
+        map.put("author", "google 3");
+        map.put("desc", "google 3");
+        map.put("img", R.drawable.ic_launcher);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "book3");
+        map.put("author", "google 3");
+        map.put("desc", "google 3");
+        map.put("img", R.drawable.ic_launcher);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "book3");
+        map.put("author", "google 3");
+        map.put("desc", "google 3");
+        map.put("img", R.drawable.ic_launcher);
+        list.add(map);
+
+        return list;
     }
 
     @Override

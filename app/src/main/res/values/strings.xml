@@ -155,11 +155,12 @@
     <string name="wifi_changing_network">Requesting connection to network\u2026</string>
 
     <string name="bottom_tab_my">我的</string>
-    <string name="bottom_tab_daily">每日精选</string>
-    <string name="bottom_tab_study">我的书房</string>
-    <string name="bottom_tab_latest">新书速递</string>
+    <string name="bottom_tab_daily">精选</string>
+    <string name="bottom_tab_study">书房</string>
+    <string name="bottom_tab_latest">新书</string>
     <string name="bottom_tab_list">榜单</string>
     <string name="title_activity_main">最美童书馆</string>
 
     <string name="action_settings">设置</string>
+    <string name="load">加载中</string>
 </resources>

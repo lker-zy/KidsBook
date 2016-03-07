@@ -3,15 +3,13 @@ package com.xuewen.kidsbook.utils;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Environment;
-import android.os.Message;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xuewen.kidsbook.KidsBookApplication;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -19,7 +17,21 @@ import java.net.URL;
  * Created by lker_zy on 15-12-31.
  */
 public class Version {
-    private static String versionUrl = "";
+    private static final String TAG = Version.class.getSimpleName();
+
+    private static String versionUrl = "http://180.76.176.227/web/checkUpdate";
+    private static String localVersion = "unknown";
+
+    private static String versionDesc;
+    private static String remoteVersion;
+
+    public static String getRemoteVersion() {
+        return remoteVersion;
+    }
+
+    public static String getVersionDesc() {
+        return versionDesc;
+    }
 
     /**
      * 获取版本号
@@ -30,47 +42,53 @@ public class Version {
             Context context = KidsBookApplication.getInstance().getApplicationContext();
             PackageManager manager = context.getPackageManager();
             PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-            String version = info.versionName;
-            return version;
+            localVersion = info.versionName;
+            return localVersion;
         } catch (Exception e) {
             e.printStackTrace();
-            return "unknow";
+            return "unknown";
         }
     }
 
-    public static String getRemoteVersion() {
-        URL serverURL = null;
+    public static VersionUpdateJsonBean checkNewVersion() {
+        String versionQueryUrl  = Version.versionUrl + "?version=" + localVersion;
         try {
-            serverURL = new URL(versionUrl);
+            URL serverURL = new URL(versionQueryUrl);
             HttpURLConnection connect = (HttpURLConnection) serverURL.openConnection();
             BufferedInputStream bis = new BufferedInputStream(connect.getInputStream());
 
             int fileLength = connect.getContentLength();
             int downLength = 0;
-            String version = "";
+            String content = "";
 
             int n;
             byte[] buffer = new byte[1024];
             while ((n = bis.read(buffer, 0, buffer.length)) != -1) {
                 downLength += n;
-                version += new String(buffer);
+                content += new String(buffer);
             }
 
             if (downLength != fileLength) {
-                return "0.0";
+                return null;
             }
 
             bis.close();
             connect.disconnect();
 
-            return version;
+            LogUtil.d(TAG, content);
+            /*
+            VersionUpdateJsonBean updateJsonBean = JSON.parseObject(content, VersionUpdateJsonBean.class);
+            */
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            VersionUpdateJsonBean updateJsonBean = objectMapper.readValue(content, VersionUpdateJsonBean.class);
+
+            Version.remoteVersion = updateJsonBean.getVersion();
+            Version.versionDesc = updateJsonBean.getVerDesc();
+            return updateJsonBean;
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-        return "1.1.2";
-    }
-
-    public boolean checkNewVersion() {
-        return true;
+        return null;
     }
 }

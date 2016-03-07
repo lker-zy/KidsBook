@@ -20,7 +20,7 @@ public class LogUtil {
     final static String TAG = LogUtil.class.getSimpleName();
     // public final static boolean LOG_ENABLED = true;
 
-    final static int LOGCAT_LEVEL = 16;// logcat level
+    final static int LOGCAT_LEVEL = 2;// logcat level
     // final static int LOGCAT_LEVEL = 2;// logcat level
     final static int FILE_LOG_LEVEL = 2;// log file level, must >= LOGCAT_LEVEL
 

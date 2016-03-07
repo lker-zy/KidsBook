@@ -42,7 +42,7 @@ public class MainSearchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initTitleView();
+        //initTitleView();
 
         mSearchViewPager = (ViewPager) findViewById(R.id.search_view_pager);
         mSearchTabLayout = (TabLayout) findViewById(R.id.search_tabs);

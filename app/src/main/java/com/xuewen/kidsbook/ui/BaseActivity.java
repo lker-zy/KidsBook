@@ -8,6 +8,8 @@ import android.view.Window;
 import com.xuewen.kidsbook.KidsBookApplication;
 import com.xuewen.kidsbook.utils.LogUtil;
 
+import butterknife.ButterKnife;
+
 
 /**
  * Created by lker_zy on 15-12-18.
@@ -35,6 +37,7 @@ public abstract class BaseActivity extends Activity {
             //getWindow().setBackgroundDrawable(null);
         }
 
+        ButterKnife.bind(this);
 
         mContext = this.getApplicationContext();
         ((KidsBookApplication) this.getApplication()).addActivity(this);

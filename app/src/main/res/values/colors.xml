@@ -206,10 +206,17 @@
     <color name="umeng_socialize_text_title">#ff464f61</color>
     <color name="umeng_socialize_text_ucenter">#ff595959</color>
     <color name="umeng_socialize_ucenter_bg">#ffeeeeee</color>
+    <color name="umeng_comm_comments_bg">#ffc4c4c4</color>
     <color name="viewfinder_frame">#ff000000</color>
     <color name="viewfinder_laser">#ffff0000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="white">#ffffffff</color>
     <item name="adapter_timeline_btn" type="color">false</item>
     <item name="fgm_my_tab_btn" type="color">false</item>
+
+
+    <!-- basic color -->
+    <color name="orange">#FF9900</color>
+    <color name="green">#009900</color>
+    <color name="blue">#000099</color>
 </resources>

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,7 +18,7 @@ import java.net.URL;
  */
 public class UpdateHandler {
 
-    private static String updateUrl = "http://180.76.176.227/xrong-wx/app-debug.apk";
+    private static String updateUrl = "http://180.76.176.227/web/app-apk/app-debug.apk";
     private Handler mHandler;
     private ProgressDialog mProgressBar;
 
@@ -47,7 +48,7 @@ public class UpdateHandler {
                     int downLength = 0;
                     int progress = 0;
                     int n;
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[40960];
                     while ((n = bis.read(buffer, 0, buffer.length)) != -1) {
                         bos.write(buffer, 0, n);
                         downLength += n;
@@ -85,14 +86,19 @@ public class UpdateHandler {
 
     public static boolean isNeedUpdate() {
 
-        String v = Version.getRemoteVersion(); // 最新版本的版本号
-        LogUtil.i("update", v);
-
-        if (v.equals(Version.getLocalVersion())) {
+        VersionUpdateJsonBean updateJsonBean = Version.checkNewVersion(); // 最新版本的版本号
+        if (updateJsonBean ==  null) {
             return false;
-        } else {
+        }
+
+        LogUtil.i("need update : ", updateJsonBean.isNeedUpdate() ? "true" : "false");
+
+        if (updateJsonBean.isNeedUpdate()) {
+            LogUtil.i("need update. latest version : " , updateJsonBean.getVersion() +  " ("  + updateJsonBean.getVerDesc() + ")");
             return true;
         }
+
+        return false;
     }
 
 }
