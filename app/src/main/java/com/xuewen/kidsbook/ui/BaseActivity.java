@@ -45,6 +45,11 @@ public abstract class BaseActivity extends Activity {
         initTitleView();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     protected abstract int getLayoutId();
 
     protected void initTitleView() {};

@@ -10,21 +10,32 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StrictMode;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.format.Time;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.utils.UpdateHandler;
@@ -32,15 +43,18 @@ import com.xuewen.kidsbook.utils.Version;
 import com.xuewen.kidsbook.zxing.Intents;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final int MSG_CHECK_UPDATE_TOAST = 1;
+    private static final int MSG_CHECK_UPDATE_DONE  = 2;
+    private static final int MSG_LIST_REFRESH_ERROR = 3;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     WebView mainWebView;
@@ -48,36 +62,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.main_list_view)
     ListView listView;
 
+    @Bind(R.id.swipe_container)
+    SwipeRefreshLayout swipeLayout;
+
     private RelativeLayout dailyLayout, studyLayout, meLayout, latestLayout, listLayout;
     private ProgressDialog pBar;
 
-    private Handler mHandler = new receiveVersionHandler();
-    private Handler cHandler = new Handler() {
-        @Override
-        public void handleMessage(Message message) {
-            super.handleMessage(message);
-            switch (message.what) {
-                case MSG_CHECK_UPDATE_TOAST:
-                    Toast.makeText(MainActivity.this, "检查版本更新", Toast.LENGTH_SHORT).show();
-                    return;
-                default:
-                    break;
-            }
+    private ImageLoader imageLoader;
+    private DisplayImageOptions displayImageOptions;
+    private RequestQueue requestQueue;
 
-            Bundle data = message.getData();
-            String needUpdate = data.getString("needUpdate");
-            if (needUpdate.equals("true")) {
-                /*
-                String version = data.getString("version");
-                String verDesc = data.getString("verDesc");
-                */
-                showUpdateDialog(Version.getRemoteVersion(), Version.getVersionDesc());
-            } else {
-                Toast.makeText(MainActivity.this, "已经是最新版本了", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
+    BookItemListAdapter bookItemListAdapter = null;
 
+    public void initAdapter() {
+        // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
+        displayImageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_launcher) // 设置图片下载期间显示的图片
+                .showImageForEmptyUri(R.drawable.ic_launcher) // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.drawable.ic_launcher) // 设置图片加载或解码过程中发生错误显示的图片
+                .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true) // 设置下载的图片是否缓存在SD卡中
+                .displayer(new RoundedBitmapDisplayer(20)) // 设置成圆角图片
+                .build(); // 构建完成
+
+        imageLoader = ImageLoader.getInstance();
+
+    }
     public class receiveVersionHandler extends Handler {
 
         @Override
@@ -94,6 +104,67 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
 
+    }
+    private Handler mHandler = new receiveVersionHandler();
+
+    private Handler cHandler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            super.handleMessage(message);
+            switch (message.what) {
+                case MSG_CHECK_UPDATE_TOAST:
+                    Toast.makeText(MainActivity.this, "检查版本更新", Toast.LENGTH_SHORT).show();
+                    break;
+                case MSG_CHECK_UPDATE_DONE:
+                    Bundle data = message.getData();
+                    String needUpdate = data.getString("needUpdate");
+                    if (needUpdate.equals("true")) {
+                        showUpdateDialog(Version.getRemoteVersion(), Version.getVersionDesc());
+                    } else {
+                        Toast.makeText(MainActivity.this, "已经是最新版本了", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case MSG_LIST_REFRESH_ERROR:
+                    Toast.makeText(MainActivity.this, "获取数据失败", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    };
+
+    private void updateApp() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = MSG_CHECK_UPDATE_TOAST;
+                cHandler.sendMessage(message);
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                message = new Message();
+                Bundle data = new Bundle();
+                if (UpdateHandler.isNeedUpdate()) {
+                    data.putString("needUpdate", "true");
+                    data.putString("version", "1.2.3");
+                    data.putString("verDesc", "version(1.2.3)");
+                } else {
+                    data.putString("needUpdate", "false");
+                }
+
+
+                message.setData(data);
+                cHandler.sendMessage(message);
+            }
+        };
+
+        new Thread(runnable).start();
     }
 
     private void showUpdateDialog(String newVer, String verDesc) {
@@ -129,66 +200,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         builder.create().show();
     }
 
-
-    private void updateApp() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Message message = new Message();
-                message.what = MSG_CHECK_UPDATE_TOAST;
-                cHandler.sendMessage(message);
-
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                message = new Message();
-                Bundle data = new Bundle();
-                if (UpdateHandler.isNeedUpdate()) {
-                    data.putString("needUpdate", "true");
-                    data.putString("version", "1.2.3");
-                    data.putString("verDesc", "version(1.2.3)");
-                } else {
-                    data.putString("needUpdate", "false");
-                }
-
-
-                message.setData(data);
-                cHandler.sendMessage(message);
-            }
-        };
-
-        new Thread(runnable).start();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        dailyLayout = (RelativeLayout) findViewById(R.id.bottom_tab_daily);
-        studyLayout = (RelativeLayout) findViewById(R.id.bottom_tab_study);
-        latestLayout = (RelativeLayout) findViewById(R.id.bottom_tab_latest);
-        listLayout   = (RelativeLayout) findViewById(R.id.bottom_tab_list);
-        meLayout = (RelativeLayout) findViewById(R.id.bottom_tab_me);
-
-        dailyLayout.setOnClickListener(this);
-        studyLayout.setOnClickListener(this);
-        latestLayout.setOnClickListener(this);
-        listLayout.setOnClickListener(this);
-        meLayout.setOnClickListener(this);
-
-        initView();
-
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-
-        updateApp();
-    }
-
     @Override
     protected void initTitleView() {
         TextView title_text = (TextView) findViewById(R.id.common_title_text);
@@ -215,27 +226,51 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         initTitleView();
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, getData(), R.layout.book_item_listview,
-                new String[]{"title", "author", "desc", "img"},
-                new int[]{R.id.book_title, R.id.book_author, R.id.book_desc, R.id.book_img});
-        listView.setAdapter(simpleAdapter);
+        List<Map<String, Object>> fakeData = new ArrayList<Map<String, Object>>();
 
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        bookItemListAdapter = new BookItemListAdapter(fakeData);
+        listView.setAdapter(bookItemListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Intents.Scan.ACTION);
+                startActivity(intent);
+            }
+        });
+
         swipeLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             @Override
             public void onRefresh() {
 
+                /*
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+
                         swipeLayout.setRefreshing(false);
+                        bookItemListAdapter.setDataSet(getData());
+                        bookItemListAdapter.notifyDataSetChanged();
                     }
                 }, 1500);
+                */
 
+                // 立即启动向server的数据请求
+                // 同时， 应该用postDelayed或者Timer启动一个定时器， 防止超时
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        LogUtil.d(TAG, "onRefresh run xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                        getData();
+                    }
+                });
             }
         });
+        //swipeLayout.setProgressViewOffset(false, 0, CommonUtil.dip2px(context, 24));
+        swipeLayout.setProgressViewOffset(false, 0, 30);
+        swipeLayout.setRefreshing(true);
+        getData();
     }
 
     private void initWebView() {
@@ -271,7 +306,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         });
 
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -292,45 +326,90 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mainWebView.loadUrl("http://180.76.176.227/kidsbook/daily.action");
     }
-    private List<Map<String, Object>> getData() {
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        dailyLayout = (RelativeLayout) findViewById(R.id.bottom_tab_daily);
+        studyLayout = (RelativeLayout) findViewById(R.id.bottom_tab_study);
+        latestLayout = (RelativeLayout) findViewById(R.id.bottom_tab_latest);
+        listLayout   = (RelativeLayout) findViewById(R.id.bottom_tab_list);
+        meLayout = (RelativeLayout) findViewById(R.id.bottom_tab_me);
+
+        dailyLayout.setOnClickListener(this);
+        studyLayout.setOnClickListener(this);
+        latestLayout.setOnClickListener(this);
+        listLayout.setOnClickListener(this);
+        meLayout.setOnClickListener(this);
+
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.start();
+
+        initAdapter();
+        initView();
+
+        /***** 为了允许在主线程中进行网络操作 ******/
+        /*
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        */
+
+        updateApp();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        requestQueue.cancelAll(null);
+        requestQueue.start();
+    }
+
+    private void getData() {
+
+        /*
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("title", "book1");
         map.put("author", "google 1");
         map.put("desc", "google 1");
-        map.put("img", R.drawable.ic_launcher);
+        //map.put("img", R.drawable.ic_launcher);
+        map.put("img", "http://img3x8.ddimg.cn/20/14/22489058-1_l_1.jpg");
         list.add(map);
+        */
 
-        map = new HashMap<String, Object>();
-        map.put("title", "book2");
-        map.put("author", "google 2");
-        map.put("desc", "google 2");
-        map.put("img", R.drawable.ic_launcher);
-        list.add(map);
+        String url = "http://180.76.176.227/web/assets/books.json";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
-        map = new HashMap<String, Object>();
-        map.put("title", "book3");
-        map.put("author", "google 3");
-        map.put("desc", "google 3");
-        map.put("img", R.drawable.ic_launcher);
-        list.add(map);
+            @Override
+            public void onResponse(String response) {
+                LogUtil.d(TAG, "response for books.json: " + response);
+                swipeLayout.setRefreshing(false);
 
-        map = new HashMap<String, Object>();
-        map.put("title", "book3");
-        map.put("author", "google 3");
-        map.put("desc", "google 3");
-        map.put("img", R.drawable.ic_launcher);
-        list.add(map);
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    Map<String, Object> data = objectMapper.readValue(response, Map.class);
+                    bookItemListAdapter.setDataSet((List<Map<String, Object>>)data.get("books"));
+                    bookItemListAdapter.notifyDataSetChanged();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    cHandler.sendEmptyMessage(MSG_LIST_REFRESH_ERROR);
+                }
+            }
+        }, new Response.ErrorListener(){
 
-        map = new HashMap<String, Object>();
-        map.put("title", "book3");
-        map.put("author", "google 3");
-        map.put("desc", "google 3");
-        map.put("img", R.drawable.ic_launcher);
-        list.add(map);
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtil.d(TAG, " on error response for books.json: " + error.toString());
+                swipeLayout.setRefreshing(false);
+                cHandler.sendEmptyMessage(MSG_LIST_REFRESH_ERROR);
+            }
+        });
 
-        return list;
+        LogUtil.d(TAG, "add string request: " + url);
+        requestQueue.add(stringRequest);
     }
 
     @Override
@@ -380,6 +459,76 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         if (intent != null) {
             startActivity(intent);
+        }
+    }
+
+    public class BookItemListAdapter extends BaseAdapter {
+        List<Map<String, Object>> dataSet;
+
+        public BookItemListAdapter(List<Map<String, Object>> data) {
+            dataSet = data;
+        }
+
+        @Override
+        public int getCount() {
+            return dataSet.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = null;
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.book_item_listview, parent, false);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            Map<String, Object> data = dataSet.get(position);
+
+            holder.title.setText((String)data.get("title"));
+            holder.author.setText((String)data.get("author"));
+            holder.desc.setText((String)data.get("desc"));
+
+            String imgUrl = (String)data.get("img");
+
+            imageLoader.displayImage(imgUrl, holder.img, displayImageOptions);
+
+            return convertView;
+        }
+
+        public void setDataSet(List<Map<String, Object>> dataSet) {
+            this.dataSet = dataSet;
+        }
+
+        class ViewHolder {
+            @Bind(R.id.book_img)
+            public ImageView img;
+
+            @Bind(R.id.book_title)
+            public TextView title;
+
+            @Bind(R.id.book_author)
+            public TextView author;
+
+            @Bind(R.id.book_desc)
+            public TextView desc;
+
+            public ViewHolder(View view) {
+                ButterKnife.bind(this, view);
+            }
         }
     }
 }
