@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     BookItemListAdapter bookItemListAdapter = null;
 
-    public void initAdapter() {
+    public void initImageLoader() {
         // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
         displayImageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ic_launcher) // 设置图片下载期间显示的图片
@@ -86,10 +86,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .build(); // 构建完成
 
         imageLoader = ImageLoader.getInstance();
-
     }
-    public class receiveVersionHandler extends Handler {
 
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
@@ -103,9 +102,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         }
-
-    }
-    private Handler mHandler = new receiveVersionHandler();
+    };
 
     private Handler cHandler = new Handler() {
         @Override
@@ -223,13 +220,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
-
-        initTitleView();
-
         List<Map<String, Object>> fakeData = new ArrayList<Map<String, Object>>();
-
         bookItemListAdapter = new BookItemListAdapter(fakeData);
         listView.setAdapter(bookItemListAdapter);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -243,19 +237,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onRefresh() {
-
-                /*
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        swipeLayout.setRefreshing(false);
-                        bookItemListAdapter.setDataSet(getData());
-                        bookItemListAdapter.notifyDataSetChanged();
-                    }
-                }, 1500);
-                */
-
                 // 立即启动向server的数据请求
                 // 同时， 应该用postDelayed或者Timer启动一个定时器， 防止超时
                 new Handler().post(new Runnable() {
@@ -271,60 +252,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         swipeLayout.setProgressViewOffset(false, 0, 30);
         swipeLayout.setRefreshing(true);
         getData();
-    }
-
-    private void initWebView() {
-
-        initTitleView();
-
-        // Load page
-        //mainWebView = (WebView) findViewById(R.id.main_web_view);
-        mainWebView.requestFocus();
-
-        final WebSettings webSettings = mainWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-
-        if(Build.VERSION.SDK_INT >= 19) {
-            webSettings.setLoadsImagesAutomatically(true);
-        } else {
-            webSettings.setLoadsImagesAutomatically(false);
-        }
-
-        mainWebView.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                if (!webSettings.getLoadsImagesAutomatically()) {
-                    webSettings.setLoadsImagesAutomatically(true);
-                }
-            }
-        });
-
-        swipeLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-
-            @Override
-            public void onRefresh() {
-                //重新刷新页面
-                mainWebView.loadUrl(mainWebView.getUrl());
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeLayout.setRefreshing(false);
-                    }
-                }, 1500);
-
-            }
-        });
-
-        mainWebView.loadUrl("http://180.76.176.227/kidsbook/daily.action");
     }
 
     @Override
@@ -346,7 +273,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.start();
 
-        initAdapter();
+        initImageLoader();
         initView();
 
         /***** 为了允许在主线程中进行网络操作 ******/
@@ -369,17 +296,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void getData() {
-
-        /*
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("title", "book1");
-        map.put("author", "google 1");
-        map.put("desc", "google 1");
-        //map.put("img", R.drawable.ic_launcher);
-        map.put("img", "http://img3x8.ddimg.cn/20/14/22489058-1_l_1.jpg");
-        list.add(map);
-        */
-
         String url = "http://180.76.176.227/web/assets/books.json";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
