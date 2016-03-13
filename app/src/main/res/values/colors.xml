@@ -214,6 +214,44 @@
     <item name="adapter_timeline_btn" type="color">false</item>
     <item name="fgm_my_tab_btn" type="color">false</item>
 
+    <color name="day_bold_line_color">#ffd1d1d1</color>
+    <color name="day_chat_bg">#ffe8e8e8</color>
+    <color name="day_color1">#ff474747</color>
+    <color name="day_color10">#ff777777</color>
+    <color name="day_color2">#ff888888</color>
+    <color name="day_color3">#ffafafaf</color>
+    <color name="day_color4">#ffffb22d</color>
+    <color name="day_color5">#ffcbcbcb</color>
+    <color name="day_color6">#ff999999</color>
+    <color name="day_color7">#ff929292</color>
+    <color name="day_color8">#ffe5e5e5</color>
+    <color name="day_color9">#ffffffff</color>
+    <color name="day_foot_color">#ffffffff</color>
+    <color name="day_long_cmt_desc">#ff676767</color>
+    <color name="day_main_color">#ffffffff</color>
+    <color name="day_palm_book_bg">#ffededed</color>
+    <color name="day_press_color">#ffeeeeee</color>
+    <color name="day_shade">#00000000</color>
+    <color name="day_theme_color">#fff3f3f3</color>
+    <color name="day_top_color">#fffcfcfc</color>
+    <color name="night_bold_line_color">#ff333333</color>
+    <color name="night_chat_bg">#ff262627</color>
+    <color name="night_color1">#ffafafaf</color>
+    <color name="night_color2">#ff888888</color>
+    <color name="night_color3">#ffb98821</color>
+    <color name="night_color4">#ff474747</color>
+    <color name="night_color5">#ffb98821</color>
+    <color name="night_color6">#ffffffff</color>
+    <color name="night_color7">#ffcbcbcb</color>
+    <color name="night_color8">#ff000000</color>
+    <color name="night_foot_color">#ee202022</color>
+    <color name="night_long_cmt_desc">#ff888888</color>
+    <color name="night_main_color">#ff262627</color>
+    <color name="night_palm_book_bg">#ff555555</color>
+    <color name="night_press_color">#ff1b1b1b</color>
+    <color name="night_shade">#30262627</color>
+    <color name="night_theme_color">#ff202022</color>
+    <color name="night_top_color">#ff202022</color>
 
     <!-- basic color -->
     <color name="orange">#FF9900</color>

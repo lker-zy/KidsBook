@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -14,9 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -146,6 +143,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
 
                 message = new Message();
+                message.what = MSG_CHECK_UPDATE_DONE;
                 Bundle data = new Bundle();
                 if (UpdateHandler.isNeedUpdate()) {
                     data.putString("needUpdate", "true");
@@ -227,7 +225,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Intents.Scan.ACTION);
+                Map<String, Object> book = (Map<String, Object>) bookItemListAdapter.getItem(position);
+
+                Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
+                intent.putExtra("name", (String) book.get("name"));
+                intent.putExtra("author", (String) book.get("author"));
+                intent.putExtra("desc", (String) book.get("desc"));
+                intent.putExtra("img", (String) book.get("img"));
+
                 startActivity(intent);
             }
         });
@@ -392,7 +397,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return dataSet.get(position);
         }
 
         @Override
