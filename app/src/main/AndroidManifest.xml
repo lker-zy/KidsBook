@@ -38,6 +38,7 @@
             android:name=".ui.PersonalActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.MainSearchActivity" />
+        <activity android:name=".ui.SearchActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.QrSearchActivity" />
         <activity android:name=".zxing.CaptureActivity">

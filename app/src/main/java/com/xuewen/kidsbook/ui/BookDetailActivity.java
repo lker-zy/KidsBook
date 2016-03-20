@@ -7,14 +7,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.view.ScrollGridView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 
-public class BookDetailActivity extends BaseActivity implements View.OnTouchListener {
+public class BookDetailActivity extends BaseActivity
+        implements View.OnTouchListener, View.OnClickListener {
     private static int DEFAULT_MAX_LINES = 5;
     private String bookName;
 
@@ -30,7 +38,14 @@ public class BookDetailActivity extends BaseActivity implements View.OnTouchList
     @Bind(R.id.act_detail_book_info_introduction)
     TextView desc_text_view;
 
+    @Bind(R.id.act_detail_books_review_grid_view)
+    ScrollGridView books_review_grid_view;
+
     private GestureDetector gestureDetector;
+    private SimpleAdapter gridAdapter;
+
+    private int[] icon = { R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher };
+    private String[] iconName = { "test1", "test2", "test3"};
 
     private class DescMoreViewListener implements View.OnClickListener {
 
@@ -50,6 +65,9 @@ public class BookDetailActivity extends BaseActivity implements View.OnTouchList
     }
 
     private void initDetailView() {
+        desc_text_view.setText("a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nm\nn\nh\ni\nj\na\nb\nc\ne\nd\nf");
+        desc_text_view.setMaxLines(DEFAULT_MAX_LINES);
+
         desc_layout.setOnClickListener(new DescMoreViewListener());
 
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -65,6 +83,23 @@ public class BookDetailActivity extends BaseActivity implements View.OnTouchList
         });
 
         //detail_scroll_view.setOnTouchListener(this);
+
+        gridAdapter = new SimpleAdapter(this, getData(), R.layout.detail_book_review_grid_item,
+                new String[] {"image", "author"}, new int[] {R.id.review_img, R.id.review_author});
+        books_review_grid_view.setAdapter(gridAdapter);
+    }
+
+    private List<Map<String, Object>> getData() {
+        List<Map<String, Object>> data_list = new ArrayList<>();
+
+        for(int i = 0; i < 3; i++){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("image", R.drawable.ic_launcher);
+            map.put("author", "test_" + i);
+            data_list.add(map);
+        }
+
+        return data_list;
     }
 
     @Override
@@ -89,6 +124,17 @@ public class BookDetailActivity extends BaseActivity implements View.OnTouchList
     }
 
     @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.common_title_left_btn:
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     protected int getLayoutId() { return R.layout.activity_book_detail;}
 
     @Override
@@ -97,7 +143,9 @@ public class BookDetailActivity extends BaseActivity implements View.OnTouchList
         title_text.setText(bookName);
         title_text.setVisibility(View.VISIBLE);
 
-        ((LinearLayout) findViewById(R.id.common_title_left_btn)).setVisibility(View.VISIBLE);
+        LinearLayout title_left_btn = (LinearLayout) findViewById(R.id.common_title_left_btn);
+        title_left_btn.setVisibility(View.VISIBLE);
+        title_left_btn.setOnClickListener(this);
 
         ImageView left_img = (ImageView) findViewById(R.id.common_title_left_btn_icon);
         left_img.setBackgroundResource(R.drawable.commont_title_back);

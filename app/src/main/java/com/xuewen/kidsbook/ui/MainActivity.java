@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -198,7 +199,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initTitleView() {
         TextView title_text = (TextView) findViewById(R.id.common_title_text);
-        title_text.setText("最美童书馆");
+        title_text.setText(R.string.app_name);
         title_text.setVisibility(View.VISIBLE);
 
         ((LinearLayout) findViewById(R.id.common_title_left_btn)).setVisibility(View.VISIBLE);
@@ -372,7 +373,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.common_title_right_btn_image_1:
                 LogUtil.d(TAG, "iv_i_want_know is clicked");
-                intent = new Intent(MainActivity.this, MainSearchActivity.class);
+                intent = new Intent(MainActivity.this, SearchActivity.class);
                 break;
             default:
                 break;

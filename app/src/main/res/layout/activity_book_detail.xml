@@ -73,6 +73,18 @@
                             android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip" android:layout_marginBottom="15.0dip" android:lineSpacingMultiplier="1.4" />
                     </LinearLayout>
                     <include layout="@layout/common_line" />
+                    <LinearLayout android:orientation="vertical" android:id="@+id/act_detail_recommend_books_review_layout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="0.0dip" />
+                        <com.xuewen.kidsbook.view.ScrollGridView android:id="@+id/act_detail_books_review_grid_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:numColumns="auto_fit"
+                            android:columnWidth="80dp">
+
+                        </com.xuewen.kidsbook.view.ScrollGridView>
+                        <include layout="@layout/common_line" />
+                    </LinearLayout>
+                    <include layout="@layout/common_line" />
                     <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="0.0dip" />
                     <LinearLayout android:orientation="vertical" android:id="@+id/act_detail_recommend_card_layout_out" android:layout_width="fill_parent" android:layout_height="wrap_content">
                         <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="0.0dip" />

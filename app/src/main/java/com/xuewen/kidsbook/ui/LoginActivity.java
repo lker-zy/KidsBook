@@ -10,8 +10,21 @@ import android.widget.TextView;
 
 import com.xuewen.kidsbook.R;
 
+import butterknife.Bind;
+
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
+    @Bind(R.id.common_title_text)
+    TextView title_text;
+
+    @Bind(R.id.common_title_left_btn)
+    LinearLayout back_btn;
+
+    @Bind(R.id.common_title_left_btn_icon)
+    ImageView back_btn_icon;
+
+    @Bind(R.id.act_login_registration)
+    Button reg_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +34,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initView() {
-        TextView title_text = (TextView) findViewById(R.id.common_title_text);
         title_text.setText("登录");
         title_text.setVisibility(View.VISIBLE);
 
-        ((LinearLayout) findViewById(R.id.common_title_left_btn)).setVisibility(View.VISIBLE);
+        back_btn.setVisibility(View.VISIBLE);
 
-        ImageView left_img = (ImageView) findViewById(R.id.common_title_left_btn_icon);
-        left_img.setBackgroundResource(R.drawable.commont_title_back);
-        left_img.setVisibility(View.VISIBLE);
+        back_btn_icon.setBackgroundResource(R.drawable.commont_title_back);
+        back_btn_icon.setVisibility(View.VISIBLE);
 
-        Button regButton = (Button) findViewById(R.id.act_login_registration);
-        regButton.setOnClickListener(new Button.OnClickListener() {
+        reg_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
