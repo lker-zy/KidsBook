@@ -35,6 +35,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.service.LoginService;
 import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.utils.UpdateHandler;
 import com.xuewen.kidsbook.utils.Version;
@@ -298,7 +299,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onDestroy();
 
         requestQueue.cancelAll(null);
-        requestQueue.start();
     }
 
     private void getData() {
@@ -348,31 +348,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.bottom_tab_daily:
-                LogUtil.d(TAG, "iv_me is clicked");
                 intent = new Intent(MainActivity.this, PersonalActivity.class);
                 break;
             case R.id.bottom_tab_study:
-                LogUtil.d(TAG, "iv_know is clicked");
                 intent = new Intent(MainActivity.this, MainSearchActivity.class);
                 break;
+            case R.id.bottom_tab_latest:
+            case R.id.bottom_tab_list:
+                intent = new Intent(MainActivity.this, ListAllActivity.class);
+                break;
             case R.id.bottom_tab_me:
-                LogUtil.d(TAG, "iv_i_want_know is clicked");
+                isLogin = LoginService.isLogin();
                 if (isLogin) {
                     intent = new Intent(MainActivity.this, SettingActivity.class);
                 } else {
                     intent = new Intent(MainActivity.this, LoginActivity.class);
                 }
                 break;
-            case R.id.bottom_tab_latest:
-            case R.id.bottom_tab_list:
-                intent = new Intent(MainActivity.this, ListAllActivity.class);
-                break;
             case R.id.common_title_left_btn_icon:
                 //intent = new Intent(MainActivity.this, CaptureActivity.class);
                 intent = new Intent(Intents.Scan.ACTION);
                 break;
             case R.id.common_title_right_btn_image_1:
-                LogUtil.d(TAG, "iv_i_want_know is clicked");
                 intent = new Intent(MainActivity.this, SearchActivity.class);
                 break;
             default:

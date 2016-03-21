@@ -9,11 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.service.LoginService;
 
 import butterknife.Bind;
 
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity
+        implements View.OnClickListener, LoginService.LoginListener {
     @Bind(R.id.common_title_text)
     TextView title_text;
 
@@ -57,6 +59,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.act_login_ok:
+                LoginService loginService = new LoginService();
+                loginService.setLoginListener(this);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoginSucc(Object data) {
+
+    }
+
+    @Override
+    public void onLoginFail(Object data) {
 
     }
 }

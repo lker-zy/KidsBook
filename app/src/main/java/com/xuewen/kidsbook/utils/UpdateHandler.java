@@ -35,6 +35,7 @@ public class UpdateHandler {
         mProgressBar.show();
 
         new Thread() {
+            @Override
             public void run() {
                 URL serverURL = null;
                 try {

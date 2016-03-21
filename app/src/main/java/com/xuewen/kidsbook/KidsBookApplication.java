@@ -12,12 +12,12 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.xuewen.kidsbook.net.GlobalVolley;
 import com.xuewen.kidsbook.utils.LogUtil;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 
@@ -28,12 +28,7 @@ import java.util.Map;
 
 public class KidsBookApplication extends Application {
     private static final String TAG = "KidsBookApplication";
-    public static Context context;
     public static Map<String, Activity> activitys = new HashMap<String, Activity>();
-    /**
-     * 当前系统保存的所有用户
-     */
-    public static List<String> USER_NAME_LIST;
     /**
      * 当前应用状态
      */
@@ -46,6 +41,10 @@ public class KidsBookApplication extends Application {
      * 主线程刷新界面handler YQH 20120706
      */
     private Handler handler = null;
+
+    public Context getContext() {
+        return getApplicationContext();
+    }
 
     /**
      * 设置信息
@@ -83,24 +82,17 @@ public class KidsBookApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LogUtil.i(TAG, "onCreate当前的程序:" + android.os.Process.myPid());
-        context = this;
-        // MessageWait.getInstance().start();
-        // 禁用 IPV6
         System.setProperty("java.net.preferIPv6Addresses", "false");
-        //USER_NAME_LIST = PreferenceUtil.getSavedUserList();
-        // 初始化声音
-        //SoundManager.getInstance();
-        // 创建图片文件夹
         // 初始化 主线程刷新界面handler YQH 20120706
         handler = new Handler();
-        initFolder();
         // recordLogInfo();
 
         initImageLoader(getApplicationContext());
+        initGlobalVolley();
     }
 
-    private void initFolder() {
-
+    private void initGlobalVolley() {
+        GlobalVolley.initialize();
     }
 
     public static void initImageLoader(Context context) {
@@ -158,48 +150,10 @@ public class KidsBookApplication extends Application {
     }
 
     public enum AppStatus {
-        /**
-         * 没有网络
-         */
         NO_NETWORK,
-
-        /**
-         * 连接中
-         **/
-        CONNECTING,
-        /**
-         * 有网络，但无法访问服务器，进行重试
-         **/
-        RETRY,
-        /**
-         * 重试超时，停止链接
-         **/
-        NOT_CONNECTION,
-        /** 链接出错 **/
-        // CONNECTION_ERROE,
-        /** 链接关闭 **/
-        // CONNECTION_CLOSE,
-        /**
-         * 握手中
-         **/
-        HANDSHACK,
-        /**
-         * 链接完成，握手完成
-         **/
-        CONNECTION_OK,
-        /** 登录中 **/
-        // LOGINING,
-        /**
-         * 登录失败
-         **/
+        LOGINING,
         LOGINFAILD,
-        /**
-         * 已经登录成功
-         **/
         LOGIN_READLY,
-        /**
-         * 已经登出
-         **/
         OFFLINE;
     }
 

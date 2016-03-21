@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.utils.LogUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ import java.util.Map;
 import butterknife.Bind;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
+    private static String TAG = RegisterActivity.class.getSimpleName();
     private static String reg_url = "http://180.76.176.227/user/reg";
 
     @Bind(R.id.common_title_left_btn) LinearLayout back_btn;
@@ -124,6 +126,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        LogUtil.d(TAG, "receive registration response");
                         //Login();
                         handler.sendEmptyMessage(MSG_REG_SUCCESS);
 
@@ -141,19 +144,21 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         message.setData(data);
                         handler.sendMessage(message);
                     }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String>  map = new HashMap<>();
-                        map.put("nickname", nickname);
-                        map.put("phonenum", phonenum);
-                        map.put("verifycode", verifycode);
-                        map.put("password", password);
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String>  map = new HashMap<>();
+                map.put("nickname", nickname);
+                map.put("phonenum", phonenum);
+                map.put("verifycode", verifycode);
+                map.put("password", password);
 
-                        return map;
-                    }
+                return map;
+            }
         };
 
+        LogUtil.d(TAG, "add reg request to request queue");
         getRequestQueue().add(request);
     }
 }

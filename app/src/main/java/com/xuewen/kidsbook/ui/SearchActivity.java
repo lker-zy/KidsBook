@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.service.beans.SearchViewItem;
 import com.xuewen.kidsbook.view.CommonSearchView;
 
 import java.util.ArrayList;
@@ -21,53 +22,6 @@ import butterknife.Bind;
 /**
  * Created by lker_zy on 16-3-17.
  */
-
-class Bean {
-
-    private int iconId;
-    private String title;
-    private String content;
-    private String comments;
-
-    public Bean(int iconId, String title, String content, String comments) {
-        this.iconId = iconId;
-        this.title = title;
-        this.content = content;
-        this.comments = comments;
-    }
-
-    public int getIconId() {
-        return iconId;
-    }
-
-    public void setIconId(int iconId) {
-        this.iconId = iconId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-}
 
 public class SearchActivity extends BaseActivity implements CommonSearchView.SearchViewListener {
     /**
@@ -88,7 +42,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
     /**
      * 数据库数据，总数据
      */
-    private List<Bean> dbData;
+    private List<SearchViewItem> dbData;
 
     /**
      * 热搜版数据
@@ -103,7 +57,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
     /**
      * 搜索结果的数据
      */
-    private List<Bean> resultData;
+    private List<SearchViewItem> resultData;
 
     /**
      * 默认提示框显示项的个数
@@ -175,7 +129,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
         int size = 100;
         dbData = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            dbData.add(new Bean(R.drawable.btn_know_pre, "android开发必备技能" + (i + 1), "Android自定义view——自定义搜索view", i * 20 + 2 + ""));
+            dbData.add(new SearchViewItem(R.drawable.btn_know_pre, "android开发必备技能" + (i + 1), "Android自定义view——自定义搜索view", i * 20 + 2 + ""));
         }
     }
 
@@ -269,7 +223,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
     }
 
     class SearchAdapter extends BaseAdapter {
-        public SearchAdapter(Context context, List<Bean> data, int layout_id) {
+        public SearchAdapter(Context context, List<SearchViewItem> data, int layout_id) {
         }
 
         @Override
