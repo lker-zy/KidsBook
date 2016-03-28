@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#00eee111"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingTop="10dp" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/at_me_dynamic_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <RelativeLayout
+                android:id="@+id/at_me_dynamic_image_lay"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="5dp" >
+
+                <!--
+                <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/at_me_dynamic_image"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentTop="true"
+                    fresco:actualImageScaleType="fitXY"
+                    fresco:failureImage="@drawable/user_center_default"
+                    fresco:retryImage="@drawable/user_center_default"/>
+                -->
+                <ImageView
+                    android:id="@+id/at_me_dynamic_image"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/user_center_default"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/at_me_dynamic_image_dot"
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/update_promote"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/at_me_dynamic_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/at_me_dynamic_image_lay"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:text="会员中心"
+                android:textColor="#333333"
+                android:textSize="12sp"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/at_me_dynamic_complement_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/at_me_dynamic_lay"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="成为会员"
+            android:textColor="#ff2d4b"
+            android:textSize="10sp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>

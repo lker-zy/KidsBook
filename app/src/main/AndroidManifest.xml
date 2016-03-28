@@ -49,7 +49,7 @@
         </activity>
         <activity android:name=".ui.SettingActivity" />
         <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.ListAllActivity" />
+        <activity android:name=".ui.RankingActivity" />
         <activity android:name=".ui.BookDetailActivity"></activity>
     </application>
 

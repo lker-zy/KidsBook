@@ -82,7 +82,6 @@
                             android:columnWidth="80dp">
 
                         </com.xuewen.kidsbook.view.ScrollGridView>
-                        <include layout="@layout/common_line" />
                     </LinearLayout>
                     <include layout="@layout/common_line" />
                     <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="0.0dip" />

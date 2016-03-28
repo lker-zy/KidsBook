@@ -1,10 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.xuewen.kidsbook.ui.PersonalActivity">
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/top_padding_view"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/custom_pottery_red"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/wode_has_login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/at_me_top_bg" />
+
+                <Button
+                    android:id="@+id/wode_login_btn"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/wode_denglu_background_selector"
+                    android:gravity="center"
+                    android:text="登录/注册"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/wode_photo"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:id="@+id/setting_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="12dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/mypage_navigationbar_icon_setting" />
 
 
-</android.support.design.widget.CoordinatorLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <include layout="@layout/common_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/personal_app_grid_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#c8cacc">
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -2,12 +2,15 @@ package com.xuewen.kidsbook.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xuewen.kidsbook.R;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by lker_zy on 16-3-17.
@@ -89,7 +93,6 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
         searchView.setTipsHintAdapter(hintAdapter);
         searchView.setAutoCompleteAdapter(autoCompleteAdapter);
 
-        lvResults = (ListView) findViewById(R.id.main_lv_search_results);
         lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -185,7 +188,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
             }
         }
         if (resultAdapter == null) {
-            resultAdapter = new SearchAdapter(this, resultData, R.layout.main_search_layout);
+            resultAdapter = new SearchAdapter(this, resultData, R.layout.book_item_listview);
         } else {
             resultAdapter.notifyDataSetChanged();
         }
@@ -222,13 +225,20 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
         Toast.makeText(this, "完成搜素", Toast.LENGTH_SHORT).show();
     }
 
-    class SearchAdapter extends BaseAdapter {
+    public class SearchAdapter extends BaseAdapter {
+        private Context context;
+        private List<SearchViewItem> data;
+        private int view_item_layout_id;
+
         public SearchAdapter(Context context, List<SearchViewItem> data, int layout_id) {
+            this.context = context;
+            this.data = data;
+            this.view_item_layout_id = layout_id;
         }
 
         @Override
         public int getCount() {
-            return 0;
+            return data.size();
         }
 
         @Override
@@ -243,7 +253,43 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
+            ViewHolder holder = null;
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(this.context).inflate(this.view_item_layout_id, parent, false);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            SearchViewItem itemData = this.data.get(position);
+
+            holder.title.setText(itemData.getTitle());
+            holder.author.setText(itemData.getTitle());
+            holder.desc.setText(itemData.getComments());
+
+            //imageLoader.displayImage(imgUrl, holder.img, displayImageOptions);
+
+            return convertView;
+        }
+    }
+
+    public class ViewHolder {
+        @Bind(R.id.book_img)
+        public ImageView img;
+
+        @Bind(R.id.book_title)
+        public TextView title;
+
+        @Bind(R.id.book_author)
+        public TextView author;
+
+        @Bind(R.id.book_desc)
+        public TextView desc;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
         }
     }
 }

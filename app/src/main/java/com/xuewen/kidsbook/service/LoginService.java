@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.xuewen.kidsbook.net.GlobalVolley;
 import com.xuewen.kidsbook.service.beans.User;
 import com.xuewen.kidsbook.utils.LogUtil;
 
@@ -68,6 +69,7 @@ public class LoginService {
             }
         };
 
+        GlobalVolley.add(request);
     }
 
     public interface LoginListener {

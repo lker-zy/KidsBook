@@ -14,11 +14,13 @@
         layout="@layout/common_title" />
 
 
+    <!--
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/swipe_container"
         android:layout_below="@id/title_bar">
+    -->
 
 <!--
         <ScrollView
@@ -34,6 +36,7 @@
             </WebView>
         </ScrollView>
 -->
+    <!--
         <ListView
             android:id="@+id/main_list_view"
             android:layout_width="match_parent"
@@ -41,8 +44,16 @@
             android:divider="@null" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
+    -->
+    <FrameLayout
+        android:id="@+id/main_content_frag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_tab_latest"
+        android:layout_below="@+id/title_bar" />
 
     <LinearLayout
+        android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

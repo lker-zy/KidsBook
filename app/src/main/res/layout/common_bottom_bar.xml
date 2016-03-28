@@ -37,6 +37,7 @@
             android:textSize="12sp" />
     </RelativeLayout>
 
+    <!--
     <RelativeLayout
         android:id="@+id/bottom_tab_study"
         android:layout_width="0dp"
@@ -61,6 +62,7 @@
             android:textColor="@color/black"
             android:textSize="12sp" />
     </RelativeLayout>
+    -->
 
     <RelativeLayout
         android:id="@+id/bottom_tab_latest"
