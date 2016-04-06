@@ -8,12 +8,15 @@
         android:right="7dp"
         android:top="7dp" />
     <!-- 设置圆角矩形 -->
-    <corners android:radius="30dp" />
+    <corners android:radius="3dp" />
 
     <stroke
         android:width="0.5dp"
         android:color="@color/common_line" />
 
+    <!--
     <solid android:color="#CCCCCC" />
+    -->
+    <solid android:color="#F2F2F2" />
 
 </shape>

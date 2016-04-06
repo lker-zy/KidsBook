@@ -11,9 +11,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.xuewen.kidsbook.net.GlobalVolley;
+import com.xuewen.kidsbook.service.LoginService;
 import com.xuewen.kidsbook.utils.LogUtil;
+import com.xuewen.kidsbook.utils.StorageUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -83,12 +84,15 @@ public class KidsBookApplication extends Application {
         super.onCreate();
         LogUtil.i(TAG, "onCreate当前的程序:" + android.os.Process.myPid());
         System.setProperty("java.net.preferIPv6Addresses", "false");
-        // 初始化 主线程刷新界面handler YQH 20120706
         handler = new Handler();
-        // recordLogInfo();
 
         initImageLoader(getApplicationContext());
         initGlobalVolley();
+
+        new LoginService();
+
+        //File appStorageLoc = StorageUtils.getDirectory(getApplicationContext(), AppConfig.STORAGE_BASE);
+        File appCacheLoc = StorageUtils.getDirectory(getApplicationContext(), AppConfig.CACHE_BASE);
     }
 
     private void initGlobalVolley() {
@@ -97,7 +101,7 @@ public class KidsBookApplication extends Application {
 
     public static void initImageLoader(Context context) {
         //缓存文件的目录
-        File cacheDir = StorageUtils.getOwnCacheDirectory(context, "universalimageloader/Cache");
+        //File cacheDir = StorageUtils.getOwnCacheDirectory(context, "universalimageloader/Cache");
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .memoryCacheExtraOptions(480, 800) // max width, max height，即保存的每个缓存文件的最大长宽
                 .threadPoolSize(3) //线程池内线程的数量

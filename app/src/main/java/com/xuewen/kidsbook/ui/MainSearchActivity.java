@@ -23,7 +23,7 @@ public class MainSearchActivity extends BaseActivity {
     private LayoutInflater mInflater;
 
     private List<String> mTitleList = new ArrayList<String>();
-    private View view1, view2, view3, view4, view5;
+    private View view1, view2;
     private List<View> mViewList = new ArrayList<View>();
 
     @Override

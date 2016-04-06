@@ -18,10 +18,15 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.AbsListView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
+import com.xuewen.kidsbook.KidsBookApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -895,6 +900,22 @@ public class Utils {
             return false;
         }
     }
+
+
+    private static boolean hasExternalStoragePermission(Context context) {
+        final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
+
+        int perm = context.checkCallingOrSelfPermission(EXTERNAL_STORAGE_PERMISSION);
+        return perm == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean isMediaOk() {
+        if (isMediaMounted() && hasExternalStoragePermission(KidsBookApplication.getInstance().getContext())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     /**
@@ -938,4 +959,22 @@ public class Utils {
     }
     */
 
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
 }

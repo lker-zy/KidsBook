@@ -1,6 +1,5 @@
 package com.xuewen.kidsbook.ui.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -23,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.xuewen.kidsbook.AppConfig;
+import com.xuewen.kidsbook.Const;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.ui.BookDetailActivity;
 import com.xuewen.kidsbook.utils.LogUtil;
@@ -38,23 +38,19 @@ import butterknife.ButterKnife;
 /**
  * Created by lker_zy on 16-3-28.
  */
-public class MainDefaultFrag extends Fragment {
+public class MainDefaultFrag extends BaseFragment {
     private final static String TAG = MainDefaultFrag.class.getSimpleName();
-    private static final int MSG_LIST_REFRESH_ERROR = 3;
 
     @Bind(R.id.main_list_view) ListView listView;
     @Bind(R.id.swipe_container) SwipeRefreshLayout swipeLayout;
 
     BookItemListAdapter bookItemListAdapter = null;
-    private Handler handler;
-    private RequestQueue requestQueue;
     private ImageLoader imageLoader;
     private DisplayImageOptions displayImageOptions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.act_main_default_frag, container, false);
-        ButterKnife.bind(this, view);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
         initImageLoader();
         initView();
@@ -62,12 +58,9 @@ public class MainDefaultFrag extends Fragment {
         return view;
     }
 
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
-
-    public void setVolley(RequestQueue requestQueue) {
-        this.requestQueue = requestQueue;
+    @Override
+    protected int getLayoutId() {
+        return R.layout.act_main_default_frag;
     }
 
     public void initImageLoader() {
@@ -127,8 +120,7 @@ public class MainDefaultFrag extends Fragment {
     }
 
     private void getData() {
-        String url = "http://180.76.176.227/web/dailyBooks";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.DAILY_BOOKS_URL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -142,7 +134,7 @@ public class MainDefaultFrag extends Fragment {
                     bookItemListAdapter.notifyDataSetChanged();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    handler.sendEmptyMessage(MSG_LIST_REFRESH_ERROR);
+                    handler.sendEmptyMessage(Const.MSG_LIST_REFRESH_ERROR);
                 }
             }
         }, new Response.ErrorListener(){
@@ -151,11 +143,11 @@ public class MainDefaultFrag extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 LogUtil.d(TAG, " on error response for books.json: " + error.toString());
                 swipeLayout.setRefreshing(false);
-                handler.sendEmptyMessage(MSG_LIST_REFRESH_ERROR);
+                handler.sendEmptyMessage(Const.MSG_LIST_REFRESH_ERROR);
             }
         });
 
-        LogUtil.d(TAG, "add string request: " + url);
+        LogUtil.d(TAG, "add string request: " + AppConfig.DAILY_BOOKS_URL);
         requestQueue.add(stringRequest);
     }
 

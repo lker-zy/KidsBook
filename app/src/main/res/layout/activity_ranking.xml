@@ -1,34 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_below="@+id/title_bar"
+    android:orientation="vertical"
+    android:id="@+id/act_ranking_scroll_grid_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/common_view_bg"
-    android:clipToPadding="true"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="0.0dip" />
+    <com.xuewen.kidsbook.view.ScrollGridView
+        android:id="@+id/act_ranking_scroll_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="auto_fit"
+        android:columnWidth="80dp">
 
-
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/common_title" />
-
-    <LinearLayout
-        android:layout_below="@+id/title_bar"
-        android:orientation="vertical"
-        android:id="@+id/act_ranking_scroll_grid_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-        <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="0.0dip" />
-        <com.xuewen.kidsbook.view.ScrollGridView
-            android:id="@+id/act_ranking_scroll_grid_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="auto_fit"
-            android:columnWidth="80dp">
-
-        </com.xuewen.kidsbook.view.ScrollGridView>
-    </LinearLayout>
-
-</RelativeLayout>
+    </com.xuewen.kidsbook.view.ScrollGridView>
+</LinearLayout>

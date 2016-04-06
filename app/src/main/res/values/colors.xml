@@ -259,4 +259,7 @@
     <color name="blue">#000099</color>
 
     <color name="custom_pottery_red">#ff2d4b</color>
+    <color name="custom_line">#c8cacc</color>
+    <color name="custom_white">#ffffff</color>
+    <color name="hot_search_text">#4d4d4d</color>
 </resources>

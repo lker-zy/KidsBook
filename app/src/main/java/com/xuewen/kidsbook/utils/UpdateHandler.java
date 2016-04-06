@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+
+import com.xuewen.kidsbook.AppConfig;
+import com.xuewen.kidsbook.Const;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,7 +20,6 @@ import java.net.URL;
  */
 public class UpdateHandler {
 
-    private static String updateUrl = "http://180.76.176.227/web/app-apk/app-debug.apk";
     private Handler mHandler;
     private ProgressDialog mProgressBar;
 
@@ -37,37 +38,31 @@ public class UpdateHandler {
         new Thread() {
             @Override
             public void run() {
-                URL serverURL = null;
                 try {
-                    serverURL = new URL(updateUrl);
+                    URL serverURL = new URL(AppConfig.APK_DOWNLOAD_URL);
                     HttpURLConnection connect = (HttpURLConnection) serverURL.openConnection();
                     BufferedInputStream bis = new BufferedInputStream(connect.getInputStream());
-                    File apkfile = new File(Environment.getExternalStorageDirectory(), saveName);
+                    File apkfile = new File(Environment.getExternalStorageDirectory() + "/" + AppConfig.CACHE_BASE, saveName);
                     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(apkfile));
 
                     int fileLength = connect.getContentLength();
                     int downLength = 0;
-                    int progress = 0;
                     int n;
                     byte[] buffer = new byte[40960];
                     while ((n = bis.read(buffer, 0, buffer.length)) != -1) {
                         bos.write(buffer, 0, n);
                         downLength += n;
-                        progress = (int) (((float) downLength / fileLength) * 100);
-                        Message msg = new Message();
-                        msg.arg1 = progress;
-
+                        int progress = (int) (((float) downLength / fileLength) * 100);
                         mProgressBar.setProgress(progress);
                     }
 
-                    Message msg = new Message();
-                    msg.arg1 = 100;
-                    mHandler.sendMessage(msg);
+                    mHandler.sendEmptyMessage(Const.MSG_DOWN_UPDATE_DONE);
                     bis.close();
                     bos.close();
                     connect.disconnect();
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
+                    mProgressBar.setMessage(e.toString());
                 }
             }
 

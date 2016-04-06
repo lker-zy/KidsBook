@@ -90,12 +90,12 @@ public class LoginActivity extends BaseActivity
         switch (v.getId()) {
             case R.id.act_login_ok:
                 login_btn.setText("登录中...");
-                LoginService loginService = new LoginService();
+                LoginService loginService = LoginService.getInstance();
                 loginService.setLoginListener(this);
 
                 User user = new User();
                 user.setPhonenum("15810535238");
-                user.setPassword("131564");
+                user.setPassword("love");
                 loginService.login(user);
                 break;
         }
@@ -103,6 +103,7 @@ public class LoginActivity extends BaseActivity
 
     @Override
     public void onLoginSucc(Object data) {
+        Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
         startActivity(intent);
     }
@@ -110,6 +111,7 @@ public class LoginActivity extends BaseActivity
     @Override
     public void onLoginFail(Object data) {
         login_btn.setText("登录");
+        Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
         handler.sendEmptyMessage(MSG_LOGIN_FAILED);
     }
 }

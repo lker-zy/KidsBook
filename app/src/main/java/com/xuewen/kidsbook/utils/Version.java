@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.KidsBookApplication;
 
 import java.io.BufferedInputStream;
@@ -18,8 +18,6 @@ import java.net.URL;
  */
 public class Version {
     private static final String TAG = Version.class.getSimpleName();
-
-    private static String versionUrl = "http://180.76.176.227/web/checkUpdate";
     private static String localVersion = "unknown";
 
     private static String versionDesc;
@@ -51,7 +49,7 @@ public class Version {
     }
 
     public static VersionUpdateJsonBean checkNewVersion() {
-        String versionQueryUrl  = Version.versionUrl + "?version=" + localVersion;
+        String versionQueryUrl  = AppConfig.UPDATE_URL + "?version=" + localVersion;
         try {
             URL serverURL = new URL(versionQueryUrl);
             HttpURLConnection connect = (HttpURLConnection) serverURL.openConnection();
@@ -76,9 +74,6 @@ public class Version {
             connect.disconnect();
 
             LogUtil.d(TAG, content);
-            /*
-            VersionUpdateJsonBean updateJsonBean = JSON.parseObject(content, VersionUpdateJsonBean.class);
-            */
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             VersionUpdateJsonBean updateJsonBean = objectMapper.readValue(content, VersionUpdateJsonBean.class);

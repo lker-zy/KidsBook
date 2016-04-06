@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/custom_line" />
+
+    <RelativeLayout
+        android:id="@+id/book_study_title_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:background="@drawable/waimai_shoplist_item_bg_color_selector"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/book_study_title_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            fresco:actualImageScaleType="fitCenter"
+            fresco:placeholderImage="@drawable/book_study_icon"
+            fresco:placeholderImageScaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/atme_bdwallet_title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/book_study_title_icon"
+            android:text="我的书房"
+            android:layout_marginLeft="5dp"
+            android:textColor="#4d4d4d"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/book_study_title_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/book_study_title_arrow"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="#ff2d4b"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/book_study_title_arrow"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/mypage_list_icon_arrow" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/custom_line" />
+
+    <LinearLayout
+        android:id="@+id/book_study_title_outside"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="55dp"
+        android:background="@drawable/waimai_shoplist_item_bg_color_selector"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/custom_line" />
+</LinearLayout>

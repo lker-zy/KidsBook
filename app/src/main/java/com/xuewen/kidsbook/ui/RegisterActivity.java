@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.utils.LogUtil;
 
@@ -27,7 +28,6 @@ import butterknife.Bind;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     private static String TAG = RegisterActivity.class.getSimpleName();
-    private static String reg_url = "http://180.76.176.227/user/reg";
 
     @Bind(R.id.common_title_left_btn) LinearLayout back_btn;
     @Bind(R.id.common_title_text) TextView title_text;
@@ -122,7 +122,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         final String verifycode = verify_code_et.getText().toString();
         final String password = password_et.getText().toString();
 
-        StringRequest request = new StringRequest(Request.Method.POST, reg_url,
+        StringRequest request = new StringRequest(Request.Method.POST, AppConfig.USER_REGISTER_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

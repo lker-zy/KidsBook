@@ -1,6 +1,5 @@
 package com.xuewen.kidsbook.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,12 +7,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.service.LoginService;
+
+import butterknife.Bind;
 
 public class SettingActivity extends BaseActivity {
+    @Bind(R.id.common_title_left_btn) LinearLayout back_btn;
+    @Bind(R.id.common_title_left_btn_icon) ImageView back_icon;
+
+    @Bind(R.id.act_setting_logout) LinearLayout logout_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initViews();
     }
 
     @Override
@@ -27,10 +35,18 @@ public class SettingActivity extends BaseActivity {
         title_text.setText("更多");
         title_text.setVisibility(View.VISIBLE);
 
-        ((LinearLayout) findViewById(R.id.common_title_left_btn)).setVisibility(View.VISIBLE);
+        back_btn.setVisibility(View.VISIBLE);
 
-        ImageView left_img = (ImageView) findViewById(R.id.common_title_left_btn_icon);
-        left_img.setBackgroundResource(R.drawable.commont_title_back);
-        left_img.setVisibility(View.VISIBLE);
+        back_icon.setBackgroundResource(R.drawable.commont_title_back);
+        back_icon.setVisibility(View.VISIBLE);
+    }
+
+    private void initViews() {
+        logout_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginService.getInstance().logout();
+            }
+        });
     }
 }

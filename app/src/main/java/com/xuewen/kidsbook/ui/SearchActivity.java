@@ -99,6 +99,8 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
                 Toast.makeText(SearchActivity.this, position + "", Toast.LENGTH_SHORT).show();
             }
         });
+
+        setHintSize(5);
     }
 
     @Override
@@ -222,7 +224,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
             //更新搜索数据
             resultAdapter.notifyDataSetChanged();
         }
-        Toast.makeText(this, "完成搜素", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "完成搜索", Toast.LENGTH_SHORT).show();
     }
 
     public class SearchAdapter extends BaseAdapter {
