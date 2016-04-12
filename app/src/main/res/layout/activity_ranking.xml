@@ -7,13 +7,17 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="0.0dip" />
+    <View android:background="#fff3f3f3" android:layout_width="fill_parent" android:layout_height="10dip" />
+
     <com.xuewen.kidsbook.view.ScrollGridView
         android:id="@+id/act_ranking_scroll_grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:numColumns="auto_fit"
-        android:columnWidth="80dp">
+        android:columnWidth="120dp"
+        android:verticalSpacing="20dp"
+        android:horizontalSpacing="20dp"
+        android:stretchMode="columnWidth">
 
     </com.xuewen.kidsbook.view.ScrollGridView>
 </LinearLayout>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
     <RelativeLayout
@@ -17,12 +17,12 @@
             android:orientation="horizontal"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_width="80.0dp"
-            android:layout_height="110.0dp">
+            android:layout_width="100.0dp"
+            android:layout_height="120.0dp">
 
             <ImageView android:id="@+id/book_img"
-                android:layout_width="79.0dp"
-                android:layout_height="109.0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:layout_margin="5px"
                 android:layout_alignParentLeft="true"
@@ -30,28 +30,42 @@
 
         </RelativeLayout>
 
-
-        <TextView android:id="@+id/book_title"
+        <TextView android:id="@+id/book_category"
             android:layout_toRightOf="@+id/book_item_img_layout"
             android:layout_alignTop="@+id/book_item_img_layout"
             android:layout_marginLeft="10.0dp"
             android:layout_marginTop="10.0dp"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/book_category"
+            android:text="时光简史/卷"
+            android:textSize="10.0sp" />
+
+        <TextView android:id="@+id/book_title"
+            android:layout_below="@+id/book_category"
+            android:layout_alignLeft="@+id/book_category"
+            android:layout_marginTop="10.0dp"
             android:maxLines="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="最美时光"
             android:textColor="#FF4D4D4D"
             android:textSize="16.0sp" />
 
         <TextView android:id="@+id/book_author"
             android:layout_below="@+id/book_title"
+            android:layout_marginTop="5dp"
             android:layout_alignLeft="@+id/book_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="时光君"
             android:textColor="#FF666666"
-            android:textSize="13.0sp" />
+            android:textSize="10.0sp" />
 
         <TextView android:id="@+id/book_desc"
             android:layout_below="@+id/book_author"
+            android:layout_marginTop="10dp"
             android:layout_alignLeft="@+id/book_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

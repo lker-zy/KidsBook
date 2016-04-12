@@ -80,6 +80,7 @@ public class Version {
 
             Version.remoteVersion = updateJsonBean.getVersion();
             Version.versionDesc = updateJsonBean.getVerDesc();
+            Version.versionDesc = "今日新版: ui update / bugfix";
             return updateJsonBean;
         } catch (java.io.IOException e) {
             e.printStackTrace();

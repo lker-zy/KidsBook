@@ -141,10 +141,10 @@
     <string name="wifi_changing_network">Requesting connection to network\u2026</string>
 
     <string name="bottom_tab_my">我的</string>
-    <string name="bottom_tab_daily">精选</string>
+    <string name="bottom_essence">精选</string>
     <string name="bottom_tab_study">书房</string>
-    <string name="bottom_tab_latest">新书</string>
-    <string name="bottom_tab_list">榜单</string>
+    <string name="bottom_tab_crowd">众读</string>
+    <string name="bottom_tab_activity">活动</string>
     <string name="title_activity_main">童书盒子</string>
 
     <string name="action_settings">设置</string>
@@ -154,4 +154,8 @@
     <string name="back_btn_text">返回</string>
     <string name="search_hint_text">请输入关键字</string>
     <string name="search_iv_delete_desc">删除</string>
+
+    <string name="menu_isbn_search">ISBN 扫描</string>
+    <string name="menu_dingzhi">私人定制</string>
+    <string name="menu_shouqi_search">手气不错</string>
 </resources>

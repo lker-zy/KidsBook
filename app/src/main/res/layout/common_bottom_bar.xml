@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_bottom_tab_daily"
             android:layout_centerHorizontal="true"
-            android:text="@string/bottom_tab_daily"
+            android:text="@string/bottom_essence"
             android:textColor="@color/black"
             android:textSize="12sp" />
     </RelativeLayout>
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_bottom_tab_latest"
             android:layout_centerHorizontal="true"
-            android:text="@string/bottom_tab_latest"
+            android:text="@string/bottom_tab_crowd"
             android:textColor="@color/black"
             android:textSize="12sp" />
     </RelativeLayout>
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_bottom_tab_list"
             android:layout_centerHorizontal="true"
-            android:text="@string/bottom_tab_list"
+            android:text="@string/bottom_tab_activity"
             android:textColor="@color/black"
             android:textSize="12sp" />
     </RelativeLayout>

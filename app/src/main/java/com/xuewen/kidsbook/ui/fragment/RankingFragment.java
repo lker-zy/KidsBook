@@ -1,6 +1,5 @@
 package com.xuewen.kidsbook.ui.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,9 +53,19 @@ public class RankingFragment extends BaseFragment {
     }
 
     private void initViews() {
-        gridAdapter = new SimpleAdapter(getActivity(), getData(), R.layout.detail_book_review_grid_item,
-                new String[] {"image", "author"}, new int[] {R.id.review_img, R.id.review_author});
+        gridAdapter = new SimpleAdapter(getActivity(), getData(), R.layout.book_item_large_view,
+                new String[] {"image", "author"}, new int[] {R.id.book_image, R.id.book_title});
         rankGridView.setAdapter(gridAdapter);
+    }
+
+    private void dynamicAdjustGridView(ScrollGridView view) {
+        SimpleAdapter adapter = (SimpleAdapter) view.getAdapter();
+        if (adapter == null) {
+            return;
+        }
+
+        int col = 3;
+
     }
 
 }

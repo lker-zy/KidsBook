@@ -38,8 +38,8 @@ import butterknife.ButterKnife;
 /**
  * Created by lker_zy on 16-3-28.
  */
-public class MainDefaultFrag extends BaseFragment {
-    private final static String TAG = MainDefaultFrag.class.getSimpleName();
+public class SuggestFragment extends BaseFragment {
+    private final static String TAG = SuggestFragment.class.getSimpleName();
 
     @Bind(R.id.main_list_view) ListView listView;
     @Bind(R.id.swipe_container) SwipeRefreshLayout swipeLayout;
@@ -60,7 +60,7 @@ public class MainDefaultFrag extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.act_main_default_frag;
+        return R.layout.frag_main_essence;
     }
 
     public void initImageLoader() {

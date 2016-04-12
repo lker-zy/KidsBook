@@ -85,7 +85,10 @@
     <color name="common_like_select">#ffffb712</color>
     <color name="common_like_text_normal">#ffa6a6a6</color>
     <color name="common_like_text_select">#ffffb330</color>
-    <color name="common_title_bg">#fffcfcfc</color>
+    <!--
+    <color name="common_title_bg">#00fcfcfc</color>
+    -->
+    <color name="common_title_bg">#FFfcfcfc</color>
     <color name="common_view_bg">#fff3f3f3</color>
     <color name="create_card_bg">#82000000</color>
     <color name="default_overlay_color">#aaffffff</color>
@@ -262,4 +265,6 @@
     <color name="custom_line">#c8cacc</color>
     <color name="custom_white">#ffffff</color>
     <color name="hot_search_text">#4d4d4d</color>
+
+    <color name="book_category">#fff99725</color>
 </resources>

@@ -28,11 +28,11 @@ android:shape="rectangle">
     android:bottomRightRadius 	整型 右下角半径
  -->
 <corners
-    android:radius="30dp"
-    android:topLeftRadius="30dp"
-    android:topRightRadius="30dp"
-    android:bottomLeftRadius="30dp"
-    android:bottomRightRadius="30dp"
+    android:radius="5dp"
+    android:topLeftRadius="5dp"
+    android:topRightRadius="5dp"
+    android:bottomLeftRadius="5dp"
+    android:bottomRightRadius="5dp"
     />
 
 <!--

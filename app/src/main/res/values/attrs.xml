@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HomeTabView">
+        <attr name="icon_size" format="dimension"></attr>
+        <attr name="text_size" format="dimension"></attr>
+        <attr name="text_select_color" format="color"></attr>
+        <attr name="text_normal_color" format="color"></attr>
+        <attr name="item_padding" format="dimension"></attr>
+    </declare-styleable>
+</resources>

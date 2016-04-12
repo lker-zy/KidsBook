@@ -25,6 +25,9 @@ public class BookDetailActivity extends BaseActivity
         implements View.OnTouchListener, View.OnClickListener {
     private static int DEFAULT_MAX_LINES = 5;
     private String bookName;
+    private String bookAuthor;
+    private String bookDesc;
+    private String bookImgUri;
 
     @Bind(R.id.act_detail_scrolview)
     ScrollView detail_scroll_view;
@@ -41,6 +44,9 @@ public class BookDetailActivity extends BaseActivity
     @Bind(R.id.act_detail_books_review_grid_view)
     ScrollGridView books_review_grid_view;
 
+    @Bind(R.id.act_detail_title_book_name)  TextView book_name_view;
+    @Bind(R.id.act_detail_title_book_author) TextView book_author_view;
+
     private GestureDetector gestureDetector;
     private SimpleAdapter gridAdapter;
 
@@ -54,7 +60,7 @@ public class BookDetailActivity extends BaseActivity
             if (!desc_layout.isSelected()) {
                 desc_layout.setSelected(true);
                 desc_more_text_view.setText("收起");
-                desc_text_view.setText("a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nm\nn\nh\ni\nj\na\nb\nc\ne\nd\nf");
+                desc_text_view.setText(bookDesc);
                 desc_text_view.setMaxLines(50);
             } else {
                 desc_layout.setSelected(false);
@@ -65,7 +71,10 @@ public class BookDetailActivity extends BaseActivity
     }
 
     private void initDetailView() {
-        desc_text_view.setText("a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nm\nn\nh\ni\nj\na\nb\nc\ne\nd\nf");
+        book_name_view.setText(bookName);
+        book_author_view.setText(bookAuthor);
+
+        desc_text_view.setText(bookDesc);
         desc_text_view.setMaxLines(DEFAULT_MAX_LINES);
 
         desc_layout.setOnClickListener(new DescMoreViewListener());
@@ -106,6 +115,9 @@ public class BookDetailActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         Bundle bundle = this.getIntent().getExtras();
         bookName = bundle.getString("name");
+        bookAuthor = bundle.getString("author");
+        bookDesc = bundle.getString("desc");
+        bookImgUri = bundle.getString("img");
 
         super.onCreate(savedInstanceState);
 
@@ -140,7 +152,7 @@ public class BookDetailActivity extends BaseActivity
     @Override
     protected void initTitleView() {
         TextView title_text = (TextView) findViewById(R.id.common_title_text);
-        title_text.setText(bookName);
+        title_text.setText("图书详情");
         title_text.setVisibility(View.VISIBLE);
 
         LinearLayout title_left_btn = (LinearLayout) findViewById(R.id.common_title_left_btn);

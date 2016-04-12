@@ -12,9 +12,12 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +29,8 @@ import com.xuewen.kidsbook.Const;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.service.LoginService;
 import com.xuewen.kidsbook.ui.fragment.BaseFragment;
-import com.xuewen.kidsbook.ui.fragment.MainDefaultFrag;
+import com.xuewen.kidsbook.ui.fragment.LatestBooksFragment;
+import com.xuewen.kidsbook.ui.fragment.SuggestFragment;
 import com.xuewen.kidsbook.ui.fragment.PersonalFragment;
 import com.xuewen.kidsbook.ui.fragment.RankingFragment;
 import com.xuewen.kidsbook.utils.UpdateHandler;
@@ -44,6 +48,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private RelativeLayout dailyLayout, meLayout, latestLayout, listLayout;
     @Bind(R.id.title_bar) LinearLayout titleLayout;
+
+    private PopupMenu right_menu;
 
     private long exitTime = 0;
     private ProgressDialog pBar;
@@ -166,17 +172,36 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.common_title_left_btn).setVisibility(View.VISIBLE);
 
         ImageView left_img = (ImageView) findViewById(R.id.common_title_left_btn_icon);
-        left_img.setBackgroundResource(R.drawable.common_title_qr);
+        left_img.setBackgroundResource(R.drawable.title_left_personal_center);
         left_img.setVisibility(View.VISIBLE);
 
         findViewById(R.id.common_title_right_btn).setVisibility(View.VISIBLE);
 
         ImageView right_img = (ImageView) findViewById(R.id.common_title_right_btn_image_1);
-        right_img.setBackgroundResource(R.drawable.commont_search_icon);
+        right_img.setBackgroundResource(R.drawable.title_right_more_func);
         right_img.setVisibility(View.VISIBLE);
 
         left_img.setOnClickListener(this);
         right_img.setOnClickListener(this);
+
+        right_menu = new PopupMenu(this, right_img);
+        Menu menu = right_menu.getMenu();
+
+        getMenuInflater().inflate(R.menu.title_right_more, menu);
+        right_menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_isbn_search:
+                        break;
+                    case R.id.menu_dingzhi_search:
+                        break;
+                    case R.id.menu_shouqi_search:
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     private void changeContentFragment(int frag_id) {
@@ -188,10 +213,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             switch (frag_id) {
                 case CONTENT_FRAG_ID_MAIN:
-                    fragment = new MainDefaultFrag();
+                    fragment = new SuggestFragment();
                     break;
                 case CONTENT_FRAG_ID_SHELF:
-                    fragment = new RankingFragment();
+                    fragment = new LatestBooksFragment();
                     break;
                 case CONTENT_FRAG_ID_RANK:
                     fragment = new RankingFragment();
@@ -302,7 +327,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 intent = new Intent(Intents.Scan.ACTION);
                 break;
             case R.id.common_title_right_btn_image_1:
-                intent = new Intent(MainActivity.this, SearchActivity.class);
+                //intent = new Intent(MainActivity.this, SearchActivity.class);
+                right_menu.show();
                 break;
             default:
                 break;

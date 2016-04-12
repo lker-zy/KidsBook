@@ -18,8 +18,6 @@ import com.xuewen.kidsbook.view.DynamicGridView;
 import com.xuewen.kidsbook.view.DynamicGridViewItem;
 import com.xuewen.kidsbook.view.StudyTitleItemView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
