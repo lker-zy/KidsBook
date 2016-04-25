@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/report_title"
+        android:padding="8dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="莉莉妈: 给孩子不一样的冒险体验"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/report_content"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="报告内容"
+        android:textSize="12sp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:layout_height="32dp">
+
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/zan_image"
+            android:layout_gravity="center|right"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_praise_grey"/>
+
+        <TextView
+            android:id="@+id/zan_num"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:textColor="@color/red"
+            android:textSize="10sp"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/common_line" />
+
+</LinearLayout>

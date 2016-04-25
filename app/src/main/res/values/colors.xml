@@ -267,4 +267,18 @@
     <color name="hot_search_text">#4d4d4d</color>
 
     <color name="book_category">#fff99725</color>
+    <color name="tab_indicator">#ff00ff00</color>
+    <color name="tab_indicator_text_selected">#ff00ff00</color>
+    <color name="tab_indicator_text">#ff000000</color>
+
+    <color name="essence_item_bg">#ffcdcdd7</color>
+
+    <color name="common_title_bg2">#FFFF2D47</color>
+    <color name="crowd_on_going">#ffff2d4b</color>
+    <color name="crowd_end">#f4f0745f</color>
+
+    <!--
+    <color name="book_detail_bg">#6E000000</color>
+    -->
+    <color name="book_detail_bg">#0E000000</color>
 </resources>

@@ -31,6 +31,7 @@ import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.utils.LogUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
@@ -93,17 +94,18 @@ final class DecodeHandler extends Handler {
             try {
                 rawResult = multiFormatReader.decodeWithState(bitmap);
             } catch (ReaderException re) {
-                // continue
+                LogUtil.w(TAG, re.getMessage(), re);
             } finally {
                 multiFormatReader.reset();
             }
+        } else {
+            LogUtil.d(TAG, "PlanarYUVLuminanceSource is null");
         }
 
         Handler handler = activity.getHandler();
         if (rawResult != null) {
-            // Don't log the barcode contents for security.
             long end = System.currentTimeMillis();
-            Log.d(TAG, "Found barcode in " + (end - start) + " ms");
+            LogUtil.d(TAG, "Found barcode in " + (end - start) + " ms");
             if (handler != null) {
                 Message message = Message.obtain(handler, R.id.decode_succeeded, rawResult);
                 Bundle bundle = new Bundle();

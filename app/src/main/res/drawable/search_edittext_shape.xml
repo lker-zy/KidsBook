@@ -17,6 +17,9 @@
     <!--
     <solid android:color="#CCCCCC" />
     -->
+    <!--
     <solid android:color="#00F2F2F2" />
+    -->
+    <solid android:color="#FFF2F2F2" />
 
 </shape>

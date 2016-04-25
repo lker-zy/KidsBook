@@ -33,6 +33,7 @@ import android.util.Log;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
+import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.zxing.camera.CameraManager;
 import com.xuewen.kidsbook.R;
 
@@ -74,9 +75,11 @@ public final class CaptureActivityHandler extends Handler {
     public void handleMessage(Message message) {
         switch (message.what) {
             case R.id.restart_preview:
+                LogUtil.d(TAG, "restart_preview");
                 restartPreviewAndDecode();
                 break;
             case R.id.decode_succeeded:
+                LogUtil.d(TAG, "decode_succeeded");
                 state = State.SUCCESS;
                 Bundle bundle = message.getData();
                 Bitmap barcode = null;
@@ -93,15 +96,18 @@ public final class CaptureActivityHandler extends Handler {
                 activity.handleDecode((Result) message.obj, barcode, scaleFactor);
                 break;
             case R.id.decode_failed:
+                LogUtil.d(TAG, "decode_failed");
                 // We're decoding as fast as possible, so when one decode fails, start another.
                 state = State.PREVIEW;
                 cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
                 break;
             case R.id.return_scan_result:
+                LogUtil.d(TAG, "return_scan_result");
                 activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
                 activity.finish();
                 break;
             case R.id.launch_product_query:
+                LogUtil.d(TAG, "launch_product_query");
                 String url = (String) message.obj;
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);

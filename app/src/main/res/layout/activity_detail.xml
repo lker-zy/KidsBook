@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/common_title" />
+
+    <ScrollView android:id="@+id/act_detail_scrolview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/act_detail_title_include">
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/activity_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:src="@drawable/bg_profile"/>
+
+            <TextView
+                android:paddingTop="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="活动详情"/>
+
+            <TextView
+                android:paddingTop="18dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="日本超人气绘本作者宫西达也来了"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:paddingTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="作为4个孩子的爸爸， 他有一套自己的育儿经。\n作为日本超人气绘本作者， 是如何创作绘本的？现场演绎会本，教你怎么给孩子讲故事。"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <LinearLayout
+                android:paddingTop="8dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 2016年5月22日14：00"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:paddingTop="8dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="地点: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 王府井新华书店三层"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:paddingTop="8dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="联系方式: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 13888888888"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

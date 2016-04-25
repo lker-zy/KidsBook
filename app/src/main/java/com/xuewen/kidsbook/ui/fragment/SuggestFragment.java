@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +27,7 @@ import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.Const;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.ui.BookDetailActivity;
+import com.xuewen.kidsbook.ui.SuggestDetailActivity;
 import com.xuewen.kidsbook.utils.LogUtil;
 
 import java.io.IOException;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.BindDimen;
 import butterknife.ButterKnife;
 
 /**
@@ -87,7 +91,7 @@ public class SuggestFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Map<String, Object> book = (Map<String, Object>) bookItemListAdapter.getItem(position);
 
-                Intent intent = new Intent(getActivity(), BookDetailActivity.class);
+                Intent intent = new Intent(getActivity(), SuggestDetailActivity.class);
                 intent.putExtra("name", (String) book.get("name"));
                 intent.putExtra("author", (String) book.get("author"));
                 intent.putExtra("desc", (String) book.get("desc"));
@@ -107,7 +111,7 @@ public class SuggestFragment extends BaseFragment {
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtil.d(TAG, "onRefresh run xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                        LogUtil.d(TAG, "onRefresh run ");
                         getData();
                     }
                 });
@@ -124,7 +128,7 @@ public class SuggestFragment extends BaseFragment {
 
             @Override
             public void onResponse(String response) {
-                LogUtil.d(TAG, "response for books.json: " + response);
+                LogUtil.d(TAG, "response for books.json ok. ");
                 swipeLayout.setRefreshing(false);
 
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -146,6 +150,10 @@ public class SuggestFragment extends BaseFragment {
                 handler.sendEmptyMessage(Const.MSG_LIST_REFRESH_ERROR);
             }
         });
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         LogUtil.d(TAG, "add string request: " + AppConfig.DAILY_BOOKS_URL);
         requestQueue.add(stringRequest);
@@ -178,7 +186,7 @@ public class SuggestFragment extends BaseFragment {
             ViewHolder holder = null;
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.book_item_listview, parent, false);
+                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.essence_listview_item, parent, false);
                 holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             } else {
@@ -192,12 +200,15 @@ public class SuggestFragment extends BaseFragment {
             } else {
                 holder.title.setText((String) data.get("title"));
             }
+            /*
             holder.author.setText((String)data.get("author"));
             holder.desc.setText((String)data.get("desc"));
 
             String imgUrl = (String)data.get("img");
 
             imageLoader.displayImage(imgUrl, holder.img, displayImageOptions);
+            */
+            holder.img.setImageResource(R.drawable.bg_profile);
 
             return convertView;
         }
@@ -207,17 +218,12 @@ public class SuggestFragment extends BaseFragment {
         }
 
         class ViewHolder {
-            @Bind(R.id.book_img)
+
+            @Bind(R.id.essence_item_image)
             public ImageView img;
 
-            @Bind(R.id.book_title)
+            @Bind(R.id.essence_item_title)
             public TextView title;
-
-            @Bind(R.id.book_author)
-            public TextView author;
-
-            @Bind(R.id.book_desc)
-            public TextView desc;
 
             public ViewHolder(View view) {
                 ButterKnife.bind(this, view);

@@ -10,6 +10,7 @@ import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.KidsBookApplication;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -50,41 +51,24 @@ public class Version {
 
     public static VersionUpdateJsonBean checkNewVersion() {
         String versionQueryUrl  = AppConfig.UPDATE_URL + "?version=" + localVersion;
+
+        String content = Network.simpleDownload(versionQueryUrl);
+        LogUtil.d(TAG, content);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        VersionUpdateJsonBean updateJsonBean = null;
         try {
-            URL serverURL = new URL(versionQueryUrl);
-            HttpURLConnection connect = (HttpURLConnection) serverURL.openConnection();
-            BufferedInputStream bis = new BufferedInputStream(connect.getInputStream());
-
-            int fileLength = connect.getContentLength();
-            int downLength = 0;
-            String content = "";
-
-            int n;
-            byte[] buffer = new byte[1024];
-            while ((n = bis.read(buffer, 0, buffer.length)) != -1) {
-                downLength += n;
-                content += new String(buffer);
-            }
-
-            if (downLength != fileLength) {
-                return null;
-            }
-
-            bis.close();
-            connect.disconnect();
-
-            LogUtil.d(TAG, content);
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            VersionUpdateJsonBean updateJsonBean = objectMapper.readValue(content, VersionUpdateJsonBean.class);
-
-            Version.remoteVersion = updateJsonBean.getVersion();
-            Version.versionDesc = updateJsonBean.getVerDesc();
-            Version.versionDesc = "今日新版: ui update / bugfix";
-            return updateJsonBean;
-        } catch (java.io.IOException e) {
+            updateJsonBean = objectMapper.readValue(content, VersionUpdateJsonBean.class);
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
+
+        Version.remoteVersion = updateJsonBean.getVersion();
+        Version.versionDesc = updateJsonBean.getVerDesc();
+        Version.versionDesc = "1. 增加活动模块\n2. 更新众读申请详细页面";
+        return updateJsonBean;
     }
 }

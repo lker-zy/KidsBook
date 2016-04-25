@@ -32,12 +32,12 @@
             fresco:placeholderImageScaleType="fitCenter" />
 
         <TextView
-            android:id="@+id/atme_bdwallet_title_name"
+            android:id="@+id/atme_navi_title_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/book_study_title_icon"
-            android:text="我的书房"
+            android:text="书架"
             android:layout_marginLeft="5dp"
             android:textColor="#4d4d4d"
             android:textSize="14dp" />

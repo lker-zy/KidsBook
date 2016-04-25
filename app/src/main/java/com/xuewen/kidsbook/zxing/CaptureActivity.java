@@ -1,22 +1,5 @@
-/*
- * Copyright (C) 2008 ZXing authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.xuewen.kidsbook.zxing;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -57,9 +39,10 @@ import com.google.zxing.ResultPoint;
 
 import com.xuewen.kidsbook.R;
 
+import com.xuewen.kidsbook.ui.BaseActivity;
+import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.zxing.camera.CameraManager;
 import com.xuewen.kidsbook.zxing.clipboard.ClipboardInterface;
-import com.xuewen.kidsbook.zxing.history.HistoryActivity;
 import com.xuewen.kidsbook.zxing.history.HistoryItem;
 import com.xuewen.kidsbook.zxing.history.HistoryManager;
 import com.xuewen.kidsbook.zxing.result.ResultButtonListener;
@@ -82,7 +65,7 @@ import java.util.Map;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+public final class CaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
 
     public static final int HISTORY_REQUEST_CODE = 0x0000bacc;
     private static final String TAG = CaptureActivity.class.getSimpleName();
@@ -115,18 +98,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private BeepManager beepManager;
     private AmbientLightManager ambientLightManager;
 
-    private static boolean isZXingURL(String dataString) {
-        if (dataString == null) {
-            return false;
-        }
-        for (String url : ZXING_URLS) {
-            if (dataString.startsWith(url)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static void drawLine(Canvas canvas, Paint paint, ResultPoint a, ResultPoint b, float scaleFactor) {
         if (a != null && b != null) {
             canvas.drawLine(scaleFactor * a.getX(),
@@ -155,7 +126,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.capture);
 
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
@@ -218,7 +188,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (intent != null) {
 
             String action = intent.getAction();
-            String dataString = intent.getDataString();
 
             if (Intents.Scan.ACTION.equals(action)) {
 
@@ -246,27 +215,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 if (customPromptMessage != null) {
                     statusView.setText(customPromptMessage);
                 }
-
-            } else if (dataString != null &&
-                    dataString.contains("http://www.google") &&
-                    dataString.contains("/m/products/scan")) {
-
-                // Scan only products and send the result to mobile Product Search.
-                source = IntentSource.PRODUCT_SEARCH_LINK;
-                sourceUrl = dataString;
-                decodeFormats = DecodeFormatManager.PRODUCT_FORMATS;
-
-            } else if (isZXingURL(dataString)) {
-
-                // Scan formats requested in query string (all formats if none specified).
-                // If a return URL is specified, send the results there. Otherwise, handle it ourselves.
-                source = IntentSource.ZXING_LINK;
-                sourceUrl = dataString;
-                Uri inputUri = Uri.parse(dataString);
-                scanFromWebPageManager = new ScanFromWebPageManager(inputUri);
-                decodeFormats = DecodeFormatManager.parseDecodeFormats(inputUri);
-                // Allow a sub-set of the hints to be specified by the caller.
-                decodeHints = DecodeHintManager.parseDecodeHints(inputUri);
 
             }
 
@@ -333,6 +281,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.capture;
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
@@ -373,16 +326,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         switch (item.getItemId()) {
-            case R.id.menu_history:
-                intent.setClassName(this, HistoryActivity.class.getName());
-                startActivityForResult(intent, HISTORY_REQUEST_CODE);
-                break;
             case R.id.menu_settings:
                 intent.setClassName(this, PreferencesActivity.class.getName());
-                startActivity(intent);
-                break;
-            case R.id.menu_help:
-                intent.setClassName(this, HelpActivity.class.getName());
                 startActivity(intent);
                 break;
             default:
@@ -711,7 +656,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             throw new IllegalStateException("No SurfaceHolder provided");
         }
         if (cameraManager.isOpen()) {
-            Log.w(TAG, "initCamera() while already open -- late SurfaceView callback?");
+            LogUtil.w(TAG, "initCamera() while already open -- late SurfaceView callback?");
             return;
         }
         try {
@@ -722,12 +667,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             }
             decodeOrStoreSavedBitmap(null, null);
         } catch (IOException ioe) {
-            Log.w(TAG, ioe);
+            LogUtil.w(TAG, ioe.getMessage(), ioe);
             displayFrameworkBugMessageAndExit();
         } catch (RuntimeException e) {
             // Barcode Scanner has seen crashes in the wild of this variety:
             // java.?lang.?RuntimeException: Fail to connect to camera service
-            Log.w(TAG, "Unexpected error initializing camera", e);
+            LogUtil.w(TAG, "Unexpected error initializing camera", e);
             displayFrameworkBugMessageAndExit();
         }
     }

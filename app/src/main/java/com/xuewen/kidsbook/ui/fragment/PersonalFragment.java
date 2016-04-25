@@ -49,13 +49,16 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
     }
 
     private List<Map<String, Object>> appGridInfo = new ArrayList<>();
+    private LinearLayout book_study_items_lay;
+    private LinearLayout grow_plan_items_lay;
+    private LinearLayout collection_items_lay;
 
     @Bind(R.id.personal_app_grid_container) LinearLayout app_grid_container;
     @Bind(R.id.setting_btn) ImageView settingBtn;
-    @Bind(R.id.book_study_title_outside) LinearLayout book_study_items_lay;
+    @Bind(R.id.personal_navi) LinearLayout navi_layout;
 
     private void initViews() {
-        setDynamicGrid();
+        //setDynamicGrid();
 
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +71,11 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         userPhoto.setImageResource(R.drawable.user_photo_default);
 
         initStudyTitle();
+        initGrowPlanTitle();
+        initCollectionTitle();
     }
 
-    private void addItemView(String name) {
+    private void addItemView(LinearLayout container, String name) {
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.weight = 1;
@@ -78,17 +83,47 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         StudyTitleItemView studyTitleItemView = new StudyTitleItemView(getActivity());
         studyTitleItemView.setText(name);
 
-        book_study_items_lay.addView(studyTitleItemView, lp);
+        container.addView(studyTitleItemView, lp);
     }
 
     private void initStudyTitle() {
+        LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
+        book_study_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
         book_study_items_lay.removeAllViews();
 
-        addItemView("书架");
-        addItemView("书单");
+        addItemView(book_study_items_lay, "书架");
+        addItemView(book_study_items_lay, "书单");
 
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 10;
+        navi_layout.addView(study_navi_layout);
     }
 
+    private void initGrowPlanTitle() {
+        LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
+        TextView title_name = (TextView) study_navi_layout.findViewById(R.id.atme_navi_title_name);
+        title_name.setText("成长计划");
+        grow_plan_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
+        grow_plan_items_lay.removeAllViews();
+
+        addItemView(grow_plan_items_lay, "哈哈");
+        addItemView(grow_plan_items_lay, "嘻嘻");
+
+        navi_layout.addView(study_navi_layout);
+    }
+
+    private void initCollectionTitle() {
+        LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
+        TextView title_name = (TextView) study_navi_layout.findViewById(R.id.atme_navi_title_name);
+        title_name.setText("收藏");
+        collection_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
+        collection_items_lay.removeAllViews();
+
+        addItemView(collection_items_lay, "哈哈");
+        addItemView(collection_items_lay, "嘻嘻");
+
+        navi_layout.addView(study_navi_layout);
+    }
 
     private void prepareGridData() {
         appGridInfo.clear();
@@ -110,30 +145,6 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         myBaby.put("image", R.drawable.waimai_shoplist_item_bg_nomal);
         myBaby.put("actName", "ReadingBooks");
         appGridInfo.add(myBaby);
-
-        Map<String, Object> myStudy = new HashMap<>();
-        myStudy.put("text", "书房");
-        myStudy.put("image", R.drawable.waimai_shoplist_item_bg_nomal);
-        myStudy.put("actName", "ReadingBooks");
-        appGridInfo.add(myStudy);
-
-        Map<String, Object> myComment = new HashMap<>();
-        myComment.put("text", "书评");
-        myComment.put("image", R.drawable.waimai_shoplist_item_bg_nomal);
-        myComment.put("actName", "MyBookComment");
-        appGridInfo.add(myComment);
-
-        Map<String, Object> myProbation = new HashMap<>();
-        myProbation.put("text", "试读");
-        myProbation.put("image", R.drawable.waimai_shoplist_item_bg_nomal);
-        myProbation.put("actName", "MyProbation");
-        appGridInfo.add(myProbation);
-
-        Map<String, Object> history = new HashMap<>();
-        history.put("text", "阅读轨迹");
-        history.put("image", R.drawable.waimai_shoplist_item_bg_nomal);
-        history.put("actName", "ReadingBooks");
-        appGridInfo.add(history);
 
         Map<String, Object> myMessage = new HashMap<>();
         myMessage.put("text", "消息");

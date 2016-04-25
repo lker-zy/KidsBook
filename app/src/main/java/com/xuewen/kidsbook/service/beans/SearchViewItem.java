@@ -8,6 +8,9 @@ public class SearchViewItem {
     private String title;
     private String content;
     private String comments;
+    private String author;
+
+    private String imageUrl;
 
     public SearchViewItem(int iconId, String title, String content, String comments) {
         this.iconId = iconId;
@@ -48,4 +51,19 @@ public class SearchViewItem {
         this.comments = comments;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

@@ -1,18 +1,22 @@
 package com.xuewen.kidsbook.utils;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
 
 import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.Const;
+import com.xuewen.kidsbook.KidsBookApplication;
+import com.xuewen.kidsbook.service.ConfigService;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -28,7 +32,49 @@ public class UpdateHandler {
         mHandler = handler;
     }
 
-    public void downFile(final String saveName) {
+    private void downToSdcard(final String saveName, HttpURLConnection connect) throws Exception {
+        BufferedInputStream bis = new BufferedInputStream(connect.getInputStream());
+        File apkfile = new File(Environment.getExternalStorageDirectory() + "/" + AppConfig.CACHE_BASE, saveName);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(apkfile));
+
+        int fileLength = connect.getContentLength();
+        int downLength = 0;
+        int n;
+
+        byte[] buffer = new byte[40960];
+        while ((n = bis.read(buffer, 0, buffer.length)) != -1) {
+            bos.write(buffer, 0, n);
+            downLength += n;
+            int progress = (int) (((float) downLength / fileLength) * 100);
+            mProgressBar.setProgress(progress);
+        }
+
+        bis.close();
+        bos.close();
+    }
+
+    private void downToPackageFiles(final String saveName, HttpURLConnection connect) throws Exception {
+        BufferedInputStream bis = new BufferedInputStream(connect.getInputStream());
+        Context context = KidsBookApplication.getInstance().getContext();
+        context.deleteFile(saveName);
+        FileOutputStream outputStream = KidsBookApplication.getInstance().getContext().openFileOutput(saveName, Context.MODE_APPEND + Context.MODE_WORLD_READABLE + Context.MODE_WORLD_WRITEABLE);
+
+        int fileLength = connect.getContentLength();
+        int downLength = 0;
+        int n;
+        byte[] buffer = new byte[40960];
+        while ((n = bis.read(buffer, 0, buffer.length)) != -1) {
+            outputStream.write(buffer, 0, n);
+            downLength += n;
+            int progress = (int) (((float) downLength / fileLength) * 100);
+            mProgressBar.setProgress(progress);
+        }
+
+        bis.close();
+        outputStream.close();
+    }
+
+    public void downFile(final String saveName, final boolean sdcard, final boolean dev) {
         mProgressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressBar.setTitle("正在下载");
         mProgressBar.setMessage("请稍候...");
@@ -39,30 +85,37 @@ public class UpdateHandler {
             @Override
             public void run() {
                 try {
+                    if (dev) {
+                        (new ConfigService()).changeToTestEnv();
+                    }
                     URL serverURL = new URL(AppConfig.APK_DOWNLOAD_URL);
                     HttpURLConnection connect = (HttpURLConnection) serverURL.openConnection();
-                    BufferedInputStream bis = new BufferedInputStream(connect.getInputStream());
-                    File apkfile = new File(Environment.getExternalStorageDirectory() + "/" + AppConfig.CACHE_BASE, saveName);
-                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(apkfile));
+                    connect.setConnectTimeout(3000);
+                    connect.setReadTimeout(3000);
 
-                    int fileLength = connect.getContentLength();
-                    int downLength = 0;
-                    int n;
-                    byte[] buffer = new byte[40960];
-                    while ((n = bis.read(buffer, 0, buffer.length)) != -1) {
-                        bos.write(buffer, 0, n);
-                        downLength += n;
-                        int progress = (int) (((float) downLength / fileLength) * 100);
-                        mProgressBar.setProgress(progress);
+                    /*
+                    if (sdcard) {
+                        downToSdcard(saveName, connect);
+                    } else {
+                        downToPackageFiles(saveName, connect);
                     }
+                    */
+                    downToPackageFiles(saveName, connect);
 
                     mHandler.sendEmptyMessage(Const.MSG_DOWN_UPDATE_DONE);
-                    bis.close();
-                    bos.close();
                     connect.disconnect();
-                } catch (java.io.IOException e) {
+                } catch (MalformedURLException e) {
                     e.printStackTrace();
                     mProgressBar.setMessage(e.toString());
+                    mHandler.sendEmptyMessage(Const.MSG_DOWN_UPDATE_DONE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    mProgressBar.setMessage(e.toString());
+                    mHandler.sendEmptyMessage(Const.MSG_DOWN_UPDATE_DONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mProgressBar.setMessage(e.toString());
+                    mHandler.sendEmptyMessage(Const.MSG_DOWN_UPDATE_DONE);
                 }
             }
 

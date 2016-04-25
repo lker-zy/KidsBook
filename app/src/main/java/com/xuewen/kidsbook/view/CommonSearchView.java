@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +49,8 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
      * 返回按钮
      */
     private ImageView btnBack;
+
+    private Button btnSearch;
 
     /**
      * 上下文对象
@@ -117,6 +120,7 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
         btnBack = (ImageView) findViewById(R.id.common_title_left_btn_icon);
         lvTips = (ListView) findViewById(R.id.search_lv_tips);
         hotSearchLay = (LinearLayout) findViewById(R.id.hot_search_lay);
+        btnSearch = (Button) findViewById(R.id.search_btn);
 
         lvTips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -126,6 +130,15 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
                 etInput.setSelection(text.length());
                 lvTips.setVisibility(View.GONE);
                 notifyStartSearching(text);
+            }
+        });
+
+        btnSearch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lvTips.setVisibility(GONE);
+                hotSearchLay.setVisibility(GONE);
+                notifyStartSearching(etInput.getText().toString());
             }
         });
 
@@ -152,10 +165,10 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
 
         LineWrapLayoutHotDishSearch hotSearchDishLay = (LineWrapLayoutHotDishSearch)hotSearchLay.findViewById(R.id.hot_search_dish_lay);
         List<String> dishList = new ArrayList<>();
-        dishList.add("test1");
-        dishList.add("test2");
-        dishList.add("testsssss");
-        dishList.add("testsaaas");
+        dishList.add("探险");
+        dishList.add("游记");
+        dishList.add("科学");
+        dishList.add("荒野求生");
 
         if (null != dishList) {
             for (int i = 0; i < dishList.size(); i++) {
@@ -167,18 +180,6 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
 
                     @Override
                     public void onClick(View v) {
-                        /*
-                        StatUtils.sendStatistic(
-                                "hot.search.keywords.click",
-                                "click");
-                        StatUtils.sendStatistic(
-                                "searchhistorypg.hotsearch.btn",
-                                "click");
-
-                        searchWithoutReqSug(dish);
-                        StatReferManager.getInstance().setNestedRefer(StatReferManager.NestedStatistics.HOTSEARCH.value);
-                        */
-
                         notifyStartSearching(dish);
                     }
                 });

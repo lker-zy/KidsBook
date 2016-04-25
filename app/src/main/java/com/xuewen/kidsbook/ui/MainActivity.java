@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +26,14 @@ import com.android.volley.toolbox.Volley;
 import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.Const;
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.service.ConfigService;
 import com.xuewen.kidsbook.service.LoginService;
+import com.xuewen.kidsbook.ui.fragment.ActivityFragment;
 import com.xuewen.kidsbook.ui.fragment.BaseFragment;
-import com.xuewen.kidsbook.ui.fragment.LatestBooksFragment;
+import com.xuewen.kidsbook.ui.fragment.CrowdFragment;
 import com.xuewen.kidsbook.ui.fragment.SuggestFragment;
 import com.xuewen.kidsbook.ui.fragment.PersonalFragment;
-import com.xuewen.kidsbook.ui.fragment.RankingFragment;
+import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.utils.UpdateHandler;
 import com.xuewen.kidsbook.utils.Version;
 import com.xuewen.kidsbook.zxing.Intents;
@@ -46,7 +47,11 @@ import static com.xuewen.kidsbook.utils.Utils.isMediaOk;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private RelativeLayout dailyLayout, meLayout, latestLayout, listLayout;
+    @Bind(R.id.iv_bottom_tab_essence) ImageView bottomTabIvEssence;
+    @Bind(R.id.iv_bottom_tab_activity) ImageView bottomTabIvActivity;
+    @Bind(R.id.iv_bottom_tab_study) ImageView bottomTabIvStudy;
+    @Bind(R.id.iv_bottom_tab_crowd) ImageView bottomTabIvCrowd;
+
     @Bind(R.id.title_bar) LinearLayout titleLayout;
 
     private PopupMenu right_menu;
@@ -55,6 +60,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ProgressDialog pBar;
 
     private RequestQueue requestQueue;
+
+    private boolean apkOnSdcard = true;
 
     private static final int CONTENT_FRAG_ID_MAIN       = 0;
     private static final int CONTENT_FRAG_ID_SHELF      = 1;
@@ -83,10 +90,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     pBar.cancel();
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    String path = Environment.getExternalStorageDirectory()+ "/" + AppConfig.CACHE_BASE + "/KidsBook.apk";
-                    intent.setDataAndType(Uri.fromFile(new File(path)),
-                            "application/vnd.android.package-archive");
+                    if (apkOnSdcard) {
+                        String path = Environment.getExternalStorageDirectory() + "/" + AppConfig.CACHE_BASE + "/KidsBook.apk";
+                        intent.setDataAndType(Uri.fromFile(new File(path)),
+                                "application/vnd.android.package-archive");
+                    } else {
+                        File apkFile = new File(getApplicationContext().getFilesDir(), "KidsBook.apk");
+                        LogUtil.d(TAG, apkFile.getAbsolutePath());
+                        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                    }
                     startActivity(intent);
+                    break;
+                case Const.MSG_DOWN_UPDATE_FAIL:
+                    pBar.cancel();
+                    Toast.makeText(MainActivity.this, "下载安装包失败", Toast.LENGTH_SHORT).show();
                     break;
                 case Const.MSG_LIST_REFRESH_ERROR:
                     Toast.makeText(MainActivity.this, "获取数据失败", Toast.LENGTH_SHORT).show();
@@ -107,7 +124,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 cHandler.sendMessage(message);
 
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -125,6 +142,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 message.setData(data);
                 cHandler.sendMessage(message);
+
+                //(new ConfigService()).changeToTestEnv();
             }
         };
 
@@ -144,12 +163,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                UpdateHandler uHandler = new UpdateHandler(pBar, cHandler);
                 if (isMediaOk()) {
-                    UpdateHandler uHandler = new UpdateHandler(pBar, cHandler);
-                    uHandler.downFile("KidsBook.apk");
+                    apkOnSdcard = false;
+                    uHandler.downFile("KidsBook.apk", true, false);
                 } else {
-                    Toast.makeText(MainActivity.this, "SD卡不可用，请插入SD卡",
-                            Toast.LENGTH_SHORT).show();
+                    apkOnSdcard = false;
+                    uHandler.downFile("KidsBook.apk", false, false);
+                }
+            }
+        });
+        builder.setNeutralButton("开发版下载", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                UpdateHandler uHandler = new UpdateHandler(pBar, cHandler);
+                if (isMediaOk()) {
+                    apkOnSdcard = false;
+                    uHandler.downFile("KidsBook.apk", true, true);
+                } else {
+                    apkOnSdcard = false;
+                    uHandler.downFile("KidsBook.apk", false, true);
                 }
             }
         });
@@ -169,35 +202,53 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         title_text.setText(R.string.app_name);
         title_text.setVisibility(View.VISIBLE);
 
+        /*
         findViewById(R.id.common_title_left_btn).setVisibility(View.VISIBLE);
 
         ImageView left_img = (ImageView) findViewById(R.id.common_title_left_btn_icon);
         left_img.setBackgroundResource(R.drawable.title_left_personal_center);
         left_img.setVisibility(View.VISIBLE);
+        */
 
-        findViewById(R.id.common_title_right_btn).setVisibility(View.VISIBLE);
+        LinearLayout title_right_btn = (LinearLayout) findViewById(R.id.common_title_right_btn);
+        title_right_btn.setVisibility(View.VISIBLE);
 
         ImageView right_img = (ImageView) findViewById(R.id.common_title_right_btn_image_1);
         right_img.setBackgroundResource(R.drawable.title_right_more_func);
         right_img.setVisibility(View.VISIBLE);
 
-        left_img.setOnClickListener(this);
-        right_img.setOnClickListener(this);
+        //left_img.setOnClickListener(this);
+        //right_img.setOnClickListener(this);
+        title_right_btn.setOnClickListener(this);
 
-        right_menu = new PopupMenu(this, right_img);
+        right_menu = new PopupMenu(this, title_right_btn);
         Menu menu = right_menu.getMenu();
 
         getMenuInflater().inflate(R.menu.title_right_more, menu);
         right_menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = null;
+
                 switch (item.getItemId()) {
+                    case R.id.menu_common_search:
+                        intent = new Intent(MainActivity.this, SearchActivity.class);
+                        break;
                     case R.id.menu_isbn_search:
+                        intent = new Intent(Intents.Scan.ACTION);
                         break;
                     case R.id.menu_dingzhi_search:
+                        intent = new Intent(MainActivity.this, CustomSearch.class);
                         break;
                     case R.id.menu_shouqi_search:
+                        intent = new Intent(MainActivity.this, SearchActivity.class);
                         break;
+                    default:
+                        break;
+                }
+
+                if (intent != null) {
+                    startActivity(intent);
                 }
                 return false;
             }
@@ -216,10 +267,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     fragment = new SuggestFragment();
                     break;
                 case CONTENT_FRAG_ID_SHELF:
-                    fragment = new LatestBooksFragment();
+                    fragment = new CrowdFragment();
                     break;
                 case CONTENT_FRAG_ID_RANK:
-                    fragment = new RankingFragment();
+                    fragment = new ActivityFragment();
                     break;
                 case CONTENT_FRAG_ID_PERSONAL:
                     fragment = new PersonalFragment();
@@ -249,15 +300,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dailyLayout = (RelativeLayout) findViewById(R.id.bottom_tab_daily);
-        latestLayout = (RelativeLayout) findViewById(R.id.bottom_tab_latest);
-        listLayout   = (RelativeLayout) findViewById(R.id.bottom_tab_list);
-        meLayout = (RelativeLayout) findViewById(R.id.bottom_tab_me);
-
-        dailyLayout.setOnClickListener(this);
-        latestLayout.setOnClickListener(this);
-        listLayout.setOnClickListener(this);
-        meLayout.setOnClickListener(this);
+        bottomTabIvActivity.setOnClickListener(this);
+        bottomTabIvEssence.setOnClickListener(this);
+        bottomTabIvCrowd.setOnClickListener(this);
+        bottomTabIvStudy.setOnClickListener(this);
 
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.start();
@@ -307,26 +353,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.bottom_tab_daily:
+            case R.id.iv_bottom_tab_essence:
                 changeContentFragment(CONTENT_FRAG_ID_MAIN);
                 break;
-            case R.id.bottom_tab_latest:
+            case R.id.iv_bottom_tab_crowd:
                 changeContentFragment(CONTENT_FRAG_ID_SHELF);
                 break;
-            case R.id.bottom_tab_list:
+            case R.id.iv_bottom_tab_activity:
                 changeContentFragment(CONTENT_FRAG_ID_RANK);
                 break;
-            case R.id.bottom_tab_me:
+            case R.id.iv_bottom_tab_study:
+                changeContentFragment(CONTENT_FRAG_ID_PERSONAL);
+                break;
+            case R.id.common_title_left_btn_icon:
                 if (LoginService.isLogin()) {
-                    changeContentFragment(CONTENT_FRAG_ID_PERSONAL);
+                    intent = new Intent(MainActivity.this, PersonalActivity.class);
                 } else {
                     intent = new Intent(MainActivity.this, LoginActivity.class);
                 }
                 break;
-            case R.id.common_title_left_btn_icon:
-                intent = new Intent(Intents.Scan.ACTION);
-                break;
             case R.id.common_title_right_btn_image_1:
+                //intent = new Intent(MainActivity.this, SearchActivity.class);
+                right_menu.show();
+                break;
+            case R.id.common_title_right_btn:
                 //intent = new Intent(MainActivity.this, SearchActivity.class);
                 right_menu.show();
                 break;

@@ -15,6 +15,8 @@ import butterknife.ButterKnife;
  * Created by lker_zy on 16-3-29.
  */
 public abstract class BaseFragment extends Fragment {
+    protected View container_view;
+
     protected Handler handler;
     protected RequestQueue requestQueue;
 
@@ -29,11 +31,15 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
-        ButterKnife.bind(this, view);
+        container_view = inflater.inflate(getLayoutId(), container, false);
+        ButterKnife.bind(this, container_view);
 
         init();
-        return view;
+        return container_view;
+    }
+
+    protected View getBaseView() {
+        return container_view;
     }
 
     abstract protected int getLayoutId();

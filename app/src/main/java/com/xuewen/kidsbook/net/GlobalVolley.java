@@ -20,6 +20,10 @@ public class GlobalVolley {
         requestQueue.add(request);
     }
 
+    public static RequestQueue requestQueue() {
+        return  requestQueue;
+    }
+
     public static void destroy() {
         requestQueue.cancelAll(null);
     }

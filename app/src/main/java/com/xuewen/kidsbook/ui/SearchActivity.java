@@ -1,6 +1,7 @@
 package com.xuewen.kidsbook.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xuewen.kidsbook.R;
-import com.xuewen.kidsbook.service.beans.SearchViewItem;
+import com.xuewen.kidsbook.service.SearchService;
+import com.xuewen.kidsbook.service.beans.SearchBookItem;
+import com.xuewen.kidsbook.service.beans.SearchResult;
+import com.xuewen.kidsbook.ui.monindicator.MonIndicator;
+import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.view.CommonSearchView;
 
 import java.util.ArrayList;
@@ -28,6 +37,7 @@ import butterknife.ButterKnife;
  */
 
 public class SearchActivity extends BaseActivity implements CommonSearchView.SearchViewListener {
+    private static String TAG = SearchActivity.class.getSimpleName();
     /**
      * 热搜框列表adapter
      */
@@ -44,11 +54,6 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
     private SearchAdapter resultAdapter;
 
     /**
-     * 数据库数据，总数据
-     */
-    private List<SearchViewItem> dbData;
-
-    /**
      * 热搜版数据
      */
     private List<String> hintData;
@@ -61,7 +66,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
     /**
      * 搜索结果的数据
      */
-    private List<SearchViewItem> resultData;
+    private List<SearchBookItem> resultData;
 
     /**
      * 默认提示框显示项的个数
@@ -88,17 +93,54 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
     @Bind(R.id.main_lv_search_results)
     ListView lvResults;
 
+    @Bind(R.id.loading_monindicator)
+    MonIndicator loading_indicator;
+
+    @Bind(R.id.loading_layout)
+    LinearLayout loading_lay;
+
+    private ImageLoader imageLoader;
+    private DisplayImageOptions displayImageOptions;
+
+    public void initImageLoader() {
+        // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
+        displayImageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_launcher) // 设置图片下载期间显示的图片
+                .showImageForEmptyUri(R.drawable.ic_launcher) // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.drawable.ic_launcher) // 设置图片加载或解码过程中发生错误显示的图片
+                .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true) // 设置下载的图片是否缓存在SD卡中
+                .displayer(new RoundedBitmapDisplayer(20)) // 设置成圆角图片
+                .build(); // 构建完成
+
+        imageLoader = ImageLoader.getInstance();
+    }
+
     private void initViews() {
         searchView.setSearchViewListener(this);
         searchView.setTipsHintAdapter(hintAdapter);
         searchView.setAutoCompleteAdapter(autoCompleteAdapter);
 
+        lvResults.setVisibility(View.VISIBLE);
         lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(SearchActivity.this, position + "", Toast.LENGTH_SHORT).show();
+                SearchBookItem book = (SearchBookItem) resultAdapter.getItem(position);
+
+                Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
+                intent.putExtra("name", book.getName());
+                intent.putExtra("author", book.getAuthor());
+                intent.putExtra("desc", book.getDesc());
+                intent.putExtra("img", book.getImageUrl());
+
+                startActivity(intent);
             }
         });
+
+        resultData = new ArrayList<>();
+        resultData.clear();
+        resultAdapter = new SearchAdapter(this, resultData, R.layout.book_item_listview);
+        lvResults.setAdapter(resultAdapter);
 
         setHintSize(5);
     }
@@ -106,6 +148,8 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initImageLoader();
+
         initData();
         initViews();
     }
@@ -120,22 +164,50 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
      * 初始化数据
      */
     private void initData() {
-        getDbData();
         //初始化热搜版数据
         getHintData();
         getAutoCompleteData(null);
-        getResultData(null);
     }
 
-    /**
-     * 获取db 数据
-     */
-    private void getDbData() {
-        int size = 100;
-        dbData = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            dbData.add(new SearchViewItem(R.drawable.btn_know_pre, "android开发必备技能" + (i + 1), "Android自定义view——自定义搜索view", i * 20 + 2 + ""));
-        }
+    private void search() {
+        SearchService searchService =  new SearchService();
+        searchService.setSearchServiceListener(new SearchService.SearchServiceListener() {
+            @Override
+            public void onSuccess(SearchResult searchResult) {
+                loading_lay.setVisibility(View.GONE);
+                lvResults.setVisibility(View.VISIBLE);
+
+                List<SearchBookItem> books = searchResult.getBooks();
+                if (resultData == null) {
+                    resultData = new ArrayList<>();
+                } else {
+                    resultData.clear();
+                }
+
+                LogUtil.d(TAG, "books num: " + books.size());
+                /*
+                for (int i = 0; i < books.size(); i++) {
+                    SearchBookItem book = books.get(i);
+                    LogUtil.d(TAG, "set ImageUrl: " + book.getImageUrl());
+                    resultData.add(book);
+                }
+                */
+                resultData = books;
+
+                resultAdapter.updateData(resultData);
+                resultAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(int errno, String errmsg) {
+                Toast.makeText(getApplicationContext(), "search 失败", Toast.LENGTH_SHORT).show();
+
+                loading_lay.setVisibility(View.GONE);
+                lvResults.setVisibility(View.VISIBLE);
+            }
+        });
+
+        searchService.search();
     }
 
     /**
@@ -159,6 +231,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
         } else {
             // 根据text 获取auto data
             autoCompleteData.clear();
+            /*
             for (int i = 0, count = 0; i < dbData.size()
                     && count < hintSize; i++) {
                 if (dbData.get(i).getTitle().contains(text.trim())) {
@@ -166,33 +239,12 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
                     count++;
                 }
             }
+            */
         }
         if (autoCompleteAdapter == null) {
             autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteData);
         } else {
             autoCompleteAdapter.notifyDataSetChanged();
-        }
-    }
-
-    /**
-     * 获取搜索结果data和adapter
-     */
-    private void getResultData(String text) {
-        if (resultData == null) {
-            // 初始化
-            resultData = new ArrayList<>();
-        } else {
-            resultData.clear();
-            for (int i = 0; i < dbData.size(); i++) {
-                if (dbData.get(i).getTitle().contains(text.trim())) {
-                    resultData.add(dbData.get(i));
-                }
-            }
-        }
-        if (resultAdapter == null) {
-            resultAdapter = new SearchAdapter(this, resultData, R.layout.book_item_listview);
-        } else {
-            resultAdapter.notifyDataSetChanged();
         }
     }
 
@@ -213,29 +265,27 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
      */
     @Override
     public void onSearch(String text) {
-        //更新result数据
-        getResultData(text);
-        lvResults.setVisibility(View.VISIBLE);
-        //第一次获取结果 还未配置适配器
-        if (lvResults.getAdapter() == null) {
-            //获取搜索数据 设置适配器
-            lvResults.setAdapter(resultAdapter);
-        } else {
-            //更新搜索数据
-            resultAdapter.notifyDataSetChanged();
-        }
-        Toast.makeText(this, "完成搜索", Toast.LENGTH_SHORT).show();
+        lvResults.setVisibility(View.GONE);
+
+        loading_lay.setVisibility(View.VISIBLE);
+        loading_indicator.setColors(new int[] {0xFF942909, 0xFF577B8C, 0xFF201289, 0xFF000000, 0xFF38B549});
+
+        search();
     }
 
     public class SearchAdapter extends BaseAdapter {
         private Context context;
-        private List<SearchViewItem> data;
+        private List<SearchBookItem> data;
         private int view_item_layout_id;
 
-        public SearchAdapter(Context context, List<SearchViewItem> data, int layout_id) {
+        public SearchAdapter(Context context, List<SearchBookItem> data, int layout_id) {
             this.context = context;
             this.data = data;
             this.view_item_layout_id = layout_id;
+        }
+
+        public void updateData(List<SearchBookItem> data) {
+            this.data = data;
         }
 
         @Override
@@ -245,7 +295,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return data.get(position);
         }
 
         @Override
@@ -255,7 +305,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
+            ViewHolder holder;
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(this.context).inflate(this.view_item_layout_id, parent, false);
@@ -265,13 +315,13 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            SearchViewItem itemData = this.data.get(position);
+            SearchBookItem itemData = this.data.get(position);
 
-            holder.title.setText(itemData.getTitle());
-            holder.author.setText(itemData.getTitle());
-            holder.desc.setText(itemData.getComments());
+            holder.title.setText(itemData.getName());
+            holder.author.setText(itemData.getAuthor());
+            //holder.desc.setText(itemData.getDesc());
 
-            //imageLoader.displayImage(imgUrl, holder.img, displayImageOptions);
+            imageLoader.displayImage(itemData.getImageUrl(), holder.image, displayImageOptions);
 
             return convertView;
         }
@@ -279,7 +329,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
 
     public class ViewHolder {
         @Bind(R.id.book_img)
-        public ImageView img;
+        public ImageView image;
 
         @Bind(R.id.book_title)
         public TextView title;
