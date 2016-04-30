@@ -13,4 +13,11 @@
         <attr name="circleSpacing" format="dimension" />
         <attr name="cycle" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="ShowPercentView">
+        <attr name="percent" format="integer"></attr>
+        <attr name="allLineColor" format="color" />
+        <attr name="percentLineColorLow" format="color" />
+        <attr name="percentLineColorHight" format="color" />
+    </declare-styleable>
 </resources>

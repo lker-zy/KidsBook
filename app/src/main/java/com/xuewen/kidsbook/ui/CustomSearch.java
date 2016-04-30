@@ -70,7 +70,7 @@ public class CustomSearch extends BaseActivity {
             mCircleView.addMenuItem(mItemImgs[i], mItemTexts[i]);
         }
         */
-        mCircleView.addMenuItem(0, "将关键词添加此处");
+        mCircleView.addMenuItem(0, "");
 
         mCircleView.setOnMenuItemClickListener(new CircleView.OnMenuItemClickListener() {
 

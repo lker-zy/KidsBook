@@ -4,6 +4,7 @@ package com.xuewen.kidsbook.service.beans;
  * Created by lker_zy on 16-4-24.
  */
 public class SearchBookItem {
+    private Long id;
     private String name;
     private String author;
     private String brief;
@@ -14,6 +15,14 @@ public class SearchBookItem {
 
     private String imageId;
     private String imageUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

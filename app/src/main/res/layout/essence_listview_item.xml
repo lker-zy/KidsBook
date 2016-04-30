@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:padding="8dp"
-android:layout_width="match_parent"
-android:layout_height="180dp">
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="228dp">
 
     <ImageView
         android:id="@+id/essence_item_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/essence_item_bg"
+        android:layout_height="180dp"
+        android:src="@drawable/essence_item_image_bg"
         android:contentDescription="image for essence" />
 
     <LinearLayout

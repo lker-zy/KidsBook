@@ -57,7 +57,7 @@
                         android:layout_marginTop="10.0dip" android:layout_below="@id/act_detail_title_book_star_layout">
 
                         <Button android:textSize="12.0sp" android:textColor="@color/black"
-                            android:id="@+id/act_detail_friend_want_btn"
+                            android:id="@+id/act_detail_add_grow_plan_btn"
                             android:background="@drawable/act_detail_want_read_btn_bg"
                             android:layout_width="wrap_content" android:layout_height="28.0dip"
                             android:layout_marginRight="5.0dip"

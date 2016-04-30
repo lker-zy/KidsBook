@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.MainActivity"
+        <activity android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation"
@@ -35,9 +35,7 @@
 
         </activity>
 
-        <!--
         <activity android:name=".ui.MainActivity"/>
-        -->
         <activity
             android:name=".ui.PersonalActivity"
             android:theme="@style/AppTheme.NoActionBar" />

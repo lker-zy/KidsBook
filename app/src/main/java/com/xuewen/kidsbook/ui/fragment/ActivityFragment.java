@@ -5,16 +5,25 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.ui.ActivityDetailActivity;
+import com.xuewen.kidsbook.ui.CustomSearch;
+import com.xuewen.kidsbook.ui.MainActivity;
+import com.xuewen.kidsbook.ui.SearchActivity;
 import com.xuewen.kidsbook.view.SwipeListView;
 import com.xuewen.kidsbook.view.ViewHolder;
+import com.xuewen.kidsbook.zxing.Intents;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,6 +84,61 @@ public class ActivityFragment extends BaseFragment {
         initOnlineTabView();
 
         return view;
+    }
+
+    @Override
+    protected void initTitleView() {
+        TextView title_text = (TextView) getActivity().findViewById(R.id.common_title_text);
+        title_text.setText(R.string.app_name);
+        title_text.setVisibility(View.VISIBLE);
+
+        LinearLayout title_right_btn = (LinearLayout) getActivity().findViewById(R.id.common_title_right_btn);
+        title_right_btn.setVisibility(View.VISIBLE);
+
+        ImageView right_img = (ImageView) getActivity().findViewById(R.id.common_title_right_btn_image_1);
+        right_img.setBackgroundResource(R.drawable.title_right_more_func);
+        right_img.setVisibility(View.VISIBLE);
+
+        //title_right_btn.setOnClickListener(this);
+
+        final PopupMenu right_menu = new PopupMenu(getActivity(), title_right_btn);
+        Menu menu = right_menu.getMenu();
+
+        title_right_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                right_menu.show();
+            }
+        });
+        getActivity().getMenuInflater().inflate(R.menu.title_right_more, menu);
+        right_menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = null;
+
+                switch (item.getItemId()) {
+                    case R.id.menu_common_search:
+                        intent = new Intent(getActivity(), SearchActivity.class);
+                        break;
+                    case R.id.menu_isbn_search:
+                        intent = new Intent(Intents.Scan.ACTION);
+                        break;
+                    case R.id.menu_dingzhi_search:
+                        intent = new Intent(getActivity(), CustomSearch.class);
+                        break;
+                    case R.id.menu_shouqi_search:
+                        intent = new Intent(getActivity(), SearchActivity.class);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (intent != null) {
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
     }
 
     class CrowdApplyViewHolder extends ViewHolder {

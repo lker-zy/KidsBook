@@ -13,7 +13,11 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.service.BookCollectionService;
+import com.xuewen.kidsbook.service.EssenceCollectionService;
+import com.xuewen.kidsbook.service.beans.EssenceCollection;
 import com.xuewen.kidsbook.ui.SettingActivity;
+import com.xuewen.kidsbook.view.CirclePercentView;
 import com.xuewen.kidsbook.view.DynamicGridView;
 import com.xuewen.kidsbook.view.DynamicGridViewItem;
 import com.xuewen.kidsbook.view.StudyTitleItemView;
@@ -68,7 +72,8 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             }
         });
 
-        userPhoto.setImageResource(R.drawable.user_photo_default);
+        //userPhoto.setImageResource(R.drawable.user_photo_default);
+        userPhoto.setImageResource(R.drawable.act_registration_user_icon);
 
         initStudyTitle();
         initGrowPlanTitle();
@@ -86,41 +91,107 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         container.addView(studyTitleItemView, lp);
     }
 
+    private void addBlankView(LinearLayout container, int height) {
+
+        LinearLayout blank_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.blank_view, null);
+        blank_layout.setMinimumHeight(height);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 10;
+        navi_layout.addView(blank_layout);
+    }
+
+    private void addPercentView(LinearLayout container, String name, int percent) {
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.weight = 1;
+
+        LayoutInflater mInflater = LayoutInflater.from(getActivity());
+        LinearLayout studyPercentView = (LinearLayout) mInflater.inflate(R.layout.study_percent_item, null);
+
+        CirclePercentView percentCircle = (CirclePercentView) studyPercentView.findViewById(R.id.percent_circle);
+        percentCircle.setPercent(percent);
+
+        container.addView(studyPercentView, lp);
+    }
+
     private void initStudyTitle() {
         LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
         book_study_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
         book_study_items_lay.removeAllViews();
 
-        addItemView(book_study_items_lay, "书架");
-        addItemView(book_study_items_lay, "书单");
+        addPercentView(book_study_items_lay, "", 50);
+        addPercentView(book_study_items_lay, "", 40);
+        addPercentView(book_study_items_lay, "", 10);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.topMargin = 10;
         navi_layout.addView(study_navi_layout);
     }
 
+    private void addPlanItem(LinearLayout container) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.weight = 1;
+
+        LayoutInflater mInflater = LayoutInflater.from(getActivity());
+        LinearLayout planItemView = (LinearLayout) mInflater.inflate(R.layout.grow_plan_item, null);
+
+        BookCollectionService bookCollectionService = new BookCollectionService(getActivity());
+        int count = bookCollectionService.count();
+        String numViewText = "已添加 " + count + " 本收藏";
+
+        TextView numView = (TextView) planItemView.findViewById(R.id.book_collection_num);
+        numView.setText(numViewText);
+
+        container.addView(planItemView, lp);
+    }
+
     private void initGrowPlanTitle() {
+        addBlankView(navi_layout, 16);
+
         LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
         TextView title_name = (TextView) study_navi_layout.findViewById(R.id.atme_navi_title_name);
         title_name.setText("成长计划");
         grow_plan_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
         grow_plan_items_lay.removeAllViews();
 
-        addItemView(grow_plan_items_lay, "哈哈");
-        addItemView(grow_plan_items_lay, "嘻嘻");
+        addPlanItem(grow_plan_items_lay);
 
         navi_layout.addView(study_navi_layout);
+
+    }
+
+    private void addCollectionItem(LinearLayout container, EssenceCollection collection) {
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.weight = 1;
+
+        LayoutInflater mInflater = LayoutInflater.from(getActivity());
+        LinearLayout collectionView = (LinearLayout) mInflater.inflate(R.layout.my_collection_title_item, null);
+
+        TextView title = (TextView) collectionView.findViewById(R.id.collection_title);
+        title.setText(collection.getTitle());
+
+        container.addView(collectionView, lp);
     }
 
     private void initCollectionTitle() {
+        addBlankView(navi_layout, 16);
+
         LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
         TextView title_name = (TextView) study_navi_layout.findViewById(R.id.atme_navi_title_name);
         title_name.setText("收藏");
+
         collection_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
         collection_items_lay.removeAllViews();
 
-        addItemView(collection_items_lay, "哈哈");
-        addItemView(collection_items_lay, "嘻嘻");
+        collection_items_lay.setOrientation(LinearLayout.VERTICAL);
+
+        EssenceCollectionService essenceCollectionService = new EssenceCollectionService(getActivity());
+        List<EssenceCollection> collections = essenceCollectionService.list();
+        for (int i = 0; i < collections.size(); ++i) {
+            addCollectionItem(collection_items_lay, collections.get(i));
+        }
 
         navi_layout.addView(study_navi_layout);
     }

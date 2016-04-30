@@ -40,7 +40,9 @@ public abstract class BaseActivity extends Activity {
         ButterKnife.bind(this);
 
         mContext = this.getApplicationContext();
+        /*
         ((KidsBookApplication) this.getApplication()).addActivity(this);
+        */
 
         initTitleView();
     }

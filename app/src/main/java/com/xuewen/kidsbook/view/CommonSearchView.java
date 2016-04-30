@@ -163,7 +163,7 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
             }
         });
 
-        LineWrapLayoutHotDishSearch hotSearchDishLay = (LineWrapLayoutHotDishSearch)hotSearchLay.findViewById(R.id.hot_search_dish_lay);
+        final LineWrapLayoutHotDishSearch hotSearchDishLay = (LineWrapLayoutHotDishSearch)hotSearchLay.findViewById(R.id.hot_search_dish_lay);
         List<String> dishList = new ArrayList<>();
         dishList.add("探险");
         dishList.add("游记");
@@ -180,6 +180,7 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
 
                     @Override
                     public void onClick(View v) {
+                        hotSearchLay.setVisibility(GONE);
                         notifyStartSearching(dish);
                     }
                 });

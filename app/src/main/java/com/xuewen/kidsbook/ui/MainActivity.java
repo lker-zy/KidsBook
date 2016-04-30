@@ -26,7 +26,6 @@ import com.android.volley.toolbox.Volley;
 import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.Const;
 import com.xuewen.kidsbook.R;
-import com.xuewen.kidsbook.service.ConfigService;
 import com.xuewen.kidsbook.service.LoginService;
 import com.xuewen.kidsbook.ui.fragment.ActivityFragment;
 import com.xuewen.kidsbook.ui.fragment.BaseFragment;
@@ -171,6 +170,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     apkOnSdcard = false;
                     uHandler.downFile("KidsBook.apk", false, false);
                 }
+
+                dialog.dismiss();
             }
         });
         builder.setNeutralButton("开发版下载", new DialogInterface.OnClickListener() {
@@ -184,14 +185,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     apkOnSdcard = false;
                     uHandler.downFile("KidsBook.apk", false, true);
                 }
+
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
             }
-
         });
         builder.create().show();
     }
@@ -259,6 +262,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
+        /*
+        if (frag_id != CONTENT_FRAG_ID_PERSONAL) {
+            titleLayout.setVisibility(View.VISIBLE);
+        } else {
+            titleLayout.setVisibility(View.GONE);
+        }
+        */
+
         BaseFragment fragment = contentFragment[frag_id];
         if (fragment == null) {
 
@@ -284,12 +295,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             fragment.setVolley(requestQueue);
 
             contentFragment[frag_id] = fragment;
-        }
-
-        if (frag_id != CONTENT_FRAG_ID_PERSONAL) {
-            titleLayout.setVisibility(View.VISIBLE);
-        } else {
-            titleLayout.setVisibility(View.GONE);
         }
 
         transaction.replace(R.id.main_content_frag, fragment);

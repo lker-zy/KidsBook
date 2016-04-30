@@ -9,17 +9,17 @@
         android:src="@drawable/splash_home_default"/>
 
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/splash"/>
+
+    <ImageView
         android:layout_alignParentRight="true"
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
         android:layout_width="48dp"
         android:layout_height="24dp"
         android:src="@drawable/skip"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/splash_app_image"/>
 
 </RelativeLayout>

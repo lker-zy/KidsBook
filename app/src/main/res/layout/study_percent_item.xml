@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/com.xuewen.kidsbook"
+    android:orientation="vertical"
+    android:paddingTop="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.xuewen.kidsbook.view.CirclePercentView
+        android:id="@+id/percent_circle"
+        android:layout_gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:percent="82"
+        app:allLineColor="#EBEBEB"
+        app:percentLineColorLow="#8ACB55"
+        app:percentLineColorHigh="#8ACB55"
+        />
+
+    <TextView
+        android:id="@+id/num_value"
+        android:paddingTop="5dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15" />
+
+</LinearLayout>

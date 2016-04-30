@@ -128,6 +128,7 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
                 SearchBookItem book = (SearchBookItem) resultAdapter.getItem(position);
 
                 Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
+                intent.putExtra("id", book.getId());
                 intent.putExtra("name", book.getName());
                 intent.putExtra("author", book.getAuthor());
                 intent.putExtra("desc", book.getDesc());

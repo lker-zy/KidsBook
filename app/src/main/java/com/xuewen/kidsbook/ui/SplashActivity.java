@@ -1,5 +1,6 @@
 package com.xuewen.kidsbook.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +16,7 @@ import com.xuewen.kidsbook.R;
 /**
  * Created by lker_zy on 16-3-26.
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends Activity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
@@ -23,7 +24,9 @@ public class SplashActivity extends BaseActivity {
             switch (message.what) {
                 case Const.MSG_START_MAIN_ACTIVITY:
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+                    finish();
                     break;
                 default:
                     break;
@@ -36,13 +39,16 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //getWindow().setFlags(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);  //设置全屏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        setContentView(R.layout.activity_splash);
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -54,9 +60,11 @@ public class SplashActivity extends BaseActivity {
         new Thread(runnable).start();
     }
 
+    /*
     @Override
     protected int getLayoutId() {
         return R.layout.activity_splash ;
     }
+    */
 
 }

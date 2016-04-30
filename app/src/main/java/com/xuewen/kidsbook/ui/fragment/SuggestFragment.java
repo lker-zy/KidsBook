@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,8 +31,11 @@ import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.Const;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.ui.BookDetailActivity;
+import com.xuewen.kidsbook.ui.CustomSearch;
+import com.xuewen.kidsbook.ui.SearchActivity;
 import com.xuewen.kidsbook.ui.SuggestDetailActivity;
 import com.xuewen.kidsbook.utils.LogUtil;
+import com.xuewen.kidsbook.zxing.Intents;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,15 +77,69 @@ public class SuggestFragment extends BaseFragment {
     public void initImageLoader() {
         // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
         displayImageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher) // 设置图片下载期间显示的图片
-                .showImageForEmptyUri(R.drawable.ic_launcher) // 设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnFail(R.drawable.ic_launcher) // 设置图片加载或解码过程中发生错误显示的图片
+                .showImageOnLoading(R.drawable.essence_item_image_bg) // 设置图片下载期间显示的图片
+                .showImageForEmptyUri(R.drawable.essence_item_image_bg) // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.drawable.essence_item_image_bg) // 设置图片加载或解码过程中发生错误显示的图片
                 .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
                 .cacheOnDisk(true) // 设置下载的图片是否缓存在SD卡中
                 .displayer(new RoundedBitmapDisplayer(20)) // 设置成圆角图片
                 .build(); // 构建完成
 
         imageLoader = ImageLoader.getInstance();
+    }
+
+    @Override
+    protected void initTitleView() {
+        TextView title_text = (TextView) getActivity().findViewById(R.id.common_title_text);
+        title_text.setText(R.string.app_name);
+        title_text.setVisibility(View.VISIBLE);
+
+        LinearLayout title_right_btn = (LinearLayout) getActivity().findViewById(R.id.common_title_right_btn);
+        title_right_btn.setVisibility(View.VISIBLE);
+
+        ImageView right_img = (ImageView) getActivity().findViewById(R.id.common_title_right_btn_image_1);
+        right_img.setBackgroundResource(R.drawable.title_right_more_func);
+        right_img.setVisibility(View.VISIBLE);
+
+        final PopupMenu right_menu = new PopupMenu(getActivity(), title_right_btn);
+        Menu menu = right_menu.getMenu();
+
+        title_right_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                right_menu.show();
+            }
+        });
+
+        getActivity().getMenuInflater().inflate(R.menu.title_right_more, menu);
+        right_menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = null;
+
+                switch (item.getItemId()) {
+                    case R.id.menu_common_search:
+                        intent = new Intent(getActivity(), SearchActivity.class);
+                        break;
+                    case R.id.menu_isbn_search:
+                        intent = new Intent(Intents.Scan.ACTION);
+                        break;
+                    case R.id.menu_dingzhi_search:
+                        intent = new Intent(getActivity(), CustomSearch.class);
+                        break;
+                    case R.id.menu_shouqi_search:
+                        intent = new Intent(getActivity(), SearchActivity.class);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (intent != null) {
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
     }
 
     private void initView() {
@@ -92,10 +153,9 @@ public class SuggestFragment extends BaseFragment {
                 Map<String, Object> book = (Map<String, Object>) bookItemListAdapter.getItem(position);
 
                 Intent intent = new Intent(getActivity(), SuggestDetailActivity.class);
-                intent.putExtra("name", (String) book.get("name"));
+                intent.putExtra("title", (String) book.get("title"));
                 intent.putExtra("author", (String) book.get("author"));
-                intent.putExtra("desc", (String) book.get("desc"));
-                intent.putExtra("img", (String) book.get("img"));
+                intent.putExtra("essence_id", String.valueOf(book.get("id")));
 
                 startActivity(intent);
             }
@@ -124,7 +184,7 @@ public class SuggestFragment extends BaseFragment {
     }
 
     private void getData() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.DAILY_BOOKS_URL, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.ESSENCE_LIST_URL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -134,7 +194,7 @@ public class SuggestFragment extends BaseFragment {
                 ObjectMapper objectMapper = new ObjectMapper();
                 try {
                     Map<String, Object> data = objectMapper.readValue(response, Map.class);
-                    bookItemListAdapter.setDataSet((List<Map<String, Object>>)data.get("books"));
+                    bookItemListAdapter.setDataSet((List<Map<String, Object>>)data.get("list"));
                     bookItemListAdapter.notifyDataSetChanged();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -203,12 +263,15 @@ public class SuggestFragment extends BaseFragment {
             /*
             holder.author.setText((String)data.get("author"));
             holder.desc.setText((String)data.get("desc"));
+            */
 
             String imgUrl = (String)data.get("img");
 
             imageLoader.displayImage(imgUrl, holder.img, displayImageOptions);
-            */
+
+            /*
             holder.img.setImageResource(R.drawable.bg_profile);
+            */
 
             return convertView;
         }
