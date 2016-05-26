@@ -133,6 +133,8 @@ public class SearchActivity extends BaseActivity implements CommonSearchView.Sea
                 intent.putExtra("author", book.getAuthor());
                 intent.putExtra("desc", book.getDesc());
                 intent.putExtra("img", book.getImageUrl());
+                intent.putExtra("words", book.getWordsNum());
+                intent.putExtra("price", book.getPrice());
 
                 startActivity(intent);
             }

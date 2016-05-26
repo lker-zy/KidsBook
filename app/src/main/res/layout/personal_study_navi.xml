@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:background="@color/white">
@@ -29,7 +29,8 @@
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="fitCenter"
             fresco:placeholderImage="@drawable/book_study_icon"
-            fresco:placeholderImageScaleType="fitCenter" />
+            fresco:placeholderImageScaleType="fitCenter"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/atme_navi_title_name"
@@ -42,24 +43,33 @@
             android:textColor="#4d4d4d"
             android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/book_study_title_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/book_study_title_arrow"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="#ff2d4b"
-            android:textSize="12dp" />
-
-        <ImageView
-            android:id="@+id/book_study_title_arrow"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/mypage_list_icon_arrow" />
+            android:id="@+id/book_study_detail_more"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp">
+
+            <TextView
+                android:id="@+id/book_study_title_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="共"
+                android:textColor="#ff2d4b"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/book_study_title_arrow"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/mypage_list_icon_arrow" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

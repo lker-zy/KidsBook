@@ -16,14 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.ui.ActivityDetailActivity;
 import com.xuewen.kidsbook.ui.CustomSearch;
-import com.xuewen.kidsbook.ui.MainActivity;
 import com.xuewen.kidsbook.ui.SearchActivity;
 import com.xuewen.kidsbook.view.SwipeListView;
 import com.xuewen.kidsbook.view.ViewHolder;
-import com.xuewen.kidsbook.zxing.Intents;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,14 +50,32 @@ public class ActivityFragment extends BaseFragment {
     private SwipeListView offline_tabview;
     private SwipeListView online_tabview;
 
+    private ImageLoader imageLoader;
+    private DisplayImageOptions displayImageOptions;
+    public void initImageLoader() {
+        // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
+        displayImageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.essence_item_image_bg) // 设置图片下载期间显示的图片
+                .showImageForEmptyUri(R.drawable.essence_item_image_bg) // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.drawable.essence_item_image_bg) // 设置图片加载或解码过程中发生错误显示的图片
+                .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true) // 设置下载的图片是否缓存在SD卡中
+                .displayer(new RoundedBitmapDisplayer(20)) // 设置成圆角图片
+                .build(); // 构建完成
+
+        imageLoader = ImageLoader.getInstance();
+    }
+
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_fragment;
+        return R.layout.frag_main_activity;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        initImageLoader();
 
         mInflater = LayoutInflater.from(getActivity());
         view1 = mInflater.inflate(R.layout.crowd_application_frag, null);
@@ -120,9 +140,6 @@ public class ActivityFragment extends BaseFragment {
                     case R.id.menu_common_search:
                         intent = new Intent(getActivity(), SearchActivity.class);
                         break;
-                    case R.id.menu_isbn_search:
-                        intent = new Intent(Intents.Scan.ACTION);
-                        break;
                     case R.id.menu_dingzhi_search:
                         intent = new Intent(getActivity(), CustomSearch.class);
                         break;
@@ -142,8 +159,9 @@ public class ActivityFragment extends BaseFragment {
     }
 
     class CrowdApplyViewHolder extends ViewHolder {
-        @Bind(R.id.activity_image)
-        public ImageView img;
+        @Bind(R.id.activity_image) public ImageView image;
+        @Bind(R.id.activity_address) public TextView address;
+        @Bind(R.id.activity_time) public TextView time;
 
         public CrowdApplyViewHolder(View view) {
             super(view);
@@ -151,6 +169,11 @@ public class ActivityFragment extends BaseFragment {
 
         @Override
         public void render(Object data) {
+            Map<String, Object> dataMap = (Map<String, Object>) data;
+
+            address.setText((String) dataMap.get("address"));
+            time.setText((String)dataMap.get("start_time"));
+            imageLoader.displayImage((String) dataMap.get("image_url"), image, displayImageOptions);
 
         }
     }
@@ -168,6 +191,12 @@ public class ActivityFragment extends BaseFragment {
         swipeListView.setLayoutId(R.layout.swipe_listview_view);
         swipeListView.setItemLayout(item_layout);
         swipeListView.setVolley(this.requestQueue);
+        if (parent == view1) {
+            swipeListView.setRequestUrl(AppConfig.LIST_ACTIVITY_URL + "?type=online");
+        } else {
+            swipeListView.setRequestUrl(AppConfig.LIST_ACTIVITY_URL + "?type=offline");
+        }
+
         swipeListView.setViewListener(new SwipeListView.SwipeListViewListener() {
             @Override
             public ViewHolder onInstanceViewHolder(View view) {
@@ -177,7 +206,15 @@ public class ActivityFragment extends BaseFragment {
 
             @Override
             public void onListItemClick(View view, int position, long id) {
+                Map<String, Object> data = swipeListView.getDataSet().get(position);
+
                 Intent intent = new Intent(getActivity(), ActivityDetailActivity.class);
+                intent.putExtra("content", (String) data.get("content"));
+                intent.putExtra("name", (String) data.get("name"));
+                intent.putExtra("start_time", (String) data.get("start_time"));
+                intent.putExtra("address", (String) data.get("address"));
+                intent.putExtra("image_url", (String) data.get("image_url"));
+
                 startActivity(intent);
 
             }
@@ -194,7 +231,7 @@ public class ActivityFragment extends BaseFragment {
                     return new ArrayList<Map<String, Object>>();
                 }
 
-                return (List<Map<String, Object>>) data.get("books");
+                return (List<Map<String, Object>>) data.get("list");
             }
         });
 

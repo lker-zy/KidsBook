@@ -15,9 +15,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +28,6 @@ import com.android.volley.toolbox.Volley;
 import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.Const;
 import com.xuewen.kidsbook.R;
-import com.xuewen.kidsbook.service.LoginService;
 import com.xuewen.kidsbook.ui.fragment.ActivityFragment;
 import com.xuewen.kidsbook.ui.fragment.BaseFragment;
 import com.xuewen.kidsbook.ui.fragment.CrowdFragment;
@@ -35,9 +36,11 @@ import com.xuewen.kidsbook.ui.fragment.PersonalFragment;
 import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.utils.UpdateHandler;
 import com.xuewen.kidsbook.utils.Version;
-import com.xuewen.kidsbook.zxing.Intents;
+import com.xuewen.kidsbook.zxing.CaptureActivity;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -51,9 +54,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.iv_bottom_tab_study) ImageView bottomTabIvStudy;
     @Bind(R.id.iv_bottom_tab_crowd) ImageView bottomTabIvCrowd;
 
+    @Bind(R.id.bottom_tab_essence) RelativeLayout bottomTabEssence;
+    @Bind(R.id.bottom_tab_crowd) RelativeLayout bottomTabCrowd;
+    @Bind(R.id.bottom_tab_activity) RelativeLayout bottomTabActivity;
+    @Bind(R.id.bottom_tab_study) RelativeLayout bottomTabStudy;
+
     @Bind(R.id.title_bar) LinearLayout titleLayout;
+    @Bind(R.id.common_title_left_btn) LinearLayout titleLeftBtn;
+    @Bind(R.id.common_title_left_btn_icon) ImageView leftBtnImage;
+    @Bind(R.id.main_content_frag) FrameLayout mainFragment;
 
     private PopupMenu right_menu;
+    private ImageView current_navi_iv;
+    private List<ImageView> bottomTabIvs = new ArrayList<>();
 
     private long exitTime = 0;
     private ProgressDialog pBar;
@@ -67,6 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final int CONTENT_FRAG_ID_RANK       = 2;
     private static final int CONTENT_FRAG_ID_PERSONAL   = 3;
     private BaseFragment[] contentFragment = {null, null, null, null};
+    private int curFragId = CONTENT_FRAG_ID_MAIN;
 
     private Handler cHandler = new Handler() {
         @Override
@@ -205,13 +219,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         title_text.setText(R.string.app_name);
         title_text.setVisibility(View.VISIBLE);
 
-        /*
-        findViewById(R.id.common_title_left_btn).setVisibility(View.VISIBLE);
-
-        ImageView left_img = (ImageView) findViewById(R.id.common_title_left_btn_icon);
-        left_img.setBackgroundResource(R.drawable.title_left_personal_center);
-        left_img.setVisibility(View.VISIBLE);
-        */
+        titleLeftBtn.setVisibility(View.VISIBLE);
+        leftBtnImage.setBackgroundResource(R.drawable.icon_scanning);
+        leftBtnImage.setVisibility(View.VISIBLE);
+        titleLeftBtn.setOnClickListener(this);
 
         LinearLayout title_right_btn = (LinearLayout) findViewById(R.id.common_title_right_btn);
         title_right_btn.setVisibility(View.VISIBLE);
@@ -220,8 +231,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         right_img.setBackgroundResource(R.drawable.title_right_more_func);
         right_img.setVisibility(View.VISIBLE);
 
-        //left_img.setOnClickListener(this);
-        //right_img.setOnClickListener(this);
         title_right_btn.setOnClickListener(this);
 
         right_menu = new PopupMenu(this, title_right_btn);
@@ -237,9 +246,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     case R.id.menu_common_search:
                         intent = new Intent(MainActivity.this, SearchActivity.class);
                         break;
+                    /*
                     case R.id.menu_isbn_search:
                         intent = new Intent(Intents.Scan.ACTION);
                         break;
+                    */
                     case R.id.menu_dingzhi_search:
                         intent = new Intent(MainActivity.this, CustomSearch.class);
                         break;
@@ -258,17 +269,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    //@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void changeContentFragment(int frag_id) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-
-        /*
-        if (frag_id != CONTENT_FRAG_ID_PERSONAL) {
-            titleLayout.setVisibility(View.VISIBLE);
-        } else {
-            titleLayout.setVisibility(View.GONE);
-        }
-        */
 
         BaseFragment fragment = contentFragment[frag_id];
         if (fragment == null) {
@@ -299,16 +303,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         transaction.replace(R.id.main_content_frag, fragment);
         transaction.commit();
+
+        if (frag_id == CONTENT_FRAG_ID_PERSONAL) {
+            titleLayout.setVisibility(View.GONE);
+
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainFragment.getLayoutParams();
+            lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            mainFragment.setLayoutParams(lp);
+        } else {
+            if (curFragId == CONTENT_FRAG_ID_PERSONAL) {
+                titleLayout.setVisibility(View.VISIBLE);
+
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainFragment.getLayoutParams();
+                lp.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+                mainFragment.setLayoutParams(lp);
+            }
+
+        }
+
+        current_navi_iv.setSelected(false);
+        current_navi_iv = bottomTabIvs.get(frag_id);
+        current_navi_iv.setSelected(true);
+
+
+        curFragId = frag_id;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        bottomTabIvActivity.setOnClickListener(this);
-        bottomTabIvEssence.setOnClickListener(this);
-        bottomTabIvCrowd.setOnClickListener(this);
-        bottomTabIvStudy.setOnClickListener(this);
+        bottomTabActivity.setOnClickListener(this);
+        bottomTabEssence.setOnClickListener(this);
+        bottomTabCrowd.setOnClickListener(this);
+        bottomTabStudy.setOnClickListener(this);
+
+        bottomTabIvs.add(bottomTabIvEssence);
+        bottomTabIvs.add(bottomTabIvCrowd);
+        bottomTabIvs.add(bottomTabIvActivity);
+        bottomTabIvs.add(bottomTabIvStudy);
+
+        current_navi_iv = bottomTabIvs.get(0);
+        current_navi_iv.setSelected(true);
 
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.start();
@@ -358,24 +394,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.iv_bottom_tab_essence:
+            case R.id.bottom_tab_essence:
                 changeContentFragment(CONTENT_FRAG_ID_MAIN);
                 break;
-            case R.id.iv_bottom_tab_crowd:
+            case R.id.bottom_tab_crowd:
                 changeContentFragment(CONTENT_FRAG_ID_SHELF);
                 break;
-            case R.id.iv_bottom_tab_activity:
+            case R.id.bottom_tab_activity:
                 changeContentFragment(CONTENT_FRAG_ID_RANK);
                 break;
-            case R.id.iv_bottom_tab_study:
+            case R.id.bottom_tab_study:
                 changeContentFragment(CONTENT_FRAG_ID_PERSONAL);
                 break;
-            case R.id.common_title_left_btn_icon:
-                if (LoginService.isLogin()) {
-                    intent = new Intent(MainActivity.this, PersonalActivity.class);
-                } else {
-                    intent = new Intent(MainActivity.this, LoginActivity.class);
-                }
+            case R.id.common_title_left_btn:
+                intent = new Intent(MainActivity.this, CaptureActivity.class);
                 break;
             case R.id.common_title_right_btn_image_1:
                 //intent = new Intent(MainActivity.this, SearchActivity.class);

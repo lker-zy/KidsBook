@@ -1,7 +1,6 @@
 package com.xuewen.kidsbook.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,9 +25,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private List<Map<String, Object>> appGridInfo = new ArrayList<>();
 
     @Bind(R.id.personal_app_grid_container) LinearLayout app_grid_container;
-    @Bind(R.id.setting_btn) ImageView settingBtn;
+    //@Bind(R.id.setting_btn) ImageView settingBtn;
 
     private void initViews() {
+        /*
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +36,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
             }
         });
+        */
     }
 
     @Override
@@ -47,7 +48,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_personal;
+        return R.layout.frag_main_personal;
     }
 
     private void prepareGridData() {
@@ -121,10 +122,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.setting_btn:
-                break;
-        }
 
     }
 

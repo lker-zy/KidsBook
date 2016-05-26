@@ -4,23 +4,24 @@ package com.xuewen.kidsbook.service.beans;
  * Created by lker_zy on 16-4-24.
  */
 public class SearchBookItem {
-    private Long id;
+    private int id;
     private String name;
     private String author;
     private String brief;
     private String desc;
     private String publisher;
     private String pageNum;
-    private String wordsNum;
+    private Long wordsNum;
+    private String price;
 
     private String imageId;
     private String imageUrl;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -64,14 +65,6 @@ public class SearchBookItem {
         this.pageNum = pageNum;
     }
 
-    public String getWordsNum() {
-        return wordsNum;
-    }
-
-    public void setWordsNum(String wordsNum) {
-        this.wordsNum = wordsNum;
-    }
-
     public String getImageId() {
         return imageId;
     }
@@ -94,5 +87,21 @@ public class SearchBookItem {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Long getWordsNum() {
+        return wordsNum;
+    }
+
+    public void setWordsNum(Long wordsNum) {
+        this.wordsNum = wordsNum;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

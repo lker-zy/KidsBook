@@ -47,4 +47,14 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="ProgressBar.Walk" parent="@android:style/Widget.ProgressBar">
+        <item name="android:maxWidth">100.0dip</item>
+        <item name="android:maxHeight">100.0dip</item>
+        <!--
+        <item name="android:indeterminateDrawable">@drawable/progress_walk</item>
+        -->
+        <item name="android:minWidth">75.0dip</item>
+        <item name="android:minHeight">75.0dip</item>
+    </style>
+
 </resources>

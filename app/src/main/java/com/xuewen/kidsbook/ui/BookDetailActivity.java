@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.service.BookCollectionService;
 import com.xuewen.kidsbook.service.beans.BookCollection;
+import com.xuewen.kidsbook.utils.LogUtil;
 import com.xuewen.kidsbook.view.ScrollGridView;
 
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import butterknife.Bind;
 
 public class BookDetailActivity extends BaseActivity
         implements View.OnTouchListener, View.OnClickListener {
+    private static String TAG = BookDetailActivity.class.getSimpleName();
+
     private static int DEFAULT_MAX_LINES = 5;
 
     private static final int MSG_ADD_BOOK_COLLECTION_SUCC = 0;
@@ -41,6 +44,8 @@ public class BookDetailActivity extends BaseActivity
     private String bookAuthor;
     private String bookDesc;
     private String bookImgUri;
+    private Long bookWords;
+    private float bookPrice;
 
     @Bind(R.id.act_detail_scrolview) ScrollView detail_scroll_view;
 
@@ -49,7 +54,7 @@ public class BookDetailActivity extends BaseActivity
 
     @Bind(R.id.act_detail_book_info_introduction) TextView desc_text_view;
 
-    @Bind(R.id.act_detail_books_review_grid_view) ScrollGridView books_review_grid_view;
+    //@Bind(R.id.act_detail_books_review_grid_view) ScrollGridView books_review_grid_view;
 
     @Bind(R.id.act_detail_title_book_name)  TextView book_name_view;
     @Bind(R.id.act_detail_title_book_author) TextView book_author_view;
@@ -57,12 +62,14 @@ public class BookDetailActivity extends BaseActivity
     @Bind(R.id.act_detail_add_grow_plan_btn) Button add_grow_plan_btn;
 
     private GestureDetector gestureDetector;
-    private SimpleAdapter gridAdapter;
+    //private SimpleAdapter gridAdapter;
     private ImageLoader imageLoader;
     private DisplayImageOptions displayImageOptions;
 
+    /*
     private int[] icon = { R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher };
     private String[] iconName = { "test1", "test2", "test3"};
+    */
 
     private class DescMoreViewListener implements View.OnClickListener {
 
@@ -123,6 +130,8 @@ public class BookDetailActivity extends BaseActivity
                 bookCollection.setAuthor(bookAuthor);
                 bookCollection.setName(bookName);
                 bookCollection.setId(bookId);
+                bookCollection.setWords(bookWords);
+                bookCollection.setPrice(bookPrice);
 
                 BookCollectionService bookCollectionService = new BookCollectionService(BookDetailActivity.this);
                 bookCollectionService.add(bookCollection);
@@ -139,9 +148,11 @@ public class BookDetailActivity extends BaseActivity
 
         //detail_scroll_view.setOnTouchListener(this);
 
+        /*
         gridAdapter = new SimpleAdapter(this, getData(), R.layout.detail_book_review_grid_item,
                 new String[] {"image", "author"}, new int[] {R.id.review_img, R.id.review_author});
         books_review_grid_view.setAdapter(gridAdapter);
+        */
 
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -177,6 +188,10 @@ public class BookDetailActivity extends BaseActivity
         bookAuthor = bundle.getString("author");
         bookDesc = bundle.getString("desc");
         bookImgUri = bundle.getString("img");
+        bookWords = bundle.getLong("words");
+
+        String price = bundle.getString("price");
+        bookPrice = Float.parseFloat(price);
 
         super.onCreate(savedInstanceState);
 

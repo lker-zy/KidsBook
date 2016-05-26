@@ -5,6 +5,9 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.xuewen.kidsbook.AppConfig;
+import com.xuewen.kidsbook.utils.LogUtil;
+
 /**
  * Created by lker_zy on 16-4-30.
  */
@@ -22,12 +25,14 @@ public class BookCollectionDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (id integer primary key, name varchar(128), author varchar(36), publisher varchar(36))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +
+                " (id integer primary key, category_id int, words bigint, name varchar(128), " +
+                "price float, " +
+                "author varchar(36), publisher varchar(36), category_name varchar(32), desc varchar(65536) )");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 }
 

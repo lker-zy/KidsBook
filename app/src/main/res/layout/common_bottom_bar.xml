@@ -7,9 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="54dp"
     android:layout_alignParentBottom="true"
-    android:orientation="vertical"
-    android:background="@color/black">
-    
+    android:orientation="horizontal"
+    android:background="@color/bottom_bar_bg">
+
+    <!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -23,7 +24,7 @@
             android:layout_weight="1.0"
             android:layout_centerHorizontal="true"
             android:contentDescription="@null"
-            android:src="@drawable/ic_tab_select_normal" />
+            android:src="@drawable/essence_icon_selector" />
 
         <ImageView
             android:id="@+id/iv_bottom_tab_crowd"
@@ -32,7 +33,7 @@
             android:layout_weight="1.0"
             android:layout_centerHorizontal="true"
             android:contentDescription="@null"
-            android:src="@drawable/ic_book" />
+            android:src="@drawable/crowd_icon_selector" />
 
         <ImageView
             android:id="@+id/iv_bottom_tab_activity"
@@ -41,7 +42,7 @@
             android:layout_weight="1.0"
             android:layout_centerHorizontal="true"
             android:contentDescription="@null"
-            android:src="@drawable/ic_tab_activity" />
+            android:src="@drawable/activity_icon_selector" />
 
         <ImageView
             android:id="@+id/iv_bottom_tab_study"
@@ -50,7 +51,7 @@
             android:layout_weight="1.0"
             android:layout_centerHorizontal="true"
             android:contentDescription="@null"
-            android:src="@drawable/title_left_personal_center" />
+            android:src="@drawable/me_icon_selector" />
     </LinearLayout>
 
     <LinearLayout
@@ -66,7 +67,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="@string/bottom_essence"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
@@ -78,7 +79,7 @@
             android:padding="5dp"
             android:gravity="center"
             android:text="@string/bottom_tab_crowd"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
@@ -90,7 +91,7 @@
             android:padding="5dp"
             android:gravity="center"
             android:text="@string/bottom_tab_activity"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
@@ -102,109 +103,112 @@
             android:padding="5dp"
             android:gravity="center"
             android:text="@string/bottom_tab_study"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp" />
     </LinearLayout>
-
-    <!--
-    <RelativeLayout
-        android:id="@+id/bottom_tab_daily"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.0">
-
-        <ImageView
-            android:id="@+id/iv_bottom_tab_daily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@null"
-            android:src="@drawable/btn_know_nor" />
-
-        <TextView
-            android:id="@+id/tv_bottom_tab_daily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_bottom_tab_daily"
-            android:layout_centerHorizontal="true"
-            android:text="@string/bottom_essence"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-    </RelativeLayout>
+    -->
 
     <RelativeLayout
-        android:id="@+id/bottom_tab_latest"
+        android:id="@+id/bottom_tab_essence"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1.0">
 
         <ImageView
-            android:id="@+id/iv_bottom_tab_latest"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:id="@+id/iv_bottom_tab_essence"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingTop="5dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@null"
-            android:src="@drawable/ic_book" />
+            android:src="@drawable/essence_icon_selector" />
+
+        <TextView
+            android:id="@+id/tv_bottom_tab_daily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_bottom_tab_essence"
+            android:layout_centerHorizontal="true"
+            android:text="@string/bottom_essence"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_tab_crowd"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0">
+
+        <ImageView
+            android:id="@+id/iv_bottom_tab_crowd"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@null"
+            android:src="@drawable/crowd_icon_selector" />
 
         <TextView
             android:id="@+id/tv_bottom_tab_latest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bottom_tab_latest"
+            android:layout_below="@+id/iv_bottom_tab_crowd"
             android:layout_centerHorizontal="true"
             android:text="@string/bottom_tab_crowd"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/bottom_tab_list"
+        android:id="@+id/bottom_tab_activity"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.0">
 
         <ImageView
-            android:id="@+id/iv_bottom_tab_list"
+            android:id="@+id/iv_bottom_tab_activity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:paddingTop="5dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@null"
-            android:src="@drawable/btn_my_nor" />
+            android:src="@drawable/activity_icon_selector" />
 
         <TextView
             android:id="@+id/tv_bottom_tab_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bottom_tab_list"
+            android:layout_below="@+id/iv_bottom_tab_activity"
             android:layout_centerHorizontal="true"
             android:text="@string/bottom_tab_activity"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/bottom_tab_me"
+        android:id="@+id/bottom_tab_study"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.0">
 
         <ImageView
-            android:id="@+id/iv_bottom_tab_me"
+            android:id="@+id/iv_bottom_tab_study"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:paddingTop="5dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@null"
-            android:src="@drawable/btn_my_nor" />
+            android:src="@drawable/me_icon_selector" />
 
         <TextView
             android:id="@+id/tv_bottom_tab_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bottom_tab_me"
+            android:layout_below="@+id/iv_bottom_tab_study"
             android:layout_centerHorizontal="true"
             android:text="@string/bottom_tab_my"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp" />
     </RelativeLayout>
-    -->
 </LinearLayout>

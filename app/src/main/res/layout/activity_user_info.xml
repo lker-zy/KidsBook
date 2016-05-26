@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/index_floor_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/common_title" android:id="@+id/normal_title_layout" />
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@+id/normal_title_layout">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:id="@+id/usr_info_head_layout"
+                android:background="@color/fuxk_base_color_white" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_head_name_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="15.0dip" android:text="@string/usr_info_head" android:layout_centerVertical="true" />
+                <RelativeLayout android:id="@+id/my_dd_head_icon_layout"
+                    android:paddingTop="10.0dip" android:paddingBottom="10.0dip"
+                    android:layout_width="wrap_content" android:layout_height="fill_parent"
+                    android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip"
+                    android:layout_toLeftOf="@+id/usr_info_right_arrow">
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/user_head_photo"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        fresco:roundAsCircle="true"
+                        fresco:roundingBorderColor="@color/custom_white"
+                        fresco:roundingBorderWidth="2dp" />
+
+                    <ImageView android:layout_width="70.0dip" android:layout_height="70.0dip" android:src="@drawable/icon_mask" android:scaleType="fitXY"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+                <ImageView android:id="@+id/usr_info_right_arrow"
+                    android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginRight="15.0dip"
+                    android:src="@drawable/common_right_arrow" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <RelativeLayout android:id="@+id/usr_info_usr_name_layout"
+                android:background="@color/fuxk_base_color_white" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="48.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_usr_name_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="会员名 : " android:layout_centerVertical="true" />
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_gray" android:id="@+id/usr_info_usr_member_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:text="\ 18618105088"
+                    android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View android:background="@color/setting_line" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <RelativeLayout android:id="@+id/usr_info_nick_name_layout"
+                android:background="@color/fuxk_base_color_white" android:layout_width="fill_parent" android:layout_height="48.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_nick_name_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/usr_info_nick_name"
+                    android:layout_centerVertical="true" />
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_gray" android:ellipsize="end" android:gravity="left"
+                    android:id="@+id/usr_info_nick_member_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip"
+                    android:singleLine="true" android:layout_toLeftOf="@+id/usr_info_nick_member_et" android:layout_toRightOf="@id/usr_info_nick_name_text"
+                    android:text="aa"
+                    android:layout_centerVertical="true" />
+                <EditText android:visibility="gone"
+                    android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_gray" android:ellipsize="end" android:gravity="left"
+                    android:id="@+id/usr_info_nick_member_et" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip"
+                    android:singleLine="true" android:layout_toLeftOf="@+id/usr_info_nick_name_submit_btn" android:layout_toRightOf="@id/usr_info_nick_name_text"
+                    android:layout_centerVertical="true" />
+                <Button
+                    android:id="@+id/usr_info_nick_name_submit_btn"
+                    android:visibility="invisible"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="确认"
+                    android:layout_alignParentRight="true"
+                    />
+
+                <ImageView android:id="@+id/usr_info_nick_name_edit_icon"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip"
+                    android:src="@drawable/text_edit_icon" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <RelativeLayout android:id="@+id/usr_info_baby_birthday_layout"
+                android:background="@color/fuxk_base_color_white" android:layout_width="fill_parent" android:layout_height="48.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_baby_birthday_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/usr_info_baby_birthday"
+                    android:layout_centerVertical="true" />
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_gray" android:ellipsize="end" android:gravity="right"
+                    android:id="@+id/usr_info_baby_birthday_member_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip"
+                    android:singleLine="true" android:layout_toLeftOf="@+id/usr_info_baby_birthday_right_arrow" android:layout_toRightOf="@id/usr_info_baby_birthday_text"
+                    android:layout_centerVertical="true" />
+                <ImageView android:id="@+id/usr_info_baby_birthday_right_arrow"
+                    android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginRight="15.0dip"
+                    android:src="@drawable/common_right_arrow" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <!--
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <RelativeLayout android:id="@+id/usr_info_grade_layout" android:background="@color/fuxk_base_color_white"
+                android:layout_width="fill_parent" android:layout_height="48.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_grade_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/usr_info_grade"
+                    android:layout_centerVertical="true" />
+                <TextView android:textSize="16.0sp" android:textColor="@color/setting_member_color" android:id="@+id/usr_info_grade_name_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <RelativeLayout android:id="@+id/usr_info_sex_layout"
+                android:background="@color/fuxk_base_color_white" android:layout_width="fill_parent" android:layout_height="48.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black"
+                    android:id="@+id/usr_info_sex_name_text" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="15.0dip" android:text="@string/usr_info_sex" android:layout_centerVertical="true" />
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_gray" android:id="@+id/usr_info_sex_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip"
+                    android:layout_toLeftOf="@+id/usr_info_sex_right_arrow" android:layout_centerVertical="true" />
+                <ImageView android:id="@+id/usr_info_sex_right_arrow" android:layout_width="wrap_content" android:layout_height="fill_parent"
+                    android:layout_marginRight="15.0dip" android:src="@drawable/common_right_arrow" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <RelativeLayout android:id="@+id/usr_info_integral_layout" android:background="@color/fuxk_base_color_white"
+                android:layout_width="fill_parent" android:layout_height="48.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_integral_name_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/usr_info_integral"
+                    android:layout_centerVertical="true" />
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_gray" android:id="@+id/usr_info_integral_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip"
+                    android:layout_toLeftOf="@+id/usr_info_integral_right_arrow" android:layout_centerVertical="true" />
+                <ImageView android:id="@+id/usr_info_integral_right_arrow" android:layout_width="wrap_content" android:layout_height="fill_parent"
+                    android:layout_marginRight="15.0dip" android:src="@drawable/common_right_arrow" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <View android:background="@color/setting_shadow" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+            <RelativeLayout android:id="@+id/usr_info_address_layout" android:background="@color/fuxk_base_color_white"
+                android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_marginTop="10.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_address_name_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/usr_info_address"
+                    android:layout_centerVertical="true" />
+                <ImageView android:id="@+id/usr_info_address_right_arrow" android:layout_width="wrap_content" android:layout_height="fill_parent"
+                    android:layout_marginRight="15.0dip" android:src="@drawable/common_right_arrow" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <RelativeLayout android:id="@+id/usr_info_safe_setting_layout" android:background="@color/fuxk_base_color_white" android:layout_width="fill_parent"
+                android:layout_height="48.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/fuxk_base_color_black" android:id="@+id/usr_info_safe_setting_name_text"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip"
+                    android:text="@string/usr_info_safe_setting" android:layout_centerVertical="true" />
+                <ImageView android:id="@+id/usr_info_safe_setting_right_arrow" android:layout_width="wrap_content" android:layout_height="fill_parent"
+                    android:layout_marginRight="15.0dip" android:src="@drawable/common_right_arrow" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            -->
+            <View android:background="@color/setting_line" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+            <View android:background="@color/setting_shadow" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout android:id="@+id/user_photo_parent_layout"
+        android:background="@color/white" android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout android:orientation="vertical" android:id="@+id/usr_photo_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip">
+
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="98.0dip">
+                <Button android:textSize="18.0sp" android:textColor="@color/photo_select_photo_color" android:id="@+id/btn_photo_camera" android:background="@null"
+                    android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/photo_select_camera" />
+                <View android:background="@color/fuxk_base_divide_line_color" android:layout_width="fill_parent" android:layout_height="1.0dip" />
+                <Button android:textSize="18.0sp"
+                    android:textColor="@color/photo_select_cancle_color" android:id="@+id/btn_photo_gallery"
+                    android:background="@null" android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/photo_select_gallery" />
+            </LinearLayout>
+            <Button android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/photo_select_cancle_color"
+                android:id="@+id/cancle" android:layout_width="fill_parent" android:layout_height="48.0dip"
+                android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" android:text="@string/photo_select_cancel" />
+        </LinearLayout>
+    </RelativeLayout>
+    <ProgressBar android:id="@+id/progress"
+        android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_centerInParent="true" style="@style/ProgressBar.Walk" />
+</RelativeLayout>

@@ -136,7 +136,7 @@
                             android:layout_marginTop="1.0dip" android:layout_marginBottom="1.0dip">
 
                             <TextView android:textSize="12.0sp" android:textColor="@color/black"
-                                android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="精品解读" />
+                                android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="阅读指导" />
 
                         </LinearLayout>
 
@@ -150,9 +150,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:numColumns="auto_fit"
+                                android:visibility="gone"
                                 android:columnWidth="80dp">
 
                             </com.xuewen.kidsbook.view.ScrollGridView>
+
+                            <LinearLayout android:gravity="center" android:id="@+id/act_detail_essence_list"
+                                android:paddingTop="10.0dip" android:paddingBottom="10.0dip"
+                                android:visibility="visible"
+                                android:layout_width="fill_parent" android:layout_height="45.0dip"
+                                android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip">
+
+                                <TextView android:textSize="14.0sp" android:textColor="#ff999999"
+                                    android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="暂无阅读指导" />
+                                <ImageView android:layout_width="6.0dip" android:layout_height="10.0dip"
+                                    android:layout_marginLeft="3.0dip" android:src="@drawable/common_right_arrow" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -213,7 +226,9 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-        <LinearLayout android:id="@+id/act_detail_add_cmt_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+        <LinearLayout android:id="@+id/act_detail_add_cmt_layout"
+            android:visibility="gone"
+            android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
             <include layout="@layout/book_detail_cmt_layout" />
         </LinearLayout>
     </RelativeLayout>

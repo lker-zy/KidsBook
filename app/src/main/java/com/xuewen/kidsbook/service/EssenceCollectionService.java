@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.db.EssenceCollectionDatabaseHelper;
 import com.xuewen.kidsbook.service.beans.EssenceCollection;
 import com.xuewen.kidsbook.utils.LogUtil;
@@ -26,20 +27,25 @@ public class EssenceCollectionService {
 
     public void add(EssenceCollection essenceCollection) {
 
-        EssenceCollectionDatabaseHelper dbHelper = new EssenceCollectionDatabaseHelper(context, TABLE, null, 1);
+        EssenceCollectionDatabaseHelper dbHelper = new EssenceCollectionDatabaseHelper(context, TABLE, null, AppConfig.DB_VERSION_4_ESSENCE_COLLECTION);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        /*
         String addSql = "INSERT INTO " + TABLE + "(id, title, author) values(" + essenceCollection.getId() + ", '" +
                 essenceCollection.getTitle() + "', '" + essenceCollection.getAuthor() + "')";
         LogUtil.d(TAG, "sql is: " + addSql);
 
         db.execSQL(addSql);
+        */
+
+        LogUtil.d(TAG, "insert book collection: " + essenceCollection.getContentValues().toString());
+        db.insert(TABLE, null, essenceCollection.getContentValues());
         db.close();
     }
 
     public int getCount() {
         int count = 0;
-        EssenceCollectionDatabaseHelper dbHelper = new EssenceCollectionDatabaseHelper(context, TABLE, null, 1);
+        EssenceCollectionDatabaseHelper dbHelper = new EssenceCollectionDatabaseHelper(context, TABLE, null, AppConfig.DB_VERSION_4_ESSENCE_COLLECTION);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String countSql = " select count(*) from " + TABLE;
@@ -57,7 +63,7 @@ public class EssenceCollectionService {
 
     public List<EssenceCollection> list() {
         List<EssenceCollection> list = new ArrayList<>();
-        EssenceCollectionDatabaseHelper dbHelper = new EssenceCollectionDatabaseHelper(context, TABLE, null, 1);
+        EssenceCollectionDatabaseHelper dbHelper = new EssenceCollectionDatabaseHelper(context, TABLE, null, AppConfig.DB_VERSION_4_ESSENCE_COLLECTION);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String sql = " select id, title, author from " + TABLE;

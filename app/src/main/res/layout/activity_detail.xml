@@ -27,6 +27,7 @@
                 android:text="活动详情"/>
 
             <TextView
+                android:id="@+id/activity_name"
                 android:paddingTop="18dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
@@ -35,6 +36,7 @@
                 android:textSize="16dp"/>
 
             <TextView
+                android:id="@+id/activity_content"
                 android:paddingTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text="时间: "/>
                 <TextView
+                    android:id="@+id/activity_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" 2016年5月22日14：00"/>
@@ -72,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:text="地点: "/>
                 <TextView
+                    android:id="@+id/activity_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" 王府井新华书店三层"/>

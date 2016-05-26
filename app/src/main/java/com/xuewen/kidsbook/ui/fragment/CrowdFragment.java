@@ -16,15 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.R;
-import com.xuewen.kidsbook.ui.BookDetailActivity;
 import com.xuewen.kidsbook.ui.CrawdApplyActivity;
 import com.xuewen.kidsbook.ui.CustomSearch;
 import com.xuewen.kidsbook.ui.ReportDetailActivity;
 import com.xuewen.kidsbook.ui.SearchActivity;
 import com.xuewen.kidsbook.view.SwipeListView;
 import com.xuewen.kidsbook.view.ViewHolder;
-import com.xuewen.kidsbook.zxing.Intents;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -100,12 +99,38 @@ public class CrowdFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.crawd_fragment;
+        return R.layout.frag_main_crawd;
+    }
+
+    class CrowdReportViewHolder extends ViewHolder {
+        @Bind(R.id.report_title)
+        public TextView title;
+
+        @Bind(R.id.report_num)
+        TextView report_num;
+
+        public CrowdReportViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void render(Object data) {
+            Map<String, Object> reportData = (Map<String, Object>) data;
+
+            title.setText("《" + reportData.get("book_name") + "》 众读报告");
+            report_num.setText("已有" + reportData.get("count") + "人提交报告");
+        }
     }
 
     class CrowdApplyViewHolder extends ViewHolder {
         @Bind(R.id.book_image)
         public ImageView img;
+
+        @Bind(R.id.book_publisher)
+        public TextView publisher;
+
+        @Bind(R.id.apply_num)
+        TextView apply_num;
 
         public CrowdApplyViewHolder(View view) {
             super(view);
@@ -113,7 +138,10 @@ public class CrowdFragment extends BaseFragment {
 
         @Override
         public void render(Object data) {
+            Map<String, Object> applyData = (Map<String, Object>) data;
 
+            publisher.setText((String) applyData.get("publisher"));
+            apply_num.setText("申请人数 " + applyData.get("apply_num"));
         }
     }
 
@@ -151,9 +179,6 @@ public class CrowdFragment extends BaseFragment {
                     case R.id.menu_common_search:
                         intent = new Intent(getActivity(), SearchActivity.class);
                         break;
-                    case R.id.menu_isbn_search:
-                        intent = new Intent(Intents.Scan.ACTION);
-                        break;
                     case R.id.menu_dingzhi_search:
                         intent = new Intent(getActivity(), CustomSearch.class);
                         break;
@@ -185,11 +210,23 @@ public class CrowdFragment extends BaseFragment {
         swipeListView.setLayoutId(R.layout.swipe_listview_view);
         swipeListView.setItemLayout(item_layout);
         swipeListView.setVolley(this.requestQueue);
+        if (parent == view2) {
+            swipeListView.setRequestUrl(AppConfig.REPORTS_OVERVIEW_URL);
+        } else {
+            swipeListView.setRequestUrl(AppConfig.LIST_CROWD_APPLY_URL);
+        }
+
         swipeListView.setViewListener(new SwipeListView.SwipeListViewListener() {
             @Override
             public ViewHolder onInstanceViewHolder(View view) {
-                CrowdApplyViewHolder holder = new CrowdApplyViewHolder(view);
-                return holder;
+                if (parent == view2) {
+                    CrowdReportViewHolder holder = new CrowdReportViewHolder(view);
+                    return  holder;
+
+                } else {
+                    CrowdApplyViewHolder holder = new CrowdApplyViewHolder(view);
+                    return  holder;
+                }
             }
 
             @Override
@@ -198,14 +235,16 @@ public class CrowdFragment extends BaseFragment {
 
                 if (parent == view2) {
                     Intent intent = new Intent(getActivity(), ReportDetailActivity.class);
+                    intent.putExtra("apply_id", (int) book.get("id"));
+                    intent.putExtra("book_name", (String) book.get("book_name"));
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getActivity(), CrawdApplyActivity.class);
-                    intent.putExtra("name", (String) book.get("name"));
-                    intent.putExtra("author", (String) book.get("author"));
-                    intent.putExtra("desc", (String) book.get("desc"));
-                    intent.putExtra("publisher", (String)book.get("puborg"));
-                    intent.putExtra("image_url", (String) book.get("imageUrl"));
+                    intent.putExtra("name", (String) book.get("book_name"));
+                    intent.putExtra("author", (String) book.get("book_author"));
+                    intent.putExtra("desc", (String) book.get("book_desc"));
+                    intent.putExtra("publisher", (String)book.get("publisher"));
+                    intent.putExtra("image_url", (String) book.get("image_url"));
                     startActivity(intent);
                 }
 
@@ -223,7 +262,7 @@ public class CrowdFragment extends BaseFragment {
                     return new ArrayList<Map<String, Object>>();
                 }
 
-                return (List<Map<String, Object>>) data.get("books");
+                return (List<Map<String, Object>>) data.get("list");
             }
         });
 

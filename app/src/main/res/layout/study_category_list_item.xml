@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <ImageView
+        android:id="@+id/image_iv"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/study_ic_wenxue"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+        
+        <TextView
+            android:id="@+id/category_name_tv"
+            android:layout_width="match_parent"
+            android:paddingTop="8dp"
+            android:layout_height="32dp"
+            android:textSize="18sp"
+            android:text="文学"/>
+
+        <TextView
+            android:id="@+id/book_num_tv"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:textSize="12sp"
+            android:text="藏书32本"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

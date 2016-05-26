@@ -38,6 +38,7 @@ public class SwipeListView extends LinearLayout {
     private SwipeListViewListener viewListener;
 
     private RequestQueue requestQueue;
+    private String requestUrl;
 
     public List<Map<String, Object>> getDataSet() {
         return dataSet;
@@ -73,6 +74,9 @@ public class SwipeListView extends LinearLayout {
     }
     public void setVolley(RequestQueue requestQueue) {
         this.requestQueue = requestQueue;
+    }
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
     }
 
     public void initView() {
@@ -115,7 +119,7 @@ public class SwipeListView extends LinearLayout {
     }
 
     private void getData() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.DAILY_BOOKS_URL, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestUrl, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

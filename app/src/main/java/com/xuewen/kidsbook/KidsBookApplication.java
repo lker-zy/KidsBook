@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.xuewen.kidsbook.net.GlobalVolley;
+import com.xuewen.kidsbook.service.BookCollectionService;
 import com.xuewen.kidsbook.service.ConfigService;
 import com.xuewen.kidsbook.service.LoginService;
 import com.xuewen.kidsbook.utils.LogUtil;
@@ -91,6 +92,8 @@ public class KidsBookApplication extends Application {
         initGlobalVolley();
 
         new LoginService();
+
+        BookCollectionService.init();
 
         //File appStorageLoc = StorageUtils.getDirectory(getApplicationContext(), AppConfig.STORAGE_BASE);
         File appCacheLoc = StorageUtils.getDirectory(getApplicationContext(), AppConfig.CACHE_BASE);

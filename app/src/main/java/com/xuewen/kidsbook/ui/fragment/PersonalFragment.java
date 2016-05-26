@@ -15,9 +15,11 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.service.BookCollectionService;
 import com.xuewen.kidsbook.service.EssenceCollectionService;
+import com.xuewen.kidsbook.service.beans.BookCollection;
 import com.xuewen.kidsbook.service.beans.EssenceCollection;
+import com.xuewen.kidsbook.ui.CollectionActivity;
 import com.xuewen.kidsbook.ui.SettingActivity;
-import com.xuewen.kidsbook.view.CirclePercentView;
+import com.xuewen.kidsbook.ui.StudyActivity;
 import com.xuewen.kidsbook.view.DynamicGridView;
 import com.xuewen.kidsbook.view.DynamicGridViewItem;
 import com.xuewen.kidsbook.view.StudyTitleItemView;
@@ -35,6 +37,8 @@ import butterknife.ButterKnife;
  */
 public class PersonalFragment extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.user_photo) SimpleDraweeView userPhoto;
+    @Bind(R.id.book_study_total_words) TextView total_words_tv;
+    @Bind(R.id.book_study_energy_value) TextView energy_value_tv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_personal;
+        return R.layout.frag_main_personal;
     }
 
     private List<Map<String, Object>> appGridInfo = new ArrayList<>();
@@ -72,8 +76,15 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             }
         });
 
-        //userPhoto.setImageResource(R.drawable.user_photo_default);
         userPhoto.setImageResource(R.drawable.act_registration_user_icon);
+        userPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });
 
         initStudyTitle();
         initGrowPlanTitle();
@@ -101,6 +112,7 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         navi_layout.addView(blank_layout);
     }
 
+    /*
     private void addPercentView(LinearLayout container, String name, int percent) {
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -114,34 +126,72 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
 
         container.addView(studyPercentView, lp);
     }
+    */
+
+    private void addCategoryView(LinearLayout container, int resId, String category, int num) {
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.weight = 1;
+
+        LayoutInflater mInflater = LayoutInflater.from(getActivity());
+        LinearLayout categoryView = (LinearLayout) mInflater.inflate(R.layout.study_percent_item, null);
+
+        ImageView imageView = (ImageView) categoryView.findViewById(R.id.item_image);
+        imageView.setImageResource(resId);
+
+        TextView textView = (TextView) categoryView.findViewById(R.id.num_value);
+        textView.setText(category + " " + num);
+
+        container.addView(categoryView, lp);
+    }
 
     private void initStudyTitle() {
         LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
         book_study_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
         book_study_items_lay.removeAllViews();
+        TextView title_content = (TextView) study_navi_layout.findViewById(R.id.book_study_title_content);
 
-        addPercentView(book_study_items_lay, "", 50);
-        addPercentView(book_study_items_lay, "", 40);
-        addPercentView(book_study_items_lay, "", 10);
+        long total_words = 0;
+        float total_price = (float) 0;
+        BookCollectionService bookCollectionService = new BookCollectionService(getActivity());
+        List<BookCollection> collections = bookCollectionService.list();
+        for (int i = 0; i < collections.size(); ++i) {
+            total_words += collections.get(i).getWords();
+            total_price += collections.get(i).getPrice();
+        }
+
+        title_content.setText(collections.size() + "本");
+        total_words_tv.setText(String.valueOf(total_words));
+        energy_value_tv.setText(String.valueOf(total_price));
+
+        addCategoryView(book_study_items_lay, R.drawable.study_ic_wenxue, "文学", 8);
+        addCategoryView(book_study_items_lay, R.drawable.study_ic_huiben, "绘本", 18);
+        addCategoryView(book_study_items_lay, R.drawable.study_ic_baike, "百科", 11);
+        addCategoryView(book_study_items_lay, R.drawable.study_ic_tuhuashu, "图画书", 32);
+
+        LinearLayout detail_more = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_detail_more);
+        detail_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), StudyActivity.class);
+                startActivity(intent);
+            }
+        });
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.topMargin = 10;
         navi_layout.addView(study_navi_layout);
     }
 
-    private void addPlanItem(LinearLayout container) {
+    private void addPlanItem(LinearLayout container, String viewText) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.weight = 1;
 
         LayoutInflater mInflater = LayoutInflater.from(getActivity());
         LinearLayout planItemView = (LinearLayout) mInflater.inflate(R.layout.grow_plan_item, null);
 
-        BookCollectionService bookCollectionService = new BookCollectionService(getActivity());
-        int count = bookCollectionService.count();
-        String numViewText = "已添加 " + count + " 本收藏";
-
-        TextView numView = (TextView) planItemView.findViewById(R.id.book_collection_num);
-        numView.setText(numViewText);
+        TextView numView = (TextView) planItemView.findViewById(R.id.view_text);
+        numView.setText(viewText);
 
         container.addView(planItemView, lp);
     }
@@ -151,11 +201,34 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
 
         LinearLayout study_navi_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.personal_study_navi, null);
         TextView title_name = (TextView) study_navi_layout.findViewById(R.id.atme_navi_title_name);
-        title_name.setText("成长计划");
+        title_name.setText("计划");
+        TextView title_content = (TextView) study_navi_layout.findViewById(R.id.book_study_title_content);
+
         grow_plan_items_lay = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_title_outside);
         grow_plan_items_lay.removeAllViews();
+        grow_plan_items_lay.setOrientation(LinearLayout.VERTICAL);
 
-        addPlanItem(grow_plan_items_lay);
+        long total_words = 0;
+        float total_price = (float) 0;
+        BookCollectionService bookCollectionService = new BookCollectionService(getActivity());
+        List<BookCollection> collections = bookCollectionService.list();
+        for (int i = 0; i < collections.size(); ++i) {
+            total_words += collections.get(i).getWords();
+            total_price += collections.get(i).getPrice();
+        }
+
+        title_content.setText(collections.size() + "本");
+        total_words_tv.setText(String.valueOf(total_words));
+        energy_value_tv.setText(String.valueOf(total_price));
+
+        addPlanItem(grow_plan_items_lay, "总计" + total_words +"字待计划阅读");
+        addPlanItem(grow_plan_items_lay, "总计" + total_price +"点成长力可累积");
+        /*
+        addCategoryView(grow_plan_items_lay, R.drawable.plan_ic_wenxue, "文学", 8);
+        addCategoryView(grow_plan_items_lay, R.drawable.plan_ic_huiben, "绘本", 18);
+        addCategoryView(grow_plan_items_lay, R.drawable.plan_ic_baike, "百科", 11);
+        addCategoryView(grow_plan_items_lay, R.drawable.plan_ic_tuhuashu, "图画书", 32);
+        */
 
         navi_layout.addView(study_navi_layout);
 
@@ -192,6 +265,19 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         for (int i = 0; i < collections.size(); ++i) {
             addCollectionItem(collection_items_lay, collections.get(i));
         }
+
+        TextView title_content = (TextView) study_navi_layout.findViewById(R.id.book_study_title_content);
+        title_content.setText(collections.size() + "篇");
+
+        LinearLayout detail_more = (LinearLayout) study_navi_layout.findViewById(R.id.book_study_detail_more);
+        detail_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CollectionActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         navi_layout.addView(study_navi_layout);
     }
@@ -263,10 +349,6 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.setting_btn:
-                break;
-        }
 
     }
 

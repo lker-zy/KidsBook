@@ -278,7 +278,53 @@
     <color name="crowd_end">#f4f0745f</color>
 
     <!--
+    <color name="bottom_bar_bg">#FDF5E6</color>
+    <color name="title_bar_bg">#FDF5E6</color>
+    -->
+    <color name="bottom_bar_bg">#FFFFFF</color>
+    <color name="title_bar_bg">#FFFFFF</color>
+
+    <!--
     <color name="book_detail_bg">#6E000000</color>
     -->
     <color name="book_detail_bg">#0E000000</color>
+    <color name="essence_item_text_bg">#ffEEEEEE</color>
+    <color name="essence_list_bg">#c8cacc</color>
+
+    <color name="index_floor_bg">#fff2f2f2</color>
+
+    <color name="fuxk_base_color_balck_bg">#50646464</color>
+    <color name="fuxk_base_color_black">#ff323232</color>
+    <color name="fuxk_base_color_black_">#80000000</color>
+    <color name="fuxk_base_color_black_2">#ff3c3c3c</color>
+    <color name="fuxk_base_color_black_40">#70000000</color>
+    <color name="fuxk_base_color_cyan">#ff32dcd2</color>
+    <color name="fuxk_base_color_gray">#ff969696</color>
+    <color name="fuxk_base_color_gray_black">#ff646464</color>
+    <color name="fuxk_base_color_gray_black_2">#ff3c3c3c</color>
+    <color name="fuxk_base_color_list_press">#ffdcdcdc</color>
+    <color name="fuxk_base_color_orange">#ffff9600</color>
+    <color name="fuxk_base_color_orange_add_cart_press">#ffcc792d</color>
+    <color name="fuxk_base_color_pure_black">#ff000000</color>
+    <color name="fuxk_base_color_red">#ffff463c</color>
+    <color name="fuxk_base_color_white">#ffffffff</color>
+    <color name="fuxk_base_color_white_">#b2ffffff</color>
+    <color name="fuxk_base_content_color">#fff0f0f0</color>
+    <color name="fuxk_base_divide_line_color">#ffdcdcdc</color>
+    <color name="fuxk_gift_card_0">#ffffe2ce</color>
+    <color name="fuxk_gift_card_0_">#fffa6432</color>
+    <color name="fuxk_gift_card_1">#ffd2faff</color>
+    <color name="fuxk_gift_card_1_">#ff1eb4ff</color>
+    <color name="fuxk_gift_card_2">#ffc8fac8</color>
+    <color name="fuxk_gift_card_2_">#ff32c828</color>
+    <color name="fuxk_ingot_yellow_color">#fffafae6</color>
+
+    <color name="setting_line">#ffe1e1e1</color>
+    <color name="setting_member_color">#ffff8814</color>
+    <color name="setting_shadow">#ffebebeb</color>
+
+    <color name="photo_select_cancle_color">#ff007aff</color>
+    <color name="photo_select_photo_color">#fffd472b</color>
+
+    <color name="collection_list_devider">#90969696</color>
 </resources>

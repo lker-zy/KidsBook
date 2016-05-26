@@ -1,5 +1,7 @@
 package com.xuewen.kidsbook.service.beans;
 
+import android.content.ContentValues;
+
 /**
  * Created by lker_zy on 16-4-30.
  */
@@ -8,6 +10,11 @@ public class EssenceCollection {
     private String title;
     private String author;
     private String content;
+    private ContentValues contentValues = new ContentValues();
+
+    public ContentValues getContentValues() {
+        return contentValues;
+    }
 
     public int getId() {
         return id;
@@ -15,6 +22,7 @@ public class EssenceCollection {
 
     public void setId(int id) {
         this.id = id;
+        contentValues.put("id", id);
     }
 
     public String getTitle() {
@@ -23,6 +31,7 @@ public class EssenceCollection {
 
     public void setTitle(String title) {
         this.title = title;
+        contentValues.put("title", title);
     }
 
     public String getAuthor() {
@@ -31,6 +40,7 @@ public class EssenceCollection {
 
     public void setAuthor(String author) {
         this.author = author;
+        contentValues.put("author", author);
     }
 
     public String getContent() {
@@ -39,5 +49,6 @@ public class EssenceCollection {
 
     public void setContent(String content) {
         this.content = content;
+        contentValues.put("content", content);
     }
 }

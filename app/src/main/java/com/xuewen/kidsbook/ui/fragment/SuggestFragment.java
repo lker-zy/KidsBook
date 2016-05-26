@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -121,9 +122,6 @@ public class SuggestFragment extends BaseFragment {
                     case R.id.menu_common_search:
                         intent = new Intent(getActivity(), SearchActivity.class);
                         break;
-                    case R.id.menu_isbn_search:
-                        intent = new Intent(Intents.Scan.ACTION);
-                        break;
                     case R.id.menu_dingzhi_search:
                         intent = new Intent(getActivity(), CustomSearch.class);
                         break;
@@ -147,6 +145,7 @@ public class SuggestFragment extends BaseFragment {
         bookItemListAdapter = new BookItemListAdapter(fakeData);
         listView.setAdapter(bookItemListAdapter);
 
+        /*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -155,11 +154,12 @@ public class SuggestFragment extends BaseFragment {
                 Intent intent = new Intent(getActivity(), SuggestDetailActivity.class);
                 intent.putExtra("title", (String) book.get("title"));
                 intent.putExtra("author", (String) book.get("author"));
-                intent.putExtra("essence_id", String.valueOf(book.get("id")));
+                intent.putExtra("essence_id", (int) book.get("id"));
 
                 startActivity(intent);
             }
         });
+        */
 
         swipeLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -253,25 +253,33 @@ public class SuggestFragment extends BaseFragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            Map<String, Object> data = dataSet.get(position);
+            final Map<String, Object> data = dataSet.get(position);
 
             if (data.get("title") == null) {
                 holder.title.setText((String)data.get("name"));
             } else {
                 holder.title.setText((String) data.get("title"));
             }
-            /*
-            holder.author.setText((String)data.get("author"));
-            holder.desc.setText((String)data.get("desc"));
-            */
 
             String imgUrl = (String)data.get("img");
 
             imageLoader.displayImage(imgUrl, holder.img, displayImageOptions);
 
-            /*
-            holder.img.setImageResource(R.drawable.bg_profile);
-            */
+            String rawDesc = (String)data.get("desc");
+            holder.desc.setText(Html.fromHtml(rawDesc));
+
+            holder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), SuggestDetailActivity.class);
+                    intent.putExtra("title", (String) data.get("title"));
+                    intent.putExtra("author", (String) data.get("author"));
+                    intent.putExtra("essence_id", (int) data.get("id"));
+
+                    startActivity(intent);
+
+                }
+            });
 
             return convertView;
         }
@@ -287,6 +295,9 @@ public class SuggestFragment extends BaseFragment {
 
             @Bind(R.id.essence_item_title)
             public TextView title;
+
+            @Bind(R.id.essence_item_desc)
+            public TextView desc;
 
             public ViewHolder(View view) {
                 ButterKnife.bind(this, view);

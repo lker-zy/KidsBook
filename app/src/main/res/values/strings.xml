@@ -159,4 +159,23 @@
     <string name="menu_isbn_search">ISBN 扫描</string>
     <string name="menu_dingzhi">私人定制</string>
     <string name="menu_shouqi_search">手气不错</string>
+
+    <string name="usr_info_address">收货地址：</string>
+    <string name="usr_info_grade">会员等级：</string>
+    <string name="usr_info_head">头像</string>
+    <string name="usr_info_integral">积分：</string>
+    <string name="usr_info_name_no_space">新昵称不能有空格！</string>
+    <string name="usr_info_nick_name">昵称：</string>
+    <string name="usr_info_baby_birthday">宝贝生日：</string>
+    <string name="usr_info_safe_setting">安全设置：</string>
+    <string name="usr_info_sex">性别：</string>
+
+    <string name="photo_select_camera">拍 照</string>
+    <string name="photo_select_cancel">取 消</string>
+    <string name="photo_select_gallery">从相册选择</string>
+
+    <string name="sexy_seceletor_title">您是 :</string>
+    <string name="sexy_father">爸爸</string>
+    <string name="sexy_mother">妈妈</string>
+
 </resources>
