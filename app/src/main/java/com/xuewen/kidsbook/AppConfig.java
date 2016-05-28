@@ -1,5 +1,7 @@
 package com.xuewen.kidsbook;
 
+import android.os.Environment;
+
 /**
  * Created by lker_zy on 16-3-29.
  */
@@ -25,4 +27,8 @@ public class AppConfig {
 
     public static int DB_VERSION_4_BOOK_COLLECTION = 4;
     public static int DB_VERSION_4_ESSENCE_COLLECTION = 1;
+
+    public static String USER_HEAD_PHOTO_DIR = Environment.getExternalStorageDirectory() + "/" + STORAGE_BASE;
+    public static String USER_HEAD_PHOTO_FILE = "user_head_photo.png";
+    public static String USER_HEAD_PHOTO_PATH = USER_HEAD_PHOTO_DIR + "/" + USER_HEAD_PHOTO_FILE;
 }

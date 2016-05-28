@@ -2,6 +2,7 @@ package com.xuewen.kidsbook.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.service.BookCollectionService;
 import com.xuewen.kidsbook.service.EssenceCollectionService;
@@ -24,6 +26,7 @@ import com.xuewen.kidsbook.view.DynamicGridView;
 import com.xuewen.kidsbook.view.DynamicGridViewItem;
 import com.xuewen.kidsbook.view.StudyTitleItemView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +79,8 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             }
         });
 
-        userPhoto.setImageResource(R.drawable.act_registration_user_icon);
+        //userPhoto.setImageResource(R.drawable.act_registration_user_icon);
+        userPhoto.setImageURI(Uri.fromFile(new File(AppConfig.USER_HEAD_PHOTO_DIR, AppConfig.USER_HEAD_PHOTO_FILE)));
         userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

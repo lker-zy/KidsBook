@@ -165,6 +165,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void showUpdateDialog(String newVer, String verDesc) {
         pBar = new ProgressDialog(MainActivity.this);
+        pBar.setCanceledOnTouchOutside(false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_info);

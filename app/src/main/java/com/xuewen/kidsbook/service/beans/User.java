@@ -9,6 +9,10 @@ public class User {
     private String  phonenum;
     private String  password;
     private Child   child;
+    private String  birthday;
+    private int     birYear;
+    private int     birMonth;
+    private int     birDay;
 
     public Long getId() {
         return id;
@@ -48,5 +52,47 @@ public class User {
 
     public void setChild(Child child) {
         this.child = child;
+    }
+
+    public int getBirYear() {
+        return birYear;
+    }
+
+    public void setBirYear(int birYear) {
+        this.birYear = birYear;
+    }
+
+    public int getBirMonth() {
+        return birMonth;
+    }
+
+    public void setBirMonth(int birMonth) {
+        this.birMonth = birMonth;
+    }
+
+    public int getBirDay() {
+        return birDay;
+    }
+
+    public void setBirDay(int birDay) {
+        this.birDay = birDay;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+
+        String [] arr = birthday.split("\\-");
+
+        if (arr.length != 3) {
+            return;
+        }
+
+        setBirYear(Integer.parseInt(arr[0]));
+        setBirMonth(Integer.parseInt(arr[1]));
+        setBirDay(Integer.parseInt(arr[2]));
     }
 }

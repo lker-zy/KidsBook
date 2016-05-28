@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +19,6 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xuewen.kidsbook.R;
 import com.xuewen.kidsbook.service.BookCollectionService;
 import com.xuewen.kidsbook.service.beans.BookCollection;
-import com.xuewen.kidsbook.utils.LogUtil;
-import com.xuewen.kidsbook.view.ScrollGridView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

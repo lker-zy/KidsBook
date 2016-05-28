@@ -94,7 +94,7 @@ public class CommonSearchView extends LinearLayout implements View.OnClickListen
     public CommonSearchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        LayoutInflater.from(context).inflate(R.layout.search_view_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.activity_search, this);
         initViews();
     }
 

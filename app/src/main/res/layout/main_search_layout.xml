@@ -30,8 +30,9 @@
 
     <ListView
         android:visibility="visible"
-        android:padding="8dp"
         android:id="@+id/main_lv_search_results"
+        android:divider="@color/common_line"
+        android:dividerHeight="0.1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

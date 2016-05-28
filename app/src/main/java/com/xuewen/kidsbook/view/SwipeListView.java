@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.xuewen.kidsbook.AppConfig;
 import com.xuewen.kidsbook.R;
+import com.xuewen.kidsbook.utils.LogUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.Map;
  * Created by lker_zy on 16-4-15.
  */
 public class SwipeListView extends LinearLayout {
+    private static String TAG = SwipeListView.class.getSimpleName();
     private int layoutId;
     private int itemLayoutId;
 
@@ -40,6 +42,8 @@ public class SwipeListView extends LinearLayout {
     private RequestQueue requestQueue;
     private String requestUrl;
 
+    List<Map<String, Object>> dataSet;
+
     public List<Map<String, Object>> getDataSet() {
         return dataSet;
     }
@@ -48,8 +52,6 @@ public class SwipeListView extends LinearLayout {
         this.dataSet = dataSet;
         adapter.setDataSet(dataSet);
     }
-
-    List<Map<String, Object>> dataSet;
 
     public SwipeListView(Context context) {
         super(context);
@@ -128,7 +130,8 @@ public class SwipeListView extends LinearLayout {
                 try {
                     dataSet = viewListener.onDataLoading(0, response);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LogUtil.e(TAG, e.getMessage());
+                    dataSet = new ArrayList<>();
                 }
 
                 adapter.setDataSet(dataSet);
@@ -143,7 +146,7 @@ public class SwipeListView extends LinearLayout {
                 try {
                     viewListener.onDataLoading(-1, error.getMessage());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LogUtil.e(TAG, "onErrorResponse: " + e.getMessage());
                 }
             }
         });

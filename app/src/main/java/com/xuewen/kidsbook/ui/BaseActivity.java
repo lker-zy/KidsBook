@@ -22,6 +22,8 @@ public abstract class BaseActivity extends Activity {
 
     protected Context mContext;
 
+    protected void beforeSetContentView() {}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtil.d(BaseActivity.TAG, "onCreate...");
@@ -29,6 +31,7 @@ public abstract class BaseActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        beforeSetContentView();
 
         int layoutId = getLayoutId();
         if (layoutId != 0) {
@@ -54,5 +57,5 @@ public abstract class BaseActivity extends Activity {
 
     protected abstract int getLayoutId();
 
-    protected void initTitleView() {};
+    protected void initTitleView() {}
 }

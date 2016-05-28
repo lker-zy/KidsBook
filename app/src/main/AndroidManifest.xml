@@ -67,7 +67,8 @@
         <activity android:name=".ui.CustomSearch" />
         <activity android:name=".ui.CollectionActivity" />
         <activity android:name=".ui.StudyActivity" />
-        <activity android:name=".ui.UserInfoActivity" />
+        <activity android:name=".ui.UserInfoActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
         <activity android:name=".zxing.CaptureActivity"
             android:screenOrientation="portrait">

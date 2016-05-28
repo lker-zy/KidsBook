@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -33,6 +34,9 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
@@ -865,6 +869,79 @@ public class Utils {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             return null;
+        }
+    }
+
+    public static Bitmap image2Bitmap(String path) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);//参数100表示不压缩
+            byte[] bytes = bos.toByteArray();
+
+            if (bytes.length != 0) {
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    public static void saveBitmap(Bitmap mBitmap, String savedPic)  {
+        File f = new File(savedPic);
+        FileOutputStream fOut;
+
+        try {
+            fOut = new FileOutputStream(f);
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // fOut有可能并未close， 比如flush的时候失败
+    }
+
+    public static void copyfile(File fromFile, File toFile, Boolean rewrite ) {
+        if (!fromFile.exists()) {
+            return;
+        }
+        if (!fromFile.isFile()) {
+            return ;
+        }
+        if (!fromFile.canRead()) {
+            return ;
+        }
+        if (!toFile.getParentFile().exists()) {
+            toFile.getParentFile().mkdirs();
+        }
+        if (toFile.exists() && rewrite) {
+            toFile.delete();
+        }
+
+        //当文件不存时，canWrite一直返回的都是false
+        // if (!toFile.canWrite()) {
+        // MessageDialog.openError(new Shell(),"错误信息","不能够写将要复制的目标文件" + toFile.getPath());
+        // Toast.makeText(this,"不能够写将要复制的目标文件", Toast.LENGTH_SHORT);
+        // return ;
+        // }
+        try {
+            java.io.FileInputStream fosfrom = new java.io.FileInputStream(fromFile);
+            java.io.FileOutputStream fosto = new FileOutputStream(toFile);
+            byte bt[] = new byte[1024];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) {
+                fosto.write(bt, 0, c); //将内容写到新文件当中
+            }
+            fosfrom.close();
+            fosto.close();
+        } catch (Exception ex) {
+            LogUtil.e("readfile", ex.getMessage());
         }
     }
 
